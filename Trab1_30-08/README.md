@@ -33,6 +33,17 @@ O arquivo de entrada contém registros de dados sobre artigos científicos publi
 | Atualização   | `data e hora` | data e hora da última atualização dos dados |
 | Snippet       | `alfa 1024`   | resumo textual dos dados do artigo          |
 
+#### Exemplo (ignore os `\n`)
+```
+"1";
+"Poster: 3D sketching and flexible input for surface design: A case study.";
+"2013";
+"Anamary Leal|Doug A. Bowman";
+"0";
+"2016-07-28 09:36:29";
+"Poster: 3D sketching and flexible input for surface design: A case study. A Leal, DA Bowman -  Interfaces (3DUI), 2013 IEEE Symposium , 2013 - ieeexplore.ieee.org. ABSTRACT Designing three-dimensional (3D) surfaces is difficult in both the physical world  and in 3D modeling software, requiring background knowledge and skill. The goal of this  work is to make 3D surface design easier and more accessible through natural and  .."
+```
+
 Os seguintes programas devem ser implementados: <br>
 - `upload` _<file\>_ <br>
 Programa que fará a carga inicial da massa de testes para seu banco de dados que irá criar:
@@ -91,15 +102,15 @@ class Javadoc_Test
 {
   public:
 
-    /** 
+    /**
      * An enum.
      * More detailed enum description.
      */
-    enum TEnum { 
-          TVal1, /**< enum value TVal1. */  
-          TVal2, /**< enum value TVal2. */  
-          TVal3  /**< enum value TVal3. */  
-         } 
+    enum TEnum {
+          TVal1, /**< enum value TVal1. */
+          TVal2, /**< enum value TVal2. */
+          TVal3  /**< enum value TVal3. */
+         }
        *enumPtr, /**< enum pointer. Details. */
        enumVar;  /**< enum variable. Details. */
 
@@ -146,7 +157,7 @@ class Javadoc_Test
        */
        virtual void testMeToo(char c1, char c2) = 0;
 
-      /** 
+      /**
        * a public variable.
        * Details.
        */
