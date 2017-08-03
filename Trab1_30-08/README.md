@@ -25,13 +25,13 @@ O arquivo de entrada contém registros de dados sobre artigos científicos publi
 
 | Campo         | Tipo          | Descrição  |
 |:-------------:|:--------------|:-----------|
-| ID            | `inteiro`     | código identificador do artigo              |
-| Título        | `alfa 300`    | título do artigo                            |
-| Ano           | `inteiro`     | ano de publicação do artigo                 |
-| Autores       | `alfa 1024`   | lista dos autores do artigo                 |
-| Citações      | `inteiro`     | número de vezes que o artigo foi citado     |
-| Atualização   | `data e hora` | data e hora da última atualização dos dados |
-| Snippet       | `alfa 1024`   | resumo textual dos dados do artigo          |
+| ID            | `inteiro`     | código identificador do artigo                         |
+| Título        | `alfa 300`    | título do artigo                                       |
+| Ano           | `inteiro`     | ano de publicação do artigo                            |
+| Autores       | `alfa 1024`   | lista dos autores do artigo (nomes separados por `|`)  |
+| Citações      | `inteiro`     | número de vezes que o artigo foi citado                |
+| Atualização   | `data e hora` | data e hora da última atualização dos dados (`AAAA-MM-DD hh:mm:ss`)           |
+| Snippet       | `alfa 1024`   | resumo textual dos dados do artigo                     |
 
 #### Exemplo (ignore os `\n`)
 ```
