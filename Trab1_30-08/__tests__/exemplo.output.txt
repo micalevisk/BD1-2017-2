@@ -1,5 +1,0 @@
-id ## titulo ## ano ## autores ## citacoes ## atualizacao ## snippet
-1 ## Poster:  3D sketching. ## 2013 ## Anamary Leal ## 0 ## 2016-07-28 09:36:29 ## A case study...
-2 ## Poster: photography. ## 2013 ## Yusuke Kawano|Kazuhisa Yanaka ## 0 ## 2016-07-28 09:36:49 ## 3D User Interfaces (3DUI)..
-3 ## Poster: markerless. ## 2013 ## Joseph J. LaViola Jr. ## 22 ## 2016-10-03 21:16:22 ## interact with a variety of user interfaces..
-4 ## Poster: Observing change in. ## 2013 ## Gregorio Alanis-Lobato|Schulze ## 0 ## 2012-12-31 23:00:00 ## NULL
