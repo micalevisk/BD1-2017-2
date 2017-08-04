@@ -2,4 +2,6 @@
 *.sh text eol=lf
 *.bash text eol=lf
 *.cpp text eol=lf
-*.cc text eol=crlf
+*.cc text eol=lf
+*.hpp text eol=lf
+*.sh text eol=lf
