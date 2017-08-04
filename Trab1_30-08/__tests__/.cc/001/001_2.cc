@@ -10,6 +10,16 @@
 
 using namespace std;
 
+string removeFirstAndLast(string str, char c){
+  return (str.empty() || str[0] != c || str[ str.size()-1 ] != c)
+         ? str
+         : str.substr(1, str.size() - 2);
+}
+
+string removeFirstAndLastDoubleQuotes(string str){
+  return removeFirstAndLast(str, '"');
+}
+
 int main (void)
 {
   ifstream file("../exemplo.input.csv");
@@ -21,25 +31,25 @@ int main (void)
   std::cout << "id ## titulo ## ano ## autores ## citacoes ## atualizacao ## snippet \n";
 
   while ( getline(file, id, delimitador) ) {
-    cout << id << " ## ";
+    cout << removeFirstAndLastDoubleQuotes(id) << " ## ";
 
     getline(file, titulo, delimitador) ;
-    cout << titulo << " ## ";
+    cout << removeFirstAndLastDoubleQuotes(titulo) << " ## ";
 
     getline(file, ano, delimitador) ;
-    cout << ano << " ## ";
+    cout << removeFirstAndLastDoubleQuotes(ano) << " ## ";
 
     getline(file, autores, delimitador) ;
-    cout << autores << " ## ";
+    cout << removeFirstAndLastDoubleQuotes(autores) << " ## ";
 
     getline(file, citacoes, delimitador) ;
-    cout << citacoes << " ## ";
+    cout << removeFirstAndLastDoubleQuotes(citacoes) << " ## ";
 
     getline(file, atualizacao, delimitador) ;
-    cout << atualizacao << " ## ";
+    cout << removeFirstAndLastDoubleQuotes(atualizacao) << " ## ";
 
     getline(file, snippet);
-    cout << snippet << "\n" ;
+    cout << removeFirstAndLastDoubleQuotes(snippet) << "\n" ;
   }
 
   return 0;
