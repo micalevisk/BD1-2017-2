@@ -7,7 +7,6 @@ PATH_EXPECTED_OUTPUT="exemplo.output.txt"
 
 PATH_CC_TESTSFILES="."
 DIR_CC_001="${PATH_CC_TESTSFILES}/001_*.cc"
-DIR_EXE_001="${DIR_CC_001/%.cc/.exe}"
 
 ALL_EXECUTABLE="*.exe*"
 #####################################################
@@ -50,6 +49,6 @@ ALL_EXECUTABLE="*.exe*"
 ##================== FIM DOS TESTES ==================##
 
 @test "[END] Apagar Arquivos Gerados" {
- rm $ALL_EXECUTABLE
+  rm $ALL_EXECUTABLE
   assert_success
 }
