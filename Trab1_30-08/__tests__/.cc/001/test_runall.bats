@@ -4,10 +4,7 @@ load ../../test_helper
 
 #####################################################
 PATH_EXPECTED_OUTPUT="exemplo.output.txt"
-
-PATH_CC_TESTSFILES="."
-DIR_CC_001="${PATH_CC_TESTSFILES}/001_*.cc"
-
+DIR_CC_001="./001_*.cc"
 ALL_EXECUTABLE="*.exe*"
 #####################################################
 
