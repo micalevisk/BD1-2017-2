@@ -1,7 +1,7 @@
-//:description: ler CSV usando o CSVReader
+//:description: ler CSV usando o 'csv.h'
 //:compile: g++ -std=c++11 001_3.cc -lpthread -o 001_3.exe
 
-#include "../../../include/CSVReader.hpp"
+#include "../../../include/csv.h"
 #include <iostream>
 
 using namespace std;
