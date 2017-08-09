@@ -1,5 +1,6 @@
-//:description: ler CSV formatado usando uma classe específica
-//:compile: g++ -std=c++11 001_4.cc -o 001_4.exe
+//:description: ler CSV formatado (com quebras de linhas nos registros) usando uma classe específica
+//:compile: g++ -std=c++11 001_4.cc -lpthread -o 001_4.exe
+//:time: ~20s for 1021439 record
 
 #include "../../../include/csv.h"
 #include <stdio.h>
@@ -100,58 +101,40 @@ size_t countFields(const std::string& str, const char separator = ';'){
 }
 
 
-int main(){
+int main(int argc, char* argv[]){
+  if (argc != 2) return 1;
 
   string bufferUltimaLinha;
   bool ultimoNaoFinalizado = false;
 
   const unsigned columnCount = 7;
-  LineReader in("../exemplo.input.csv");
+  unsigned long qtdRegistros = 0;
+
+  LineReader in(argv[1]);
   while (char* line = in.next_line()) {
     // printf("{%s}\n", line);
-
     string currLine = string(line);
 
     if (ultimoNaoFinalizado) {
-      ultimoNaoFinalizado = false;
       bufferUltimaLinha += currLine;
-      cout << bufferUltimaLinha << endl;
+
+      if ( !(countFields(bufferUltimaLinha) < columnCount) ) {
+        ultimoNaoFinalizado = false;
+        // cout << bufferUltimaLinha << endl;//SALVAR REGISTRO
+        qtdRegistros++;
+      }
     }
-    else if ( countFields(currLine) != columnCount ) {
+    else if ( countFields(currLine) < columnCount ) {
       ultimoNaoFinalizado = true;
       bufferUltimaLinha = currLine;
     }
     else {
-      cout << currLine << endl;
+      // cout << currLine << endl;//SALVAR REGISTRO
+      qtdRegistros++;
     }
 
   }
 
-  /*
-  io::CSVReader<
-    7,
-    io::trim_chars<' ', '\t'>,
-    io::double_quote_escape<';','\"'>
-  > in("../exemplo.input.csv");
-  in.set_header("id", "titulo", "ano", "autores", "citacoes", "atualizacao", "snippet"); // usando quando o arquivo não possui um header
-  // in.read_header(io::ignore_missing_column, "id", "titulo", "ano", "autores", "citacoes", "atualizacao", "snippet"); // usado quando a primeira linha é o header
 
-  // colunas:
-  int id, ano;
-  std::string titulo, autores, citacoes, atualizacao, snippet;
-
-  cout << "id ## titulo ## ano ## autores ## citacoes ## atualizacao ## snippet \n";
-
-  while ( in.read_row(id, titulo, ano, autores, citacoes, atualizacao, snippet) ) {
-    cout << id << " ## "
-    << titulo  << " ## "
-    << ano << " ## "
-    << autores << " ## "
-    << citacoes << " ## "
-    << atualizacao << " ## "
-    << snippet << '\n';
-  }
-  */
-
-
+  cout << "leu " << qtdRegistros << " registros\n";
 }
