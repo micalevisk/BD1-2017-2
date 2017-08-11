@@ -15,7 +15,7 @@
 
 namespace utils {//TODO mover para header
 
-  bool equals(std::string str1, std::string str2){
+  bool areEquals(std::string str1, std::string str2){
     return !str1.compare(str2);
   }
 
@@ -92,7 +92,7 @@ void commandHandler(string command)
   string file;
   unsigned id;
 
-  if (equals(command, "upload")) {
+  if (areEquals(command, "upload")) {
     cin >> file;
     try{
       if (cin.fail()) throw 1;
@@ -101,7 +101,7 @@ void commandHandler(string command)
       throwError(ERROR_READ_PARAMETER);
       return;
     }
-  } else if (equals(command, "exit")) {
+  } else if (areEquals(command, "exit")) {
     _exit();
   } else {
     cin >> id;
@@ -112,11 +112,11 @@ void commandHandler(string command)
       auto commandExecution = get_fun(commandIndex);
       commandExecution(id);
       /*
-      if (equals(command, "findrec")) {
+      if (areEquals(command, "findrec")) {
         _findrec(id);
-      } else if (equals(command, "seek1")) {
+      } else if (areEquals(command, "seek1")) {
         _seek1(id);
-      } else if (equals(command, "seek2")) {
+      } else if (areEquals(command, "seek2")) {
         _seek2(id);
       }
       */
