@@ -42,6 +42,12 @@ ALL_EXECUTABLE="*.exe*"
   assert_success
 }
 
+@test "[001_testar_v4] Comparar saída de '001_4.exe' com 'leu 6 registros'" {
+  executable_exists "001_4.exe" || skip "'001_4.exe' não encontrado!"
+  run ./001_4.exe "../exemplo.input.csv"
+  assert_equal "leu 6 registros" "${output}"
+}
+
 
 ##================== FIM DOS TESTES ==================##
 
