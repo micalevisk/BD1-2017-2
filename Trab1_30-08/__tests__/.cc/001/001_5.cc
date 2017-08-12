@@ -136,32 +136,26 @@ class ReadCSV {
       bool ultimoNaoFinalizado = false;
       unsigned qtdCamposLidos;
 
+      auto adicionarRegistro = [&](string linha){
+        vector<string> registro = StringUtils::split<columnCount>(linha, sep, qtdCamposLidos);
+        CSVRow curr(registro);
+        records.push_back(registro);
+      };
+
       while (char* line = in.next_line()) {
         string currLine = string(line);
 
         if (ultimoNaoFinalizado) {
           bufferUltimaLinha += currLine;
-
           if ( !(countFields(bufferUltimaLinha) < columnCount) ) {
             ultimoNaoFinalizado = false;
-            currLine = bufferUltimaLinha;
-            //**
-            vector<string> registro = StringUtils::split<columnCount>(currLine, sep, qtdCamposLidos);
-            CSVRow curr(registro);
-            records.push_back(registro);
-            //**
+            adicionarRegistro(bufferUltimaLinha);
           }
-        }
-        else if ( countFields(currLine) < columnCount ) {
+        } else if ( countFields(currLine) < columnCount ) {
           ultimoNaoFinalizado = true;
           bufferUltimaLinha = currLine;
-        }
-        else {
-          //**
-          vector<string> registro = StringUtils::split<columnCount>(currLine, sep, qtdCamposLidos);
-          CSVRow curr(registro);
-          records.push_back(registro);
-          //**
+        } else {
+          adicionarRegistro(currLine);
         }
       }
 
