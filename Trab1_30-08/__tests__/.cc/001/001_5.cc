@@ -115,7 +115,8 @@ struct CSVRow {
 
 using namespace std;
 
-template<unsigned columnCount = 7, char sep = ';'>
+//OBS: o construtor de 'RowDataType' deve ter 1 parâmetro do tipo 'std::vector<std::string>'
+template<class RowDataType, unsigned columnCount, char sep>
 class ReadCSV {
   string filename;
 
@@ -125,11 +126,11 @@ class ReadCSV {
   }
 
   public:
-    vector<CSVRow> records;
+    vector<RowDataType> records;
 
     ReadCSV(string _filename) : filename(_filename) {}
 
-    vector<CSVRow> readRecords(){
+    vector<RowDataType> readRecords(){
       io::LineReader in(filename);
 
       string bufferUltimaLinha;
@@ -138,7 +139,7 @@ class ReadCSV {
 
       auto adicionarRegistro = [&](string linha){
         vector<string> registro = StringUtils::split<columnCount>(linha, sep, qtdCamposLidos);
-        CSVRow curr(registro);
+        RowDataType curr(registro);
         records.push_back(registro);
       };
 
@@ -147,11 +148,11 @@ class ReadCSV {
 
         if (ultimoNaoFinalizado) {
           bufferUltimaLinha += currLine;
-          if ( !(countFields(bufferUltimaLinha) < columnCount) ) {
+          if (countFields(bufferUltimaLinha) >= columnCount) {
             ultimoNaoFinalizado = false;
             adicionarRegistro(bufferUltimaLinha);
           }
-        } else if ( countFields(currLine) < columnCount ) {
+        } else if (countFields(currLine) < columnCount) {
           ultimoNaoFinalizado = true;
           bufferUltimaLinha = currLine;
         } else {
@@ -164,18 +165,15 @@ class ReadCSV {
 };
 
 
-
 int main(int argc, char* argv[]){
   if (argc != 2) return 1;
 
-  ReadCSV<> dados(argv[1]);
+  ReadCSV<CSVRow, 7, ';'> dados(argv[1]);
   dados.readRecords();
-
   cout << "id ## titulo ## ano ## autores ## citacoes ## atualizacao ## snippet \n";
   vector<CSVRow> v = dados.records;
 
   for(const auto& dado : v){
     cout << dado << endl;
-
   }
 }
