@@ -29,16 +29,16 @@ inline void showError(const char* message, FILE* stream = stdout)
 
 static void showHelp(FILE* stream = stdout)
 {
-  fprintf(stream, "# COMANDOS DISPONÍVEIS:\n");
+  fprintf(stream, "# COMANDOS DISPONIVEIS:\n");
   // fprintf(stream, "# todos devem ser finalizados com ponto e vírgula (';')\n");
   fprintf(stream, "- exit           # apagar tudo e fechar REPL (Read-Eval-Print-Loop)\n");
   fprintf(stream, "- upload \"file\"  # carrega os dados para o banco\n\n");
 
-  fprintf(stream, "# Os comandos abaixo retornam (em relação ao arquivo utilizado):\n");
+  fprintf(stream, "# Os comandos abaixo retornam (em relacao ao arquivo utilizado):\n");
   fprintf(stream, "# registro encontrado | quantidade de blocos lidos | total de blocos\n");
   fprintf(stream, "- findrec ID       # busca no arquivo dados um registro pelo seu ID {inteiro}\n");
-  fprintf(stream, "- seek1 ID         # busca no arquivo de índice primário um registro pelo seu ID {inteiro}\n");
-  fprintf(stream, "- seek2 \"TITULO\"   # busca no arquivo de índice secundário um registro pelo seu TITULO {alfa 300}\n\n");
+  fprintf(stream, "- seek1 ID         # busca no arquivo de indice primario um registro pelo seu ID {inteiro}\n");
+  fprintf(stream, "- seek2 \"TITULO\"   # busca no arquivo de indice secundario um registro pelo seu TITULO {alfa 300}\n\n");
 }
 
 
