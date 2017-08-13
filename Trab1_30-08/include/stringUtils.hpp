@@ -55,6 +55,21 @@ namespace StringUtils {
 
   /**
    *
+   * @author Micael Levi
+   * @date 2017-08-11
+   */
+  int stringToInt(std::string strNumber){
+    try {
+      int asInt = stoi(strNumber); //don't call c_str()
+      return asInt;
+    } catch (std::exception const &e) {
+      std::cerr << "error in 'stringToInt': " << e.what() << std::endl;
+      return 0;
+    }
+  }
+
+  /**
+   *
    * @param strNumberWithDoubleQuotes A string (um inteiro) que começa e termina com aspas duplas.
    * @return O valor inteiro da string alvo.
    *
@@ -121,21 +136,6 @@ namespace StringUtils {
     }
 
     return elems;
-  }
-
-  /**
-   *
-   * @author Micael Levi
-   * @date 2017-08-11
-   */
-  int stringToInt(std::string strNumber){
-    try {
-      int asInt = stoi(strNumber); //don't call c_str()
-      return asInt;
-    } catch (std::exception const &e) {
-      std::cerr << "error in 'stringToInt': " << e.what() << std::endl;
-      return 0;
-    }
   }
 
 };
