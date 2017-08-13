@@ -174,12 +174,6 @@ class ReadCSV {
 
 
 
-struct Data {
-  int    key;
-  double value;
-};
-
-
 int main(int argc, char* argv[]){
   if (argc != 3) return 1;
 
@@ -244,61 +238,5 @@ int main(int argc, char* argv[]){
   for(const auto& dado : registros){
     cout << dado << endl;
   }
-
-  inputFile.close();
-
-
-/* LIXO
-
-  // ===== salvar em arquivo binário
-  Data a; a.key=1; a.value = 2.55;
-  Data b; b.key=2; b.value = 3.4551;
-  Data *y = new Data[2];
-  y[0] = a;
-  y[1] = b;
-
-  std::fstream outputfile;
-	outputfile.open(outputBinaryFilename, std::ios::binary | std::ios::out);
-  if(!outputfile.is_open()){
-    std::cerr << "error while opening the file";
-    return EXIT_FAILURE;
-  }
-
-  vector<Data> myVector(y, y+2);
-  outputfile.write((char*)myVector.data(), sizeof(Data) * myVector.size());
-  // outputfile.write((char*)&myVector[0], sizeof(Data) * myVector.size());
-
-  outputfile.seekg(0);
-  struct stat results;
-  if (!stat(outputBinaryFilename, &results))
-    cout << "\n\narquivo com " << results.st_size << " bytes\n";
-
-  outputfile.close();
-
-  // ===== ler de arquivo binário
-  Data* Y = new Data[2];
-  std::ifstream inputFile(outputBinaryFilename, std::ios::in | std::ios::binary);
-  inputFile.read((char*)Y, sizeof(Data) * 2);
-  cout << Y[0].key << " " << Y[0].value << endl;
-  cout << Y[1].key << " " << Y[1].value << endl;
-
-  inputFile.close();
-*/
-  /*
-  const int DIM = 6;
-  int array[DIM] = {1,2,3,4,5,6};
-  std::vector<int> myVector(array, array + DIM);
-  try {
-    std::copy(myVector.begin(), myVector.end(), std::ostreambuf_iterator<char>(outputfile));
-  } catch (std::exception const &e) {
-    std::cerr << "error in '': " << e.what() << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  std::ifstream INFILE(path, std::ios::in | std::ifstream::binary);
-  std::istreambuf_iterator iter(INFILE);
-  std::copy(iter.begin(), iter.end(), std::back_inserter(newVector));
-  */
-
 
 }
