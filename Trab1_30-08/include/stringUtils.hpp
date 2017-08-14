@@ -15,6 +15,8 @@
 
 
 #include <stdexcept>
+#include <vector>
+#include <sstream>
 
 namespace StringUtils {
 
@@ -91,6 +93,7 @@ namespace StringUtils {
    * @param strNumberWithDoubleQuotes A string (um inteiro) que começa e termina com aspas duplas.
    * @return O valor inteiro da string alvo.
    *
+   * @see StringUtils::stringToInt
    * @see StringUtils::removeFirstAndLastDoubleQuotes
    * @author Micael Levi
    * @date 2017-08-11
