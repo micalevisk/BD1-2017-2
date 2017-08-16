@@ -199,8 +199,8 @@ int main(int argc, char* argv[]){
     return EXIT_FAILURE;
   }
   outputfile.write((char*)v.data(), sizeof(CSVRow) * v.size());
-
-  outputfile.seekg(0);
+  outputfile.close();
+  
   struct stat results;// http://pubs.opengroup.org/onlinepubs/009695399/basedefs/sys/stat.h.html
   if (!stat(outputBinaryFilename, &results)) {
     cout << "Análise do arquivo:";
@@ -212,8 +212,6 @@ int main(int argc, char* argv[]){
     cout << "\n\tTime of last status change: "     << results.st_ctime;
   }
 
-  outputfile.close();
-
 
   // ===== ler registros de arquivo binário
   std::ifstream inputFile;
@@ -223,12 +221,8 @@ int main(int argc, char* argv[]){
     return EXIT_FAILURE;
   }
 
-  int beginning, end;
-  inputFile.seekg(0);
-  beginning = inputFile.tellg();
-  inputFile.seekg(0, std::ios::end);
-  end = inputFile.tellg();
-  ifstream::pos_type fileAmountBytes = (end - beginning);
+  inputFile.seekg(0, std::ios::end);// vai para o último byte
+  ifstream::pos_type fileAmountBytes = inputFile.tellg();
   int qtdRegistros = fileAmountBytes / sizeof(CSVRow);
   CSVRow* memblock = new CSVRow[qtdRegistros];
   inputFile.seekg(0, std::ios::beg);
