@@ -12,6 +12,10 @@
 
 namespace StringUtils {
 
+  bool areEquals(std::string str1, std::string str2){
+    return !str1.compare(str2);
+  }
+  
   // (c) https://stackoverflow.com/questions/16749069/c-split-string-by-regex
   std::vector<std::string>& split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
@@ -96,6 +100,7 @@ struct CSVRow {
       this->citacoes    = StringUtils::removeDoubleQuotesAndParseInt( registro.at(4) );
       this->atualizacao = StringUtils::removeDoubleQuotes( registro.at(5) );
       this->snippet     = StringUtils::removeDoubleQuotes( registro.at(6) );
+      if ( StringUtils::areEquals(snippet, "NULL") ) this->snippet = "";
     } catch (int errorCode) {
       std::cerr << "error in 'CSVRow' constructor\n";
       exit(errorCode);
@@ -181,7 +186,7 @@ int main(int argc, char* argv[]){
   const char* outputBinaryFilename = argv[2];
 
   // ===== ler arquivo de texto CSV
-  ReadCSV<CSVRow, 7, ';'> dados(argv[1]);
+  ReadCSV<CSVRow, 7, ';'> dados(csvFilename);
   dados.readRecords();
   vector<CSVRow> v = dados.records;
 
