@@ -15,7 +15,7 @@ namespace StringUtils {
   bool areEquals(std::string str1, std::string str2){
     return !str1.compare(str2);
   }
-  
+
   // (c) https://stackoverflow.com/questions/16749069/c-split-string-by-regex
   std::vector<std::string>& split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
@@ -38,7 +38,7 @@ namespace StringUtils {
     std::stringstream buffer(str);
     std::string currElem;
 
-    for (amountData=0; std::getline(buffer, currElem, separator); ++amountData) {
+    for (amountData=0; std::getline(buffer, currElem, separator) && amountData < max_elements; ++amountData) {
       if (currElem.length() > 0) elems.at(amountData) = currElem;
     }
 
@@ -72,14 +72,46 @@ namespace StringUtils {
 };
 
 
+
+#define REGISTER_TYPE __dados_registro
+#define REGISTER_SIZE (sizeof(REGISTER_TYPE))
+
+#define REGISTER_TITULO_MAX_SIZE 300
+#define REGISTER_ATORES_MAX_SIZE 1024
+#define REGISTER_ATUALIZACAO_MAX_SIZE 19
+#define REGISTER_SNIPPET_MAX_SIZE 1024
+
+struct REGISTER_TYPE {
+  /*
+  //2384 ~= 2.4KB
+  int id;//4
+  int ano;//4
+  int citacoes;//4
+
+  char autores[1025];
+  char snippet[1025];
+  char titulo[301];
+  char atualizacao[20];
+  */
+
+  //2379B ~= 2.4KB
+  int id;//4 
+  int ano;//4
+  int citacoes;//4
+
+  std::string titulo;//alfa 300
+  std::string autores;//alfa 1024
+  std::string atualizacao;//19 (AAAA-MM-DD hh:mm:ss)
+  std::string snippet;//alfa 1024
+
+  size_t size() const noexcept {// se ocupar o máximo definido, retornará 2380
+    return sizeof(id) + sizeof(ano) + sizeof(citacoes) + titulo.size() + autores.size() + atualizacao.size() + snippet.size();
+  }
+};
+
 struct CSVRow {
-  int id;
-  std::string titulo;
-  int ano;
-  std::string autores;
-  int citacoes;
-  std::string atualizacao;//AAAA-MM-DD hh:mm:ss
-  std::string snippet;
+  //id;titulo;ano;autores;citacoes;atualizacao;snippet
+  REGISTER_TYPE recdata;
 
   virtual const char* what() const throw(){
     return "CSVRow";
@@ -87,39 +119,52 @@ struct CSVRow {
 
   CSVRow() {}
 
-  CSVRow(int _id, std::string _titulo, int _ano, std::string _autores, int _citacoes, std::string _atualizacao, std::string _snippet)
-  : id(_id), titulo(_titulo), ano(_ano), autores(_autores), citacoes(_citacoes), atualizacao(_atualizacao), snippet(_snippet) {}
-
+  /**
+   * @param registro Um vector de string contendo os dados de um registro.
+   */
   CSVRow(std::vector<std::string> registro) {
     try{
       if (registro.size() != 7) throw 1;
-      this->id          = StringUtils::removeDoubleQuotesAndParseInt( registro.at(0) );
-      this->titulo      = StringUtils::removeDoubleQuotes( registro.at(1) );
-      this->ano         = StringUtils::removeDoubleQuotesAndParseInt( registro.at(2) );
-      this->autores     = StringUtils::removeDoubleQuotes( registro.at(3) );
-      this->citacoes    = StringUtils::removeDoubleQuotesAndParseInt( registro.at(4) );
-      this->atualizacao = StringUtils::removeDoubleQuotes( registro.at(5) );
-      this->snippet     = StringUtils::removeDoubleQuotes( registro.at(6) );
-      if ( StringUtils::areEquals(snippet, "NULL") ) this->snippet = "";
+      recdata.id          = StringUtils::removeDoubleQuotesAndParseInt( registro.at(0) );
+      recdata.titulo      = StringUtils::removeDoubleQuotes( registro.at(1) );
+      recdata.ano         = StringUtils::removeDoubleQuotesAndParseInt( registro.at(2) );
+      recdata.autores     = StringUtils::removeDoubleQuotes( registro.at(3) );
+      recdata.citacoes    = StringUtils::removeDoubleQuotesAndParseInt( registro.at(4) );
+      recdata.atualizacao = StringUtils::removeDoubleQuotes( registro.at(5) );
+      recdata.snippet     = StringUtils::removeDoubleQuotes( registro.at(6) );
+
+      // fixando o comprimento das strings de acordo com o especificado
+      recdata.titulo.resize(REGISTER_TITULO_MAX_SIZE);
+      recdata.autores.resize(REGISTER_ATORES_MAX_SIZE);
+      recdata.atualizacao.resize(REGISTER_ATUALIZACAO_MAX_SIZE);
+      recdata.snippet.resize(REGISTER_SNIPPET_MAX_SIZE);
+
     } catch (int errorCode) {
       std::cerr << "error in 'CSVRow' constructor\n";
       exit(errorCode);
     }
   }
 
+  /**
+   * Mostra os dados do registro
+   * separando-os por "##".
+   */
   friend std::ostream& operator <<(std::ostream& out, const CSVRow& d){
-    out << d.id << " ## "
-        << d.titulo << " ## "
-        << d.ano << " ## "
-        << d.autores << " ## "
-        << d.citacoes << " ## "
-        << d.atualizacao << " ## "
-        << d.snippet;
+    out << d.recdata.id << " ## "
+        << d.recdata.titulo << " ## "
+        << d.recdata.ano << " ## "
+        << d.recdata.autores << " ## "
+        << d.recdata.citacoes << " ## "
+        << d.recdata.atualizacao << " ## "
+        << d.recdata.snippet;
     return out;
   }
 
+  /**
+   * Compara pelo id.
+   */
   bool operator==(const CSVRow& lhs){
-    return this->id == lhs.id;
+    return recdata.id == lhs.recdata.id;
   }
 };
 
@@ -147,12 +192,14 @@ class ReadCSV {
 
       string bufferUltimaLinha;
       bool ultimoNaoFinalizado = false;
-      unsigned qtdCamposLidos;
 
       auto adicionarRegistro = [&](string linha){
+        unsigned qtdCamposLidos;
         vector<string> registro = StringUtils::split<columnCount>(linha, sep, qtdCamposLidos);
-        RowDataType curr(registro);
-        records.push_back(registro);
+        if(qtdCamposLidos == columnCount){
+          RowDataType curr(registro);
+          records.push_back(registro);
+        }
       };
 
       while (char* line = in.next_line()) {
@@ -200,7 +247,7 @@ int main(int argc, char* argv[]){
   }
   outputfile.write((char*)v.data(), sizeof(CSVRow) * v.size());
   outputfile.close();
-  
+
   struct stat results;// http://pubs.opengroup.org/onlinepubs/009695399/basedefs/sys/stat.h.html
   if (!stat(outputBinaryFilename, &results)) {
     cout << "Análise do arquivo:";
@@ -237,5 +284,4 @@ int main(int argc, char* argv[]){
   for(const auto& dado : registros){
     cout << dado << endl;
   }
-
 }
