@@ -49,7 +49,7 @@ ALL_EXECUTABLE="*.exe*"
 @test "[001_testar_v4] Comparar saída de '001_4.exe' com 'leu 6 registros'" {
   executable_exists "001_4.exe" || skip "'001_4.exe' não encontrado!"
   run ./001_4.exe "$PATH_INPUT"
-  assert_equal "leu 6 registros" "${output}"
+  assert_equal "leu 7 registros" "${output}"
 }
 
 @test "[001_testar_v5] Comparar saída de '001_5.exe' com '$PATH_EXPECTED_OUTPUT'" {
