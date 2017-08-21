@@ -2,6 +2,7 @@
 //:compile: g++ -std=c++11 001_6.cc -lpthread -o 001_6.exe
 
 #include "../../../include/csv.h"
+#include "../../../include/stringUtils.hpp"
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -9,67 +10,6 @@
 #include <fstream>
 #include <sys/stat.h>
 
-
-namespace StringUtils {
-
-  bool areEquals(std::string str1, std::string str2){
-    return !str1.compare(str2);
-  }
-
-  // (c) https://stackoverflow.com/questions/16749069/c-split-string-by-regex
-  std::vector<std::string>& split(const std::string &s, char delim, std::vector<std::string> &elems) {
-    std::stringstream ss(s);
-    std::string item;
-    while (std::getline(ss, item, delim))
-      if (item.length() > 0) elems.push_back(item);
-    return elems;
-  }
-
-  // (c) https://stackoverflow.com/questions/16749069/c-split-string-by-regex
-  std::vector<std::string> split(const std::string &s, char delim) {
-    std::vector<std::string> elems;
-    split(s, delim, elems);
-    return elems;
-  }
-
-  template<unsigned max_elements>
-  std::vector<std::string> split(const std::string& str, const char separator, unsigned& amountData){
-    std::vector<std::string> elems(max_elements);
-    std::stringstream buffer(str);
-    std::string currElem;
-
-    for (amountData=0; std::getline(buffer, currElem, separator) && amountData < max_elements; ++amountData) {
-      if (currElem.length() > 0) elems.at(amountData) = currElem;
-    }
-
-    return elems;
-  }
-
-  std::string removeFirstAndLast(std::string str, char c){
-    return (str.empty() || str[0] != c || str[ str.size()-1 ] != c)
-           ? str
-           : str.substr(1, str.size() - 2);
-  }
-
-  int stringToInt(std::string strNumber){
-    try {
-      int asInt = stoi(strNumber); //don't call c_str()
-      return asInt;
-    } catch (std::exception const &e) {
-      std::cerr << "error in 'stringToInt': " << e.what() << std::endl;
-      return 0;
-    }
-  }
-
-  std::string removeDoubleQuotes(std::string strWithDoubleQuotes){
-    return removeFirstAndLast(strWithDoubleQuotes, '"');
-  }
-
-  int removeDoubleQuotesAndParseInt(std::string strNumberWithDoubleQuotes){
-    return stringToInt( removeDoubleQuotes(strNumberWithDoubleQuotes) );
-  }
-
-};
 
 
 
@@ -126,12 +66,12 @@ struct CSVRow {
     try{
       if (registro.size() != 7) throw 1;
       recdata.id          = StringUtils::removeDoubleQuotesAndParseInt( registro.at(0) );
-      recdata.titulo      = StringUtils::removeDoubleQuotes( registro.at(1) );
+      recdata.titulo      = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(1) );
       recdata.ano         = StringUtils::removeDoubleQuotesAndParseInt( registro.at(2) );
-      recdata.autores     = StringUtils::removeDoubleQuotes( registro.at(3) );
+      recdata.autores     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(3) );
       recdata.citacoes    = StringUtils::removeDoubleQuotesAndParseInt( registro.at(4) );
-      recdata.atualizacao = StringUtils::removeDoubleQuotes( registro.at(5) );
-      recdata.snippet     = StringUtils::removeDoubleQuotes( registro.at(6) );
+      recdata.atualizacao = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(5) );
+      recdata.snippet     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(6) );
 
       // fixando o comprimento das strings de acordo com o especificado
       recdata.titulo.resize(REGISTER_TITULO_MAX_SIZE);
@@ -275,6 +215,8 @@ int main(int argc, char* argv[]){
   inputFile.seekg(0, std::ios::beg);
   inputFile.read((char*)memblock, fileAmountBytes);
   inputFile.close();
+
+  std::remove(outputBinaryFilename);
 
   cout << "\nPrimeiro registro:\n\t" << *(&memblock[0]) << endl;
   cout << "Último registro:\n\t"     << *(&memblock[5]) << endl;
