@@ -46,7 +46,7 @@ namespace StringUtils {
    * @author Micael Levi
    * @date 2017-08-11
    */
-  string removeFirstAndLastCharFrom(string str, char c){
+  std::string removeFirstAndLastCharFrom(std::string str, char c){
     return (str.empty() || str[0] != c || str[ str.size()-1 ] != c)
            ? str
            : str.substr(1, str.size() - 2);
