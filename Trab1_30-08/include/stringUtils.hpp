@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <vector>
 #include <sstream>
+#include <string>
 
 namespace StringUtils {
 
@@ -79,7 +80,7 @@ namespace StringUtils {
    */
   int stringToInt(std::string strNumber){
     try {
-      int asInt = stoi(strNumber);
+      int asInt = std::stoi(strNumber);
       return asInt;
     } catch (std::exception const &e) {
       throw std::invalid_argument( "error in 'stringToInt': " + std::string(e.what()) );
