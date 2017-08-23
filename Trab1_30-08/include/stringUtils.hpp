@@ -163,7 +163,7 @@ namespace StringUtils {
     std::stringstream buffer(str);
     std::string currElem;
 
-    for (amountData=0; std::getline(buffer, currElem, delim); ++amountData) {
+    for (amountData=0; std::getline(buffer, currElem, delim) && amountData < max_elements; ++amountData) {
       if (currElem.length() > 0)
         elems.at(amountData) = currElem;
     }
