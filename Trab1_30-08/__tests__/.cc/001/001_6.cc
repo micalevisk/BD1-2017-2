@@ -8,6 +8,7 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <sys/types.h>
 #include <sys/stat.h>
 
 
@@ -35,7 +36,7 @@ struct REGISTER_TYPE {
   */
 
   //2379B ~= 2.4KB
-  int id;//4 
+  int id;//4
   int ano;//4
   int citacoes;//4
 
@@ -74,10 +75,12 @@ struct CSVRow {
       recdata.snippet     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(6) );
 
       // fixando o comprimento das strings de acordo com o especificado
+      /*
       recdata.titulo.resize(REGISTER_TITULO_MAX_SIZE);
       recdata.autores.resize(REGISTER_ATORES_MAX_SIZE);
       recdata.atualizacao.resize(REGISTER_ATUALIZACAO_MAX_SIZE);
       recdata.snippet.resize(REGISTER_SNIPPET_MAX_SIZE);
+      */
 
     } catch (int errorCode) {
       std::cerr << "error in 'CSVRow' constructor\n";
@@ -124,8 +127,9 @@ class ReadCSV {
 
   public:
     vector<RowDataType> records;
+    unsigned long qtdRegistros;
 
-    ReadCSV(string _filename) : filename(_filename) {}
+    ReadCSV(string _filename) : filename(_filename), qtdRegistros(0) {}
 
     vector<RowDataType> readRecords(){
       io::LineReader in(filename);
@@ -133,9 +137,11 @@ class ReadCSV {
       string bufferUltimaLinha;
       bool ultimoNaoFinalizado = false;
 
+      //FIXME erro ao ler o artigo reduzido (leu apenas os 4 primeiros)
       auto adicionarRegistro = [&](string linha){
-        unsigned qtdCamposLidos;
+        size_t qtdCamposLidos;
         vector<string> registro = StringUtils::split<columnCount>(linha, sep, qtdCamposLidos);
+        // vector<string> registro = StringUtils::split<columnCount>(linha, ";\"", qtdCamposLidos);
         if(qtdCamposLidos == columnCount){
           RowDataType curr(registro);
           records.push_back(registro);
@@ -144,18 +150,21 @@ class ReadCSV {
 
       while (char* line = in.next_line()) {
         string currLine = string(line);
+        // cout << "linha: " << currLine << endl;
 
         if (ultimoNaoFinalizado) {
           bufferUltimaLinha += currLine;
           if (countFields(bufferUltimaLinha) >= columnCount) {
             ultimoNaoFinalizado = false;
             adicionarRegistro(bufferUltimaLinha);
+            qtdRegistros++;
           }
         } else if (countFields(currLine) < columnCount) {
           ultimoNaoFinalizado = true;
           bufferUltimaLinha = currLine;
         } else {
           adicionarRegistro(currLine);
+          qtdRegistros++;
         }
       }
 
@@ -175,9 +184,10 @@ int main(int argc, char* argv[]){
   // ===== ler arquivo de texto CSV
   ReadCSV<CSVRow, 7, ';'> dados(csvFilename);
   dados.readRecords();
-  vector<CSVRow> v = dados.records;
+  // vector<CSVRow> v = dados.records;
+  cout << "leu: " << dados.qtdRegistros << endl;
 
-
+  /*
   // ===== salvar registros em arquivo binário
   std::fstream outputfile;
   outputfile.open(outputBinaryFilename, std::ios::binary | std::ios::out);
@@ -198,7 +208,6 @@ int main(int argc, char* argv[]){
     cout << "\n\tTime of last data modification: " << results.st_mtime;
     cout << "\n\tTime of last status change: "     << results.st_ctime;
   }
-
 
   // ===== ler registros de arquivo binário
   std::ifstream inputFile;
@@ -226,4 +235,5 @@ int main(int argc, char* argv[]){
   for(const auto& dado : registros){
     cout << dado << endl;
   }
+  */
 }
