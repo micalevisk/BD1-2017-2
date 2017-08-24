@@ -173,8 +173,8 @@ namespace StringUtils {
    * @author Micael Levi
    * @date 2017-08-11
    */
-  template<size_t max_elements>
-  std::vector<std::string> split(const std::string& str, const char delim, size_t& amountData){
+  template<unsigned max_elements>
+  std::vector<std::string> split(const std::string& str, const char delim, unsigned& amountData){
     std::vector<std::string> elems(max_elements);
     std::stringstream buffer(str);
     std::string currElem;
@@ -201,6 +201,7 @@ namespace StringUtils {
    * @author https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
    * @date 2017-08-22
    */
+  #ifdef BUF_FIXED
   template<size_t max_elements>
   std::vector<std::string> split(const std::string str, std::string delim, size_t& amountData){//TODO nao alterar str
     std::vector<std::string> elems(max_elements);
@@ -216,7 +217,7 @@ namespace StringUtils {
 
     return elems;
   }
-
+  #endif
 
 
 };
