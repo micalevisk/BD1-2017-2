@@ -28,7 +28,7 @@ int main()
   fstream arqDados(ARQUIVO_HASH, fstream::in | fstream::out | fstream::trunc | ios::binary);
   if(!arqDados.is_open()) return 1;
 
-  Bloco bufferBloco = { .qtdRegistros = 0 };
+  Bloco bufferBloco = { .qtdRegistros = 0 };//FIXME trocar para vetor de blocos
   // strcpy(bufferBloco.dados, "some data");
   bufferBloco.dados[0] = '\0';
 
