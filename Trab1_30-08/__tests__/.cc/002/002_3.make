@@ -10,7 +10,7 @@ RM := rm -rf
 OBJECTS_DIR := objects
 
 CXX := g++ -std=c++11
-# IDIR := ../include
+IDIR := ../include
 CXXFLAGS := -I$(IDIR)
 LDFLAGS := -lpthread -Wall
 LDLIBS  := -lm
@@ -37,12 +37,12 @@ endif
 ###### Operational System #######
 #################################
 ifeq ($(OS), Windows_NT)
-	CXXFLAGS += -D __WIN32__
+	# CXXFLAGS += -D __WIN32__
 else
 	ifeq ($(UNAME_S), Linux)
-		CXXFLAGS += -D __LINUX__
+		# CXXFLAGS += -D __LINUX__
 	elif ($(UNAME_S), Darwin)
-		CXXFLAGS += -D __OSX__
+		# CXXFLAGS += -D __OSX__
 	endif
 endif
 
