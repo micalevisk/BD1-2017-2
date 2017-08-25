@@ -161,19 +161,67 @@ class ReadCSV {
 
 using namespace std;
 int main(int argc, char* argv[]){
+
+  cout << "1 registro terá " << ARTIGO_SIZE << " bytes" << endl;
+  cout << "1 bloco terá " << BLOCO_SIZE << " bytes" << endl;
+  cout << "  e guardará até " << FATOR_BLOCO << " registros" << endl;
+
+
   #ifdef DONE
-  const char* csvFilename = "../exemplo.input.csv";
+  if (argc != 3) return 1;
+
+  const char* csvFilename = argv[1];
+  const char* outputBinaryFilename = argv[2];
 
   // ===== ler arquivo de texto CSV
   ReadCSV<CSVRow, 7, ';'> dados(csvFilename);
   dados.readRecords();
   // vector<CSVRow> v = dados.records;
   cout << "leu: " << dados.qtdRegistros << endl;
+
+  // ===== salvar registros em arquivo binário
+  std::fstream outputfile;
+  outputfile.open(outputBinaryFilename, std::ios::binary | std::ios::out);
+  if(!outputfile.is_open()){
+   std::cerr << "error while opening the file";
+   return EXIT_FAILURE;
+  }
+  outputfile.write((char*)v.data(), sizeof(CSVRow) * v.size());
+  outputfile.close();
+  struct stat results;// http://pubs.opengroup.org/onlinepubs/009695399/basedefs/sys/stat.h.html
+  if (!stat(outputBinaryFilename, &results)) {
+   cout << "Análise do arquivo:";
+   cout << "\n\tThe file size in bytes: "         << results.st_size;
+   cout << "\n\tNumber of blocks allocated: "     << results.st_blocks;
+   cout << "\n\tBlock size:"                      << results.st_blksize;
+   cout << "\n\tTime of last access: "            << results.st_atime;
+   cout << "\n\tTime of last data modification: " << results.st_mtime;
+   cout << "\n\tTime of last status change: "     << results.st_ctime;
+  }
+  // ===== ler registros de arquivo binário
+  std::ifstream inputFile;
+  inputFile.open(outputBinaryFilename, std::ios::in | std::ios::binary | std::ios::ate);
+  if(!inputFile.is_open()){
+   std::cerr << "error while opening the file";
+   return EXIT_FAILURE;
+  }
+
+  inputFile.seekg(0, std::ios::end);// vai para o último byte
+  ifstream::pos_type fileAmountBytes = inputFile.tellg();
+  int qtdRegistros = fileAmountBytes / sizeof(CSVRow);
+  CSVRow* memblock = new CSVRow[qtdRegistros];
+  inputFile.seekg(0, std::ios::beg);
+  inputFile.read((char*)memblock, fileAmountBytes);
+  inputFile.close();
+  std::remove(outputBinaryFilename);
+
+  cout << "\nPrimeiro registro:\n\t" << *(&memblock[0]) << endl;
+  cout << "Último registro:\n\t"     << *(&memblock[5]) << endl;
+  cout << "\n\nTodos Lidos:\n";
+  vector<CSVRow> registros(memblock, memblock + qtdRegistros);
+  for(const auto& dado : registros){
+   cout << dado << endl;
+  }
   #endif
-
-
-  cout << "1 registro terá " << ARTIGO_SIZE << " bytes" << endl;
-  cout << "1 bloco terá " << BLOCO_SIZE << " bytes" << endl;
-  cout << "  e guardará até " << FATOR_BLOCO << " registros" << endl;
 
 }
