@@ -17,7 +17,7 @@ Definições:
 1. criar arquivo PATH_HASH_FILE para leitura/escrita
 2. definir o espaço de endereços de disco (alocar os M buckets, i.e., `M * (m * B)` bytes)
 3. **PARA CADA** registro lido para um buffer Artigo, fazer:
-   - calcular `bucketAlocado := hash(ID_do_registro)` o offset (byte) onde o bucket mapeado inicia no PATH_HASH_FILE
+   - calcular `bucketAlocado := hash(ID_do_registro)` o número do bucket (que inicia no byte `bucketAlocado * (m * B)`)
    - **PARA CADA** buffer Bloco lido de PATH_HASH_FILE do bucket calculado, fazer:
        + se a quantidade de registros do bloco for maior que bfr, (houve colisão) ir para o próximo
        + senão, inserir registro corrente no bloco corrente, i.e., copiar os bytes do artigo o array `bloco.dados`
