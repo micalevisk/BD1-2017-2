@@ -11,20 +11,23 @@
 #include <fstream>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <climits>
 
 
 
-#define Artigo __dados_registro__
+#define Artigo __type_artigo__ // tipo dos registros que serão lidos
 #define ARTIGO_SIZE (sizeof(Artigo))
-
 #define ARTIGO_TITULO_MAX_SIZE 300
 #define ARTIGO_ATORES_MAX_SIZE 1024
 #define ARTIGO_ATUALIZACAO_MAX_SIZE 19
 #define ARTIGO_SNIPPET_MAX_SIZE 1024
 
+#define Bloco __type_bloco__ // tipo do bloco que será lido (de uma vez) do disco
+#define BLOCO_SIZE (sizeof(Bloco))
+#define FATOR_BLOCO (BLOCO_SIZE / ARTIGO_SIZE) // quantidade de registros por bloco
 
 
-struct Artigo {//quase 2.4KB
+struct Artigo {//2384 bytes
   int id;//4
   int ano;//4
   int citacoes;//4
@@ -35,6 +38,10 @@ struct Artigo {//quase 2.4KB
   char snippet[ARTIGO_SNIPPET_MAX_SIZE+1];//alfa 1024
 };
 
+struct Bloco {
+  size_t qtdRegistros;//(entre 0 e FATOR_BLOCO) 8 bytes
+  char dados[4088];//para completar os 4KB
+};
 
 
 
@@ -165,6 +172,8 @@ int main(int argc, char* argv[]){
   #endif
 
 
-  cout << "1 registro terá " << sizeof(Artigo) << " bytes" << endl;
+  cout << "1 registro terá " << ARTIGO_SIZE << " bytes" << endl;
+  cout << "1 bloco terá " << BLOCO_SIZE << " bytes" << endl;
+  cout << "  e guardará até " << FATOR_BLOCO << " registros" << endl;
 
 }
