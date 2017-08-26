@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ARQUIVO_CSV="../_artigo.csv"
+
 # função hash: valor % quantidade_de_buckets
 FUNCAO_HASH="{ print \$0 % qtdbuckets }"
 
@@ -15,10 +17,13 @@ o mesmo bucket, dado uma determinada quantia de buckets.
 '
 
 QTD_BUCKETS=${1:-215000}
-TAM_BLOCO=4096 # igual ao tamanho de um registro pois cada bloco guardará apenas 1 registro
+QTD_BLOCOS_POR_BUCKET=${2:-1}
+QTD_REGISTROS_POR_BLOCO=${3:-1} #7
+TAM_BLOCO=4096
 
 # maior número de colisões
 QTD_COLISOES=$(
+  # awk -F';' -v qtdbuckets="$QTD_BUCKETS" '$1 ~ /^"[0-9]+"/ { gsub(/"/, "", $1) ; print $1 % qtdbuckets } ' "$ARQUIVO_CSV" |
   awk -v qtdbuckets="$QTD_BUCKETS" "$FUNCAO_HASH" only-ids.txt |
   awk '{ ocorrencias[$0]++ } ; END { for(id in ocorrencias) print id ":" ocorrencias[id] }' |
   sort -k2 -t':' -n |
@@ -27,17 +32,13 @@ QTD_COLISOES=$(
   cut -d: -f2
 )
 
-echo "(em $QTD_BUCKETS) pelo menos um contém $QTD_COLISOES registros de $TAM_BLOCO bytes"
+echo -e "(com $QTD_BUCKETS buckets com $QTD_BLOCOS_POR_BUCKET blocos cada e com $QTD_REGISTROS_POR_BLOCO registros por bloco)\na quantidade máxima de colisões foi: $((QTD_COLISOES - 1))"
 
-QTD_BLOCOS_POR_BUCKET=1
-QTD_REGISTROS_POR_BLOCO=7
+
 
 TAM_BUCKET=$(( QTD_BLOCOS_POR_BUCKET * TAM_BLOCO ))
-echo "Serão reservados $(( TAM_BUCKET * QTD_BUCKETS )) bytes"
+TAM_ARQUIVO_DADOS=$(( TAM_BUCKET * QTD_BUCKETS ))
 
+TAM_ARQUIVO_DADOS_GB=$(echo "scale=5; $TAM_ARQUIVO_DADOS/1000000000" | bc)
 
-# cut -d';' -f1 ../../_artigo.csv |
-# tr -d '"' |
-# awk '{print $0 %215000}' |
-# awk '{a[$0]++} ; END{ for(i in a){ print i ":" a[i]} }' |
-# sort -k2 -t':' -n
+echo "Serão reservados $TAM_ARQUIVO_DADOS bytes = $TAM_ARQUIVO_DADOS_GB gigabytes"
