@@ -195,29 +195,28 @@ namespace StringUtils {
    * @tparam max_elements A quantidade máxima de itens que deverá obtido.
    * @param str A string alvo.
    * @param delim A string que separa os itens.
-   * @param amountData Guarda a quantidade de itens obtidos.
    * @return Um vector de string contendo os itens.
    *
    * @author https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-   * @date 2017-08-22
+   * @date 2017-08-26
    */
-  #ifdef BUF_FIXED
-  template<size_t max_elements>
-  std::vector<std::string> split(const std::string str, std::string delim, size_t& amountData){//TODO nao alterar str
-    std::vector<std::string> elems(max_elements);
+  template<unsigned max_elements>
+  std::vector<std::string> split(std::string str, const std::string delim){
+      std::string token;
+      std::vector<std::string> fields(max_elements);
+      size_t pos, delimLength = delim.length();
 
-    std::string token;
-    size_t pos = 0;
-    for (amountData=0; (amountData < max_elements) && ((pos = str.find(delim)) != std::string::npos); ++amountData) {
-      token = str.substr(0, pos);
-      elems.at(amountData) = token;
-      str.erase(0, pos + delim.length());//FIXME
-    }
-    elems.at(amountData) = str + "\"";
+      unsigned fieldsCount = 0;
+      while ( ((pos = str.find(delim)) != std::string::npos) && (fieldsCount < max_elements - 1) ) {
+          token = str.substr(0, pos);
+          fields.at(fieldsCount++) = token;
 
-    return elems;
+          str.erase(0, pos + delimLength);
+      }
+      fields.at(fieldsCount) = str;
+
+      return fields;
   }
-  #endif
 
 
 };
