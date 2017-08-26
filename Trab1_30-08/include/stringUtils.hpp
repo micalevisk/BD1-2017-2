@@ -47,7 +47,7 @@ namespace StringUtils {
    * @author Micael Levi
    * @date 2017-08-22
    */
-  std::string removeFirstCharFrom(std::string str, const char c){
+  std::string removeFirstCharFrom(std::string str, const char &c){
     if (!str.empty() && str[0] == c) str.erase(str.begin());
     return str;
   }
@@ -63,7 +63,7 @@ namespace StringUtils {
    * @author Micael Levi
    * @date 2017-08-26
    */
-  std::string removeLastCharFrom(std::string str, const char c){
+  std::string removeLastCharFrom(std::string str, const char &c){
     if (!str.empty() && str[str.length()-1] == c) str.resize(str.length()-1);
     return str;
     /*
@@ -195,7 +195,7 @@ namespace StringUtils {
    * @date 2017-08-11
    */
   template<unsigned max_elements>
-  std::vector<std::string> split(const std::string& str, const char delim, unsigned& amountData){
+  std::vector<std::string> split(const std::string& str, const char &delim, unsigned &amountData){
     std::vector<std::string> elems(max_elements);
     std::stringstream buffer(str);
     std::string currElem;
@@ -222,7 +222,7 @@ namespace StringUtils {
    * @date 2017-08-26
    */
   template<unsigned max_elements>
-  std::vector<std::string> split(std::string str, const std::string delim){
+  std::vector<std::string> split(std::string str, const std::string &delim){
       std::string token;
       std::vector<std::string> fields(max_elements);
       size_t pos, delimLength = delim.length();
