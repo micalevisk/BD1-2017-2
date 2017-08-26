@@ -53,6 +53,27 @@ namespace StringUtils {
   }
 
   /**
+   * Remove o último caractere de uma string, i.e.,
+   * caso ele esteja na posição string.length - 1.
+   *
+   * @param str A string alvo.
+   * @param c O caractere que será removido.
+   * @return A string alterada, se o caractere foi encontrado.
+   *
+   * @author Micael Levi
+   * @date 2017-08-26
+   */
+  std::string removeLastCharFrom(std::string str, const char c){
+    if (!str.empty() && str[str.length()-1] == c) str.at(str.length()-1) = 0;
+    return str;
+    /*
+    return (str.empty() || str[str.length()-1] != c)
+           ? str
+           : str.substr(0, str.length()-1);
+    */
+  }
+
+  /**
    * Remove um caractere do início e do final de uma string,
    * caso ele esteja nessas duas posições.
    *
