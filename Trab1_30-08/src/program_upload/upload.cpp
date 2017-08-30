@@ -6,9 +6,10 @@
 //  A priori, recebe o caminho para o arquivo CSV
 //  para criar um arquivo binário,
 //  o arquivo de dados, usando hashing estática.
+//  Dessa forma ele fará a carga inicial da massa de dados de testes.
 //
 
-
+// > cpp.sh/6acpk
 // ---------------------------------------------------------------------------------------- //
 
 #define PATH_HASH_FILE "__hashfile"
@@ -73,7 +74,8 @@ struct Bloco {//4096 bytes
 
 
 // ---------------------------------------------------------------------------------------- //
-
+template<const char delimiter = ';'> std::string getFieldFrom(std::fstream& stream, bool& validField);
+auto getRecordFrom(std::fstream& inputStream) -> Artigo;
 // ---------------------------------------------------------------------------------------- //
 
 
@@ -84,8 +86,7 @@ int main(const int argc, const char *argv[])
   if (argc != 2) return 1;// TODO mostrar help (como usar este programa)
 
   const char* PATH_ARQUIVO_COM_DADOS = argv[1];
-  ifstream arqComDados; // arquivo de entrada
-  fstream arqDados; // arquivo que contém a hash
+  fstream arqDados, arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
 
   /*
   cout << "tamanho do Artigo = " << ARTIGO_SIZE << endl;
@@ -96,9 +97,9 @@ int main(const int argc, const char *argv[])
 
   /* ===================== alocação do arquivo de dados ===================== */
   arqDados.open(PATH_HASH_FILE, fstream::in | fstream::out | fstream::trunc | ios::binary);
-  if (!arqDados.is_open()) exit(EXIT_FAILURE);
+  if (!arqDados.is_open()) exit(EXIT_FAILURE);// TODO tornar verboso
 
-  Bloco bufferBloco = { 0 };
+  Bloco bufferBloco = { 0 }; // buffer pra Bloco (ou página, se estiver na MP) com 0 registros
   // escrevendo os buckets no arquivo
   for(unsigned i=0; i < QTD_BUCKETS; ++i){
     for(unsigned numBloco=0; numBloco < QTD_BLOCOS_POR_BUCKET; ++numBloco){
@@ -107,8 +108,7 @@ int main(const int argc, const char *argv[])
     }
   }
 
-  arqDados.close();
-
+  #ifdef DEBUG
   struct stat results;
   if ( !stat(PATH_HASH_FILE, &results) ) {
    fprintf(stderr, "Análise do arquivo:\n");
@@ -116,15 +116,110 @@ int main(const int argc, const char *argv[])
    fprintf(stderr, "\tNumber of blocks allocated: %ld\n", results.st_blocks);
    fprintf(stderr, "\tBlock size in bytes: %ld\n" , results.st_blksize);
   }
+  #endif
 
-  /* ========================os valores para o arquivo de dados ============= */
+  /* ============ ler CSV e inserir registros no arquivo de dados ============ */
   arqComDados.open(PATH_ARQUIVO_COM_DADOS);
-  if (!arqComDados.is_open()) exit(EXIT_FAILURE);
+  if (!arqComDados.is_open()) exit(EXIT_FAILURE);// TODO tornar verboso
+
+  /*
+  while (!arqComDados.eof()) {
+
+    Artigo bufferArtigoLido = getRecordFrom(arqComDados);
+
+  }
+  */
 
 
 
 
+
+  arqDados.close();
   arqComDados.close();
 
+  #ifdef DEBUG
   remove(PATH_HASH_FILE);
+  #endif
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+template<const char delimiter = ';'>
+auto getFieldFrom(std::fstream& stream, bool& validField) -> std::string { // XXX consegue lê apenas os 100 primeiros
+  std::string field;
+  char lastChar, currChar;
+  unsigned quotesAmount = 0;
+  bool end = false;
+
+  auto endOfField = [&](){
+    if (   !quotesAmount // é um campo sem as aspas
+        || (lastChar == '"' && !(quotesAmount&1)) // OU o último caractere lido foi aspas e a quantidade de aspas é par
+       ) end = true;
+  };
+
+  do{
+    if (!stream.get(currChar)) return "";
+
+    switch (currChar) {
+      case '"':
+        quotesAmount++;
+        break;
+
+      case '\r':
+        stream.get(); // tratar EOL com CRLF
+        break;
+
+      case '\n':
+        endOfField();
+        goto _end_of_loop;
+
+      case delimiter:
+        if (field == "NULL") return field;
+        endOfField();
+
+      default:;
+    }
+
+    field += currChar;
+    _end_of_loop:
+    lastChar = currChar;
+  }while(!end);
+
+  validField = (field.length() > 0); // caso tenha sido apenas uma linha em branco
+  return StringUtils::removeLastCharFrom(field, delimiter);
+}
+
+
+auto getRecordFrom(std::fstream& inputStream) -> Artigo { // TODO neutralizar retorno
+  Artigo record;
+
+  for (unsigned qtdCamposLidos=0; qtdCamposLidos < 7; ) {
+    bool campoValido = false;
+    string campoCurr = getFieldFrom(inputStream, campoValido);
+
+    if (campoValido) {
+      printf("%s\n", campoValido);
+      /*
+      switch (qtdCamposLidos) {
+
+        recdata.id          = StringUtils::removeDoubleQuotesAndParseInt( registro.at(0) );
+        recdata.titulo      = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(1) );
+        recdata.ano         = StringUtils::removeDoubleQuotesAndParseInt( registro.at(2) );
+        recdata.autores     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(3) );
+        recdata.citacoes    = StringUtils::removeDoubleQuotesAndParseInt( registro.at(4) );
+        recdata.atualizacao = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(5) );
+        recdata.snippet     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(6) );
+      }
+      */
+
+      qtdCamposLidos++;
+    }
+  }
+
+  return record;
 }
