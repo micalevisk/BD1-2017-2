@@ -9,7 +9,7 @@
 //  Dessa forma ele fará a carga inicial da massa de dados de testes.
 //
 
-// > cpp.sh/6acpk
+
 // ---------------------------------------------------------------------------------------- //
 
 #define PATH_HASH_FILE "__hashfile"
@@ -74,8 +74,16 @@ struct Bloco {//4096 bytes
 
 
 // ---------------------------------------------------------------------------------------- //
-template<const char delimiter = ';'> std::string getFieldFrom(std::fstream& stream, bool& validField);
-auto getRecordFrom(std::fstream& inputStream) -> Artigo;
+template<const char delimiter = ';'> std::string getFieldFrom(std::ifstream& stream, bool& validField);
+auto getRecordFrom(std::ifstream& inputStream) -> Artigo*;
+// ---------------------------------------------------------------------------------------- //
+
+
+// ---------------------------------------------------------------------------------------- //
+unsigned bucketPara(const Artigo& artigo){
+  // aplicar função hash
+  return artigo.id % QTD_BUCKETS;
+}
 // ---------------------------------------------------------------------------------------- //
 
 
@@ -86,7 +94,8 @@ int main(const int argc, const char *argv[])
   if (argc != 2) return 1;// TODO mostrar help (como usar este programa)
 
   const char* PATH_ARQUIVO_COM_DADOS = argv[1];
-  fstream arqDados, arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
+  fstream arqDados;
+  ifstream arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
 
   /*
   cout << "tamanho do Artigo = " << ARTIGO_SIZE << endl;
@@ -122,16 +131,15 @@ int main(const int argc, const char *argv[])
   arqComDados.open(PATH_ARQUIVO_COM_DADOS);
   if (!arqComDados.is_open()) exit(EXIT_FAILURE);// TODO tornar verboso
 
-  /*
+  unsigned artigos = 0;
   while (!arqComDados.eof()) {
-
-    Artigo bufferArtigoLido = getRecordFrom(arqComDados);
+    artigos++;
+    Artigo* artigo = getRecordFrom(arqComDados);
+    cout << bucketPara(*artigo) << endl;
 
   }
-  */
 
-
-
+  cout << "LIDOS = " << artigos << endl;
 
 
   arqDados.close();
@@ -150,7 +158,7 @@ int main(const int argc, const char *argv[])
 
 
 template<const char delimiter = ';'>
-auto getFieldFrom(std::fstream& stream, bool& validField) -> std::string { // XXX consegue lê apenas os 100 primeiros
+auto getFieldFrom(std::ifstream& stream, bool& validField) -> std::string { // XXX consegue lê apenas os 100 primeiros
   std::string field;
   char lastChar, currChar;
   unsigned quotesAmount = 0;
@@ -195,31 +203,50 @@ auto getFieldFrom(std::fstream& stream, bool& validField) -> std::string { // XX
 }
 
 
-auto getRecordFrom(std::fstream& inputStream) -> Artigo { // TODO neutralizar retorno
-  Artigo record;
+auto getRecordFrom(std::ifstream& inputStream) -> Artigo* { // TODO neutralizar retorno
+  Artigo* record = new Artigo;
+  bool algumRegistroValido = false;
 
   for (unsigned qtdCamposLidos=0; qtdCamposLidos < 7; ) {
     bool campoValido = false;
     string campoCurr = getFieldFrom(inputStream, campoValido);
 
     if (campoValido) {
-      printf("%s\n", campoValido);
-      /*
+      algumRegistroValido = true;
       switch (qtdCamposLidos) {
+        case 0:
+          record->id = StringUtils::removeDoubleQuotesAndParseInt(campoCurr);
+          break;
 
-        recdata.id          = StringUtils::removeDoubleQuotesAndParseInt( registro.at(0) );
-        recdata.titulo      = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(1) );
-        recdata.ano         = StringUtils::removeDoubleQuotesAndParseInt( registro.at(2) );
-        recdata.autores     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(3) );
-        recdata.citacoes    = StringUtils::removeDoubleQuotesAndParseInt( registro.at(4) );
-        recdata.atualizacao = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(5) );
-        recdata.snippet     = StringUtils::removeFirstAndLastDoubleQuotes( registro.at(6) );
+        case 1:
+          StringUtils::stringToCharArray(campoCurr, record->titulo, ARTIGO_TITULO_MAX_SIZE);
+          break;
+
+        case 2:
+          record->ano = StringUtils::removeDoubleQuotesAndParseInt(campoCurr);
+          break;
+
+        case 3:
+          StringUtils::stringToCharArray(campoCurr, record->autores, ARTIGO_ATORES_MAX_SIZE);
+          break;
+
+        case 4:
+          record->citacoes = StringUtils::removeDoubleQuotesAndParseInt(campoCurr);
+          break;
+
+        case 5:
+          StringUtils::stringToCharArray(campoCurr, record->atualizacao, ARTIGO_ATUALIZACAO_MAX_SIZE);
+          break;
+
+        case 6:
+          StringUtils::stringToCharArray(campoCurr, record->snippet, ARTIGO_SNIPPET_MAX_SIZE);
+
+        default:;
       }
-      */
 
       qtdCamposLidos++;
-    }
+    } else if (inputStream.eof()) break;
   }
 
-  return record;
+  return algumRegistroValido ? record : NULL;
 }
