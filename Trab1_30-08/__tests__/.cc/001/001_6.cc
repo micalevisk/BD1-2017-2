@@ -24,7 +24,7 @@
 
 #define Bloco __type_bloco__ // tipo do bloco que será lido (de uma vez) do disco
 #define BLOCO_SIZE (sizeof(Bloco))
-#define FATOR_BLOCO (BLOCO_SIZE / ARTIGO_SIZE) // quantidade de registros por bloco
+#define FATOR_BLOCO (BLOCO_SIZE / ARTIGO_SIZE) // quantidade máxima de registros por bloco
 
 
 struct Artigo {//2384 bytes
@@ -39,7 +39,7 @@ struct Artigo {//2384 bytes
 };
 
 struct Bloco {
-  size_t qtdRegistros;//(entre 0 e FATOR_BLOCO) 8 bytes
+  size_t qtdRegistros;//(entre 0 e FATOR_BLOCO - 1) 8 bytes
   char dados[4088];//para completar os 4KB
 };
 
