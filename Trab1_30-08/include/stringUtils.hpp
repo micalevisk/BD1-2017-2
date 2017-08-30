@@ -18,6 +18,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <cstring>
 
 namespace StringUtils {
 
@@ -237,6 +238,12 @@ std::vector<std::string> split(std::string str, const std::string &delim){
     fields.at(fieldsCount) = str;
 
     return fields;
+}
+
+void stringToCharArray(std::string& str, char* asCharArray, size_t arrayLength){
+  // char* strAssCharArray = new char [str.length()+1];
+  str.resize(arrayLength);
+  std::strcpy(asCharArray, str.c_str());
 }
 
 
