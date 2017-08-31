@@ -21,15 +21,9 @@
 //
 
 
-#include "stringUtils.hpp"
 #include "externalHash.hpp"
 #include <vector>
 #include <iostream>
-
-#ifdef DEBUG
-  // #define SHOW_VARIABLE(x) (std::cerr << #x " = " << (x) << '\n')
-#endif
-
 
 using namespace std;
 
@@ -40,7 +34,7 @@ int main(const int argc, const char* argv[]){
   const char* PATH_ARQUIVO_COM_DADOS = argv[1];
   ifstream arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
 
-  ExternalHash<Artigo, getArtigo_pfn> hashExterna(PATH_HASH_FILE, getArtigoId);
+  ExternalHash<Artigo, getArtigoId_pfn> hashExterna(PATH_HASH_FILE, getArtigoId);
   hashExterna.create();
 
 
@@ -51,7 +45,7 @@ int main(const int argc, const char* argv[]){
 
   arqComDados.open(PATH_ARQUIVO_COM_DADOS);
   if (!arqComDados.is_open()) {
-    fprintf(stderr, "{ERROR at %s, code line %d}\n", __FILE__, __LINE__);
+    fprintf(stdout, "{ERROR at %s, code line %d}\n", __FILE__, __LINE__);
     exit(EXIT_FAILURE);// TODO tornar verboso
   }
 
@@ -59,11 +53,8 @@ int main(const int argc, const char* argv[]){
     Artigo* artigo = getRecordArtigoFrom(arqComDados);
     if (!artigo) continue;
 
-    try { // tentar inserir registro lido no arquivo de dados
-      if ( !hashExterna.insertRecordOnHashFile(*artigo) )
-        throw "ERROR ao inserir na hash";
-    } catch (const char* msg) {
-      fprintf(stderr, "{%s: at %s, code line %d}\n", msg, __FILE__, __LINE__);
+    if (!hashExterna.insertRecordOnHashFile(*artigo)) {
+      fprintf(stdout, "{ERROR ao inserir na hash: at %s, code line %d}\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
     }
 
@@ -83,7 +74,7 @@ int main(const int argc, const char* argv[]){
 
 
   #ifdef DEBUG
-    fprintf(stderr, "- upload:: qtdRegistrosLidos = %lu\n", qtdRegistrosLidos);
+    fprintf(stderr, "- upload[%d] qtdRegistrosLidos = %lu\n", __LINE__, qtdRegistrosLidos);
   #endif
 
 

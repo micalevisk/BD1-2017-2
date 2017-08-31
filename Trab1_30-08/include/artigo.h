@@ -12,7 +12,7 @@
 #define ARTIGO_HPP
 
 
-
+#include "stringUtils.hpp"
 #include <fstream>
 
 // ============= CAMINHOS PARA OS ARQUIVOS QUE SERÃO CRIADOS ============= //
@@ -41,14 +41,14 @@
 #endif
 
 
-typedef int(*getArtigo_pfn)(const Artigo&);
+typedef int(*getArtigoId_pfn)(const Artigo&);
 
 
 /**
  * Descreve o tipo dos registros que serão lidos.
  * Está organizado de maneira a reduzir o "structure padding".
  */
-struct __Artigo {// 2384 bytes
+struct __Artigo {// 2384 bytes no cenário real
   int id;
   int ano;
   int citacoes;
