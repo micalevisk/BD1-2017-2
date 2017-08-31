@@ -27,8 +27,7 @@
 #include <iostream>
 
 #ifdef DEBUG
-  #include <sys/stat.h>
-  #define SHOW_VARIABLE(x) (std::cerr << #x " = " << (x) << '\n')
+  // #define SHOW_VARIABLE(x) (std::cerr << #x " = " << (x) << '\n')
 #endif
 
 
@@ -39,41 +38,17 @@ int main(const int argc, const char* argv[]){
   if (argc != 2) return 1;// TODO mostrar help (como usar este programa)
 
   const char* PATH_ARQUIVO_COM_DADOS = argv[1];
-  fstream arqDados;
   ifstream arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
 
-
-  // ===================== alocação do arquivo de dados ===================== //
-  arqDados.open(PATH_HASH_FILE, fstream::in | fstream::out | fstream::trunc | ios::binary);
-  if (!arqDados.is_open()) {
-    fprintf(stderr, "{ERROR at %s, code line %d}\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);// TODO tornar verboso
-  }
-
-  Bloco bufferPage = { 0 }; // buffer pra Bloco (ou página, se estiver na MP) com 0 registros
-  // escrevendo os buckets no arquivo
-  for (unsigned i=0; i < QTD_BUCKETS; ++i) {
-    // quando estão na memoria principal, blocos são chamados de "páginas"
-    for (unsigned numPagina=0; numPagina < QTD_BLOCOS_POR_BUCKET; ++numPagina) {
-      // escrever 1 bloco, i.e., alocar espaço para os registros
-      arqDados.write((char*)&bufferPage, BLOCO_SIZE);
-    }
-  }
-
-  #ifdef DEBUG
-    unsigned long qtdRegistrosLidos = 0;
-
-    struct stat results;
-    if ( !stat(PATH_HASH_FILE, &results) ) {
-     fprintf(stderr, "Análise do arquivo:\n");
-     fprintf(stderr, "\tThe file size in GB: %f\n", results.st_size / 1000000000.0);
-     fprintf(stderr, "\tNumber of blocks allocated: %ld\n", results.st_blocks);
-     fprintf(stderr, "\tBlock size in bytes: %ld\n" , results.st_blksize);
-    }
-  #endif
+  ExternalHash<Artigo, getArtigo_pfn> hashExterna(PATH_HASH_FILE, getArtigoId);
+  hashExterna.create();
 
 
   // ============ ler CSV e inserir registros no arquivo de dados ============ //
+  #ifdef DEBUG
+    unsigned long qtdRegistrosLidos = 0;
+  #endif
+
   arqComDados.open(PATH_ARQUIVO_COM_DADOS);
   if (!arqComDados.is_open()) {
     fprintf(stderr, "{ERROR at %s, code line %d}\n", __FILE__, __LINE__);
@@ -85,7 +60,7 @@ int main(const int argc, const char* argv[]){
     if (!artigo) continue;
 
     try { // tentar inserir registro lido no arquivo de dados
-      if ( !insertRecordOnHashFile(arqDados, *artigo, getArtigoId) )
+      if ( !hashExterna.insertRecordOnHashFile(*artigo) )
         throw "ERROR ao inserir na hash";
     } catch (const char* msg) {
       fprintf(stderr, "{%s: at %s, code line %d}\n", msg, __FILE__, __LINE__);
@@ -98,18 +73,19 @@ int main(const int argc, const char* argv[]){
   }
 
 
-  #ifdef DEBUG
-    SHOW_VARIABLE(qtdRegistrosLidos);
-  #endif
-
-
-  arqDados.close();
+  hashExterna.closeStream();
   arqComDados.close();
 
 
   #ifdef TEST
-    remove(PATH_HASH_FILE);
+    hashExterna.deleteHashfile();
   #endif
+
+
+  #ifdef DEBUG
+    fprintf(stderr, "- upload:: qtdRegistrosLidos = %lu\n", qtdRegistrosLidos);
+  #endif
+
+
+  return 0;
 }
-
-
