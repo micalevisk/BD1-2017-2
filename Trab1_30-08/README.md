@@ -1,15 +1,18 @@
 <!--
 documentar
-instruções
+estruturas
 e mais
 -->
 
+
 ```
-(...)
+.
 │
+├── __tests__
+├── docs
 ├── include
-│   ├── csv.h
-│   ├── main.hpp
+│   ├── artigo.h
+│   ├── externalHash.hpp
 │   └── stringUtils.hpp
 └── src
     ├── program_findrec
@@ -20,7 +23,7 @@ e mais
         └── upload.cpp
 ```
 
-# Explicação
+# Explicação Sobre o Projeto
 
 
 
@@ -36,31 +39,50 @@ Fará a carga inicial da massa de testes para seu banco de dados que irá criar:
   + Arquivo de índice primário indexado por B-Tree
   + Arquivo de índice secundário indexado por B-Tree
 
-#### (α) Exemplo
-
 
 
 ### Programa `findrec`
-> **findrec** `<ID>` `[path/to/data_file]` `[path/to/primary_index_file]`
+> **findrec** `<ID>` `[path/to/data_file]`
 
 Busca no arquivo de dados por um registro com o ID informado, se existir, e retorna os campos do registro, a quantidade de blocos lidos para encontrá-lo e a quantidade total de bloco do arquivo de dados.
 
-#### (β) Exemplo
-
-
 
 ### Programas `seek1` e `seek2`
-> **seek1** `<ID>` `[path/to/data_file]` `[path/to/primary_index_file]`
+> **seek1** `<ID>` `[path/to/data_file]`
 
 Devolve o registro com ID igual ao informado, se existir, pesquisando através do arquivo de índice primário, mostrando todos os campos, a quantidade de blocos lidos para encontrá-lo no arquivo de índice e a quantidade total de bloco do arquivo de índice primário.
 
-#### (γ) Exemplo
 
 
-
-> **seek2** `<TITULO>` `[path/to/data_file]` `[path/to/secondary_index_file]`
+> **seek2** `<TITULO>` `[path/to/data_file]`
 
 Mostra os dados do registro que possua o Título igual ao informado, se existir, pesquisando através do arquivo de índice secundário, informando a quantidade de blocos lidos para encontrá-lo no arquivo de índice e a quantidade total de bloco do arquivo de índice secundário.
 
 
-#### (δ) Exemplo
+
+## Convenções de Código
+
+
+### Template de cabeçalho de qualquer arquivo código
+```java
+//
+//  [<%= filename >]
+//  Created by <%= author_name > on <%= year >-<%= month >-<%= day >
+//  Copyright (c) <%= year > <%= author_email >; All rights reserved.
+//
+//  <%= file_description >
+//
+```
+
+### Template de cabeçalho de documentação _in-code_
+```java
+/**
+ * {{descrição}}
+ *
+ * @param {{nomeParam}} {{descrição}}.
+ * @return {{descrição}}.
+ *
+ * @author {{nome criador}}
+ * @date {{ano}}-{{mês}}-{{dia}}
+ */
+```
