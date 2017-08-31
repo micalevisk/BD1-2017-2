@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://unpkg.com/mermaid@7.0.3/dist/mermaid.min.css">
+</head>
+<body>
+  <div class="mermaid">
+    graph TB
+
+      STRING_UTILS(stringUtils.hpp) ==> UPLOAD(upload.cpp)
+      EXTERNAL_HASH(externalHash.hpp) ==> UPLOAD(upload.cpp)
+      ARTIGO(artigo.h) ==> EXTERNAL_HASH(externalHash.hpp)
+
+
+
+      classDef green fill:#9f6, stroke:#333, stroke-width:2px;
+      classDef orange fill:#f96, stroke:#333, stroke-width:2px;
+
+      class UPLOAD orange
+  </div>
+  <script src="https://unpkg.com/mermaid@7.0.3/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>
+
+<!-- http://rich-iannone.github.io/DiagrammeR/mermaid.html -->
