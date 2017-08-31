@@ -75,7 +75,7 @@ public:
    */
   ExternalHash(const char* pathToHashFile, const F& getKey) : pathToHashFile_(pathToHashFile), getKey_(getKey) {
     #ifdef DEBUG
-      fprintf(stderr, "- externalHash:: Hash externa inicializada com os parâmetros:\n");
+      fprintf(stderr, "- externalHash[%d] Hash externa inicializada com os parâmetros\n", __LINE__);
       fprintf(stderr, "\tRECORD_SIZE: %ld\n", RECORD_SIZE);
       fprintf(stderr, "\tBLOCKING_FACTOR: %lu\n", BLOCKING_FACTOR);
       fprintf(stderr, "\tpathToHashFile_: '%s'\n", pathToHashFile_);
@@ -110,7 +110,7 @@ public:
     #ifdef DEBUG
       struct stat results;
       if ( !stat(pathToHashFile_, &results) ) {
-       fprintf(stderr, "- externalHash:: Análise do arquivo:\n");
+       fprintf(stderr, "- externalHash[%d] Análise do arquivo criado\n", __LINE__);
        fprintf(stderr, "\tThe file size in GB: %f\n", results.st_size / 1000000000.0);
        fprintf(stderr, "\tNumber of blocks allocated: %ld\n", results.st_blocks);
        fprintf(stderr, "\tBlock size in bytes: %ld\n" , results.st_blksize);
@@ -141,7 +141,7 @@ public:
     closeStream();
     remove(pathToHashFile_);
     #ifdef DEBUG
-      fprintf(stderr, "- externalHash:: Arquivo '%s' foi removido!\n", pathToHashFile_);
+      fprintf(stderr, "- externalHash[%d] Arquivo '%s' foi removido!\n", __LINE__, pathToHashFile_);
     #endif
   }
 
@@ -203,7 +203,7 @@ public:
     std::memcpy(&bufferPage.dados[currPage * RECORD_SIZE], (char*)&record, RECORD_SIZE);
 
     // reescrevendo no arquivo de dados o bloco encontrado que foi atualizado
-    streamHashFile.seekp(- ((currPage+1) * BLOCO_SIZE), std::ios::cur); // voltar para o primeiro byte do bloco encontrado
+    streamHashFile.seekp(- BLOCO_SIZE, std::ios::cur); // voltar para o primeiro byte do bloco encontrado
     streamHashFile.write((char*)&bufferPage, BLOCO_SIZE); // escrever a página no arquivo
 
     return true;
