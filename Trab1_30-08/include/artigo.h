@@ -15,13 +15,16 @@
 
 #include <fstream>
 
+// ============= CAMINHOS PARA OS ARQUIVOS QUE SERÃO CRIADOS ============= //
 #define DIR_ARQUIVOS_CRIADOS "../../docs/"
+#define PATH_HASH_FILE DIR_ARQUIVOS_CRIADOS"__hashfile"
 
+// ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
+#define Artigo struct __Artigo
 #define ARTIGO_SIZE (sizeof(Artigo)) // R
 #define QTD_CAMPOS_ARTIGO 7
 
-// ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
-#ifdef _REAL_ // caso seja o cenário real (especificado)
+#ifdef CENARIO_REAL // caso seja o cenário real (especificado)
   #define ARTIGO_TITULO_MAX_SIZE 300
   #define ARTIGO_ATUALIZACAO_MAX_SIZE 19
   #define ARTIGO_ATORES_MAX_SIZE 1024
@@ -38,19 +41,22 @@
 #endif
 
 
+typedef int(*getArtigo_pfn)(const Artigo&);
+
+
 /**
  * Descreve o tipo dos registros que serão lidos.
  * Está organizado de maneira a reduzir o "structure padding".
  */
-struct Artigo {//2384 bytes
-  int id;//4
-  int ano;//4
-  int citacoes;//4
+struct __Artigo {// 2384 bytes
+  int id;
+  int ano;
+  int citacoes;
 
-  char atualizacao[ARTIGO_ATUALIZACAO_MAX_SIZE+1];//19 (AAAA-MM-DD hh:mm:ss)
-  char titulo[ARTIGO_TITULO_MAX_SIZE+1];//alfa 300
-  char autores[ARTIGO_ATORES_MAX_SIZE+1];//alfa 1024
-  char snippet[ARTIGO_SNIPPET_MAX_SIZE+1];//alfa 1024
+  char atualizacao[ARTIGO_ATUALIZACAO_MAX_SIZE+1];
+  char titulo[ARTIGO_TITULO_MAX_SIZE+1];
+  char autores[ARTIGO_ATORES_MAX_SIZE+1];
+  char snippet[ARTIGO_SNIPPET_MAX_SIZE+1];
 };
 
 
