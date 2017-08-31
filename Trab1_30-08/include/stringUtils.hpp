@@ -1,11 +1,10 @@
 //
 //  [stringUtils.hpp]
+//  Created by Micael Levi and Victor Meireles on 2017-08-11
+//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
 //
 //  Container de funções utilitárias que trabalham
 //  em cima de uma ou mais strings.
-//
-//  Created by Micael Levi and Victor Meireles on 2017-08-11
-//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
 //
 
 
@@ -240,10 +239,21 @@ std::vector<std::string> split(std::string str, const std::string &delim){
     return fields;
 }
 
-void stringToCharArray(std::string& str, char* asCharArray, size_t arrayLength){
-  // char* strAssCharArray = new char [str.length()+1];
-  str.resize(arrayLength);
-  std::strcpy(asCharArray, str.c_str());
+/**
+ * Copia os N primeiros caracteres de uma string
+ * para um vetor de caracteres.
+ *
+ * @param str A string alvo.
+ * @param asCharArray O destino da string (memória previamente alocada).
+ * @param length Quantidade de caracteres que serão copiados da string alvo.
+ *
+ * @author Micael Levi
+ * @date 2017-08-30
+ */
+void stringToCharArray(const std::string& str, char* asCharArray, size_t length){
+  std::memcpy(asCharArray, &str[0], length);
+  // str.resize(length);
+  //std::strcpy(asCharArray, str.c_str());
 }
 
 
