@@ -23,8 +23,12 @@
 
 
 #include "externalHash.hpp"
+#include "log.hpp"
 #include <vector>
 #include <iostream>
+
+#define showErrorAndExit(msg) (Log::errorMessageExit(__FILE__, __LINE__, msg))
+
 
 using namespace std;
 
@@ -34,48 +38,39 @@ int main(const int argc, const char* argv[]){
 
   const char* PATH_ARQUIVO_COM_DADOS = argv[1];
   ifstream arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
-
   ExternalHash<Artigo, getArtigoId_pfn> hashExterna(PATH_HASH_FILE, getArtigoId);
+
+  arqComDados.open(PATH_ARQUIVO_COM_DADOS);
+  if (!arqComDados.is_open()) showErrorAndExit("ao abrir o arquivo com os dados");
+
+  // ======================== criar arquivo de dados ======================== //
   hashExterna.create();
 
-
-  // ============ ler CSV e inserir registros no arquivo de dados ============ //
+  // ============ ler CSV e inserir registros no arquivo de dados =========== //
   #ifdef DEBUG
     unsigned long qtdRegistrosLidos = 0;
   #endif
 
-  arqComDados.open(PATH_ARQUIVO_COM_DADOS);
-  if (!arqComDados.is_open()) {
-    fprintf(stdout, "{ERROR at %s, code line %d}\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);// TODO tornar verboso
-  }
-
   while (!arqComDados.eof()) {
     Artigo* artigo = getRecordArtigoFrom(arqComDados);
     if (!artigo) continue;
-
-    if (!hashExterna.insertRecordOnHashFile(*artigo)) {
-      fprintf(stdout, "{ERROR ao inserir na hash: at %s, code line %d}\n", __FILE__, __LINE__);
-      exit(EXIT_FAILURE);
-    }
+    if (!hashExterna.insertRecordOnHashFile(*artigo)) showErrorAndExit("ao inserir registro lido na hash externa");
 
     #ifdef DEBUG
       qtdRegistrosLidos++;
     #endif
   }
 
-
+  // ==================== fim da manipulação dos arquivos ==================== //
   hashExterna.closeStream();
   arqComDados.close();
-
 
   #ifdef TEST
     hashExterna.deleteHashfile();
   #endif
 
-
   #ifdef DEBUG
-    fprintf(stderr, "- upload[%d] qtdRegistrosLidos = %lu\n", __LINE__, qtdRegistrosLidos);
+    fprintf(stdout, "- upload[%u] qtdRegistrosLidos = %lu\n", __LINE__, qtdRegistrosLidos);
   #endif
 
 

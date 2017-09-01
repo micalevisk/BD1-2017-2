@@ -14,12 +14,15 @@
 
 
 #include "artigo.hpp"
+#include "log.hpp"
 #include <iostream>
 #include <fstream>
 
 #ifdef DEBUG
   #include <sys/stat.h>
 #endif
+
+#define showErrorAndExit(msg) (Log::errorMessageExit(__FILE__, __LINE__, msg))
 
 
 // ============= PARÂMETROS PARA A HASH EXTERNA ============= //
@@ -75,10 +78,10 @@ public:
    */
   ExternalHash(const char* pathToHashFile, const F& getKey) : pathToHashFile_(pathToHashFile), getKey_(getKey) {
     #ifdef DEBUG
-      fprintf(stderr, "- externalHash[%d] Hash externa inicializada com os parâmetros\n", __LINE__);
-      fprintf(stderr, "\tRECORD_SIZE: %ld\n", RECORD_SIZE);
-      fprintf(stderr, "\tBLOCKING_FACTOR: %lu\n", BLOCKING_FACTOR);
-      fprintf(stderr, "\tpathToHashFile_: '%s'\n", pathToHashFile_);
+      fprintf(stdout, "- externalHash[%u] Hash externa inicializada com os parâmetros\n", __LINE__);
+      fprintf(stdout, "\tRECORD_SIZE = %ld\n", RECORD_SIZE);
+      fprintf(stdout, "\tBLOCKING_FACTOR = %lu\n", BLOCKING_FACTOR);
+      fprintf(stdout, "\tpathToHashFile_ = '%s'\n", pathToHashFile_);
     #endif
   }
 
@@ -92,10 +95,7 @@ public:
   void create(){
     // ===================== alocação do arquivo de dados ===================== //
     streamHashFile.open(pathToHashFile_, std::fstream::in | std::fstream::out | std::fstream::trunc | std::ios::binary);
-    if (!streamHashFile.is_open()) {
-      fprintf(stderr, "{ERROR at %s, code line %d}\n", __FILE__, __LINE__);
-      exit(EXIT_FAILURE);// TODO tornar verboso
-    }
+    if (!streamHashFile.is_open()) showErrorAndExit("ao criar o arquivo de dados");
 
     Bloco bufferPage = { 0 }; // buffer pra Bloco (ou página, se estiver na MP) com 0 registros
     // escrevendo os buckets no arquivo
@@ -110,10 +110,10 @@ public:
     #ifdef DEBUG
       struct stat results;
       if ( !stat(pathToHashFile_, &results) ) {
-       fprintf(stderr, "- externalHash[%d] Análise do arquivo criado\n", __LINE__);
-       fprintf(stderr, "\tThe file size in GB: %f\n", results.st_size / 1000000000.0);
-       fprintf(stderr, "\tNumber of blocks allocated: %ld\n", results.st_blocks);
-       fprintf(stderr, "\tBlock size in bytes: %ld\n" , results.st_blksize);
+       fprintf(stdout, "- externalHash[%d] Análise do arquivo criado\n", __LINE__);
+       fprintf(stdout, "\tThe file size in GB: %f\n", results.st_size / 1000000000.0);
+       fprintf(stdout, "\tNumber of blocks allocated: %ld\n", results.st_blocks);
+       fprintf(stdout, "\tBlock size in bytes: %ld\n" , results.st_blksize);
       }
     #endif
   }
@@ -141,7 +141,7 @@ public:
     closeStream();
     remove(pathToHashFile_);
     #ifdef DEBUG
-      fprintf(stderr, "- externalHash[%d] Arquivo '%s' foi removido!\n", __LINE__, pathToHashFile_);
+      fprintf(stdout, "- externalHash[%d] Arquivo '%s' foi removido!\n", __LINE__, pathToHashFile_);
     #endif
   }
 
