@@ -5,6 +5,7 @@
 //
 //  Contém definições e estruturas relacionadas
 //  ao tipo de registro que será lido da massa de dados.
+//  Além de constantes comuns aos programas.
 //
 
 
@@ -16,7 +17,7 @@
 #include <fstream>
 
 // ============= CAMINHOS PARA OS ARQUIVOS QUE SERÃO CRIADOS ============= //
-#define DIR_ARQUIVOS_CRIADOS "../../docs/"
+#define DIR_ARQUIVOS_CRIADOS "docs/"
 #define PATH_HASH_FILE DIR_ARQUIVOS_CRIADOS"__hashfile"
 
 // ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
