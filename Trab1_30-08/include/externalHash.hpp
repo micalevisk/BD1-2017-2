@@ -13,7 +13,7 @@
 
 
 
-#include "artigo.h"
+#include "artigo.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -125,7 +125,7 @@ public:
    *
    * @author Micael Levi
    * @date 2017-08-30
-   */    
+   */
   void closeStream(){
     streamHashFile.close();
   }
@@ -136,7 +136,7 @@ public:
    * @see #closeStream
    * @author Micael Levi
    * @date 2017-08-30
-   */    
+   */
   void deleteHashfile(){
     closeStream();
     remove(pathToHashFile_);
