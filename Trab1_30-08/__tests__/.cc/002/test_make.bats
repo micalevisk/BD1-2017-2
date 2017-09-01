@@ -68,7 +68,7 @@ DIR_OBJECTS="objects"
   assert_equal "rm -rf main1.exe main2.exe objects" "${output}"
 }
 
-##================== TESTANDO MAKEFILE 2 ==================##
+##================== TESTANDO MAKEFILE 3 ==================##
 
 @test "[002_testar_make_v3] Executar o comando 'make'" {
   comando=$(awk -F: '$2 ~ /make/ { print $3 ; exit 0 ; }' 002_3.make)
