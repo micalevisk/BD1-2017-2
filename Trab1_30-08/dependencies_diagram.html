@@ -8,9 +8,10 @@
   <div class="mermaid">
     graph TB
 
-      STRING_UTILS(stringUtils.hpp) ==> UPLOAD(upload.cpp)
       EXTERNAL_HASH(externalHash.hpp) ==> UPLOAD(upload.cpp)
-      ARTIGO(artigo.h) ==> EXTERNAL_HASH(externalHash.hpp)
+      LOG(log.hpp) ==> UPLOAD(upload.cpp)
+      ARTIGO(artigo.hpp) ==> EXTERNAL_HASH(externalHash.hpp)
+      LOG(log.hpp) ==> EXTERNAL_HASH(externalHash.hpp)
 
 
 
