@@ -1,6 +1,5 @@
 #!/bin/bash
 
-ARQUIVO_CSV="../_artigo.csv"
 
 # função hash: valor % quantidade_de_buckets
 FUNCAO_HASH="{ print \$0 % qtdbuckets }"
@@ -16,9 +15,9 @@ quantos blocos irão colidir, i.e., ir para
 o mesmo bucket, dado uma determinada quantia de buckets.
 '
 
-QTD_BUCKETS=${1:-215000}
+QTD_BUCKETS=${1:-20000}
 QTD_BLOCOS_POR_BUCKET=${2:-1}
-QTD_REGISTROS_POR_BLOCO=${3:-1} #7
+QTD_REGISTROS_POR_BLOCO=${3:-1}
 TAM_BLOCO=4096
 
 # maior número de colisões
