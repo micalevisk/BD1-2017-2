@@ -15,8 +15,9 @@
 //  TEST  - no final da execução, os arquivos criados serão apagados.
 //
 //  Para usar este programa, compile:
-//  $ g++ -std=c++11 -I../../include upload.cpp -o upload
+//  $ g++ -std=c++11 -I../../include upload.cpp -o ../../upload
 //  E execute:
+//  (no diretório raiz do trabalho)
 //  upload <path/to/data.csv>
 //
 
