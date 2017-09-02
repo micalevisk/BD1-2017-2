@@ -41,6 +41,7 @@
   #define ARTIGO_SNIPPET_MAX_SIZE 100
 #endif
 
+#define INVALID_FIELD "-1" // marcar que um campo não contém dados válidos, i.e., só lixo
 
 typedef int(*getArtigoId_pfn)(const Artigo&);
 
@@ -76,115 +77,68 @@ int getArtigoId(const Artigo& artigo){
 }
 
 
-// ---------------------------------------------------------------------------------------- //
-template<const char delimiter> std::string getFieldFrom(std::ifstream&, bool&);
-// ---------------------------------------------------------------------------------------- //
+/**
+ * Função específica para o formato do CSV que será lido.
+ * Retorna o valor de um campo lido,
+ * i.e., contéudo sem as aspas duplas no início e fim (se tiver).
+ *
+ * @param inputStream A stream (aberta) pro arquivo CSV cujo o campo será lido.
+ * @param delimiter O caractere que separa/delimita os campos.
+ * @return O campo lido como uma sequência de caracteres; será igual a "-1" se não foi lido.
+ *
+ * @author Victor Meireles
+ * @date 2017-09-01
+ */
+static char* getNextFieldFrom(std::istream& inputStream, const char& delimiter = ';'){
+  char *field = new char[ARTIGO_SNIPPET_MAX_SIZE+1]; // o tamanho do maior campo é o do snippet
+  bool isEvenQuotes = false; // flag para marcar se o número de aspas duplas é par
+  unsigned long i = 0;
 
-
-Artigo* getRecordArtigoFrom(std::ifstream& inputStream){ // leitura específica para o tipo Artigo
-  bool algumRegistroValido = false;
-  Artigo* record = new Artigo;
-
-  for (unsigned qtdCamposLidos=0; qtdCamposLidos < QTD_CAMPOS_ARTIGO; ) {
-    bool campoValido = false;
-    std::string campoCurr = getFieldFrom<';'>(inputStream, campoValido);
-
-    if (!campoValido ) {
-      if (inputStream.eof()) break;
-      continue;
-    }
-
-    algumRegistroValido = true;
-    switch (qtdCamposLidos) {
-      case 0:
-        record->id = StringUtils::removeDoubleQuotesAndParseInt(campoCurr);
-        break;
-
-      case 1:
-        StringUtils::stringToCharArray(campoCurr, record->titulo, ARTIGO_TITULO_MAX_SIZE);
-        break;
-
-      case 2:
-        record->ano = StringUtils::removeDoubleQuotesAndParseInt(campoCurr);
-        break;
-
-      case 3:
-        StringUtils::stringToCharArray(campoCurr, record->autores, ARTIGO_ATORES_MAX_SIZE);
-        break;
-
-      case 4:
-        record->citacoes = StringUtils::removeDoubleQuotesAndParseInt(campoCurr);
-        break;
-
-      case 5:
-        StringUtils::stringToCharArray(campoCurr, record->atualizacao, ARTIGO_ATUALIZACAO_MAX_SIZE);
-        break;
-
-      case 6:
-        StringUtils::stringToCharArray(campoCurr, record->snippet, ARTIGO_SNIPPET_MAX_SIZE);
-
-      default:;
-      }
-
-      qtdCamposLidos++;
+  for (char c; (c = inputStream.get())!=EOF; ) {
+    if (!isEvenQuotes && c == delimiter) break;
+    if (c != '\n' && c != '\r' && c != '"') field[i++] = c;
+    if (c == '"') isEvenQuotes = !isEvenQuotes;
   }
 
-  if (!algumRegistroValido) {
-    delete[] record;
-    record = NULL;
-  }
+  if (!i) strcpy(field, INVALID_FIELD); // registro inválido
+  else field[i] = 0; // definir caractere nulo
 
-  return record;
+  return field;
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////// CLASSE "CSVReader" //////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+/**
+ * Função específica para o formato do CSV que será lido.
+ * Lê 1 registro, do tipo Artigo, de um arquivo texto CSV.
+ *
+ * @param inputStream A stream (aberta) pro arquivo CSV cujo o campo será lido.
+ * @return O endereço do registro alocado, ou nullptr caso não tenha sido lido.
+ *
+ * @author Victor Meireles
+ * @date 2017-09-01
+ */
+Artigo* getRecordArtigoFrom(std::istream& inputStream){
+  char* firstField = getNextFieldFrom(inputStream);
+  if (!strcmp(firstField, INVALID_FIELD)) return nullptr;
 
-template<const char delimiter>
-std::string getFieldFrom(std::ifstream& stream, bool& validField){ // XXX consegue ler apenas os 100 primeiros
-  std::string field;
-  char lastChar, currChar;
-  unsigned quotesAmount = 0;
-  bool end = false;
+  Artigo* record = new Artigo;
 
-  auto endOfField = [&](){
-    if (   !quotesAmount // é um campo sem as aspas
-        || (lastChar == '"' && !(quotesAmount&1)) // OU o último caractere lido foi aspas e a quantidade de aspas é par
-       ) end = true;
-  };
+  record->id = atoi(firstField);
 
-  do{
-    if (!stream.get(currChar)) return "";
+  strcpy(record->titulo, getNextFieldFrom(inputStream));
+  // StringUtils::stringToCharArray(campoCurr, record->titulo, ARTIGO_TITULO_MAX_SIZE);
 
-    switch (currChar) {
-      case '"':
-        quotesAmount++;
-        break;
+  record->ano = atoi(getNextFieldFrom(inputStream));
 
-      case '\r':
-        stream.get(); // tratar EOL com CRLF
-        break;
+  strcpy(record->autores, getNextFieldFrom(inputStream));
 
-      case '\n':
-        endOfField();
-        goto _end_of_loop;
+  record->citacoes = atoi(getNextFieldFrom(inputStream));
 
-      case delimiter:
-        if (field == "NULL") return field;
-        endOfField();
+  strcpy(record->atualizacao, getNextFieldFrom(inputStream));
 
-      default:;
-    }
+  strcpy(record->snippet, getNextFieldFrom(inputStream, '\n'));
 
-    field += currChar;
-    _end_of_loop:
-    lastChar = currChar;
-  }while(!end);
-
-  validField = (field.length() > 0); // caso tenha sido apenas uma linha em branco
-  return StringUtils::removeLastCharFrom(field, delimiter);
+  return record;
 }
 
 
