@@ -1,6 +1,7 @@
 /*
- * Copyright (c) 2017 Micael Levi and Victor Meireles. All Rights Reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *  [findrec.cpp]
+ *  Created by Micael Levi and Victor Meireles on 2017-09-02
+ *  Copyright (c) 2017 mllc@icomp.ufam.edu.br; All rights reserved.
  *
  *
  *
@@ -14,7 +15,7 @@
 using namespace std;
 
 
-int main(const int argc, const char *argv[])
-{
+int main(const int argc, const char* argv[]){
 
+  return 0;
 }
