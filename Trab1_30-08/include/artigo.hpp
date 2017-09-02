@@ -13,6 +13,7 @@
 #define ARTIGO_HPP
 
 
+
 #include "stringUtils.hpp"
 #include <fstream>
 
