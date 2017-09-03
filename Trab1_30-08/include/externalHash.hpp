@@ -22,7 +22,6 @@
   #include <sys/stat.h>
 #endif
 
-#define showErrorAndExit(msg) (Log::errorMessageExit(__FILE__, __LINE__, msg))
 
 
 // ============= PARÂMETROS PARA A HASH EXTERNA ============= //
@@ -95,7 +94,8 @@ public:
   void create(){
     // ===================== alocação do arquivo de dados ===================== //
     streamHashFile.open(pathToHashFile_, std::fstream::in | std::fstream::out | std::fstream::trunc | std::ios::binary);
-    if (!streamHashFile.is_open()) showErrorAndExit("ao criar o arquivo de dados");
+    if (!streamHashFile.is_open())  Log::errorMessageExit("ao criar o arquivo de dados");
+    Log::basicMessage("\talocando os", QTD_BUCKETS, "buckets na hash externa ...");
 
     Bloco bufferPage = { 0 }; // buffer pra Bloco (ou página, se estiver na MP) com 0 registros
     // escrevendo os buckets no arquivo
@@ -106,6 +106,8 @@ public:
         streamHashFile.write((char*)&bufferPage, BLOCO_SIZE);
       }
     }
+
+    Log::basicMessage("\tarquivo de dados em hash criado em:", pathToHashFile_);
 
     #ifdef DEBUG
       struct stat results;
