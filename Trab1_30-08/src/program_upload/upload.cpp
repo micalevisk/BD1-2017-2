@@ -12,7 +12,7 @@
  *
  *  Macros disponíveis:
  *  DEBUG - mostra informações (na saída de erro) para a depuração.
- *  TEST  - no final da execução, os arquivos criados serão apagados.
+ *  TEST  - utilizar versão reduzida dos registros.
  *
  *  Para usar este programa, compile:
  *  $ g++ -std=c++11 -I../../include upload.cpp -o ../../upload
@@ -62,13 +62,15 @@ int main(const int argc, const char* argv[]){
   }
   Log::basicMessage("\tfim da indexacao dos registros lidos. hash externa finalizada");
 
+
+  // TODO: criação dos arquivos de índice primário e secundário sob o arquivo de dados criado
+  // ...
+
+
   // ==================== fim da manipulação dos arquivos ==================== //
   hashExterna.closeStream();
   arqComDados.close();
 
-  #ifdef TEST
-    hashExterna.deleteHashfile();
-  #endif
 
   #ifdef DEBUG
     fprintf(stdout, "- upload[%u] qtdRegistrosLidos = %lu\n", __LINE__, qtdRegistrosLidos);
