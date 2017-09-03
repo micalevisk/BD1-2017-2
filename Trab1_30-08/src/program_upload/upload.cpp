@@ -22,6 +22,7 @@
  */
 
 
+#include "artigo.hpp"
 #include "externalHash.hpp"
 #include <vector>
 #include <iostream>
@@ -49,7 +50,7 @@ int main(const int argc, const char* argv[]){
     unsigned long qtdRegistrosLidos = 0;
   #endif
 
-  Log::basicMessage("\tiniciando leitura do arquivo", PATH_ARQUIVO_COM_DADOS);
+  Log::basicMessage("\tiniciando leitura do arquivo texto", PATH_ARQUIVO_COM_DADOS);
   while (!arqComDados.eof()) {
     Artigo* artigo = getRecordArtigoFrom(arqComDados);
     if (!artigo) continue;
@@ -59,7 +60,7 @@ int main(const int argc, const char* argv[]){
       qtdRegistrosLidos++;
     #endif
   }
-  Log::basicMessage("\tfim da indexacao dos registros lidos; hash externa pronta");
+  Log::basicMessage("\tfim da indexacao dos registros lidos. hash externa finalizada");
 
   // ==================== fim da manipulação dos arquivos ==================== //
   hashExterna.closeStream();
