@@ -51,11 +51,12 @@ int main(const int argc, const char* argv[]){
   #endif
 
   artigo.id = idProcurado;
-  qtdBlocosCarregados = hashExterna.findRecord(artigo);
+  qtdBlocosCarregados = hashExterna.findRecord(artigo, registroEncontrado);
 
   Log::basicMessage("Quantidade de blocos lidos =", qtdBlocosCarregados);
   Log::basicMessage("Quantidade total de blocos no arquivo de dados =", QTD_BLOCOS_POR_BUCKET * QTD_BUCKETS);
-  if (qtdBlocosCarregados > 0) cout << artigo << endl;
+  if (registroEncontrado) cout << "\n----------------\n" << artigo << "\n----------------\n" << endl;
+
 
 
 
