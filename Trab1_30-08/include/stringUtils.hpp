@@ -111,7 +111,7 @@ std::string removeFirstAndLastDoubleQuotes(std::string strWithDoubleQuotes){
  * @param strNumber A string alvo, cujo conteúdo é um inteiro.
  * @return O valor inteiro da string alvo.
  *
- * @throws std::exception Lançado se a string não contiver um inteiro.
+ * @throws std::exception Lançado se a string não começar com um número.
  * @author Micael Levi
  * @date 2017-08-11
  */
