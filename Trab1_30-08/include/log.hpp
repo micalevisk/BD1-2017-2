@@ -1,11 +1,11 @@
-//
-//  [log.hpp]
-//  Created by Micael Levi and Victor Meireles on 2017-08-31
-//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
-//
-//  Container de funções utilitárias para
-//  padronizar menssagens de erro/depuração/log.
-//
+/*
+ * Copyright (c) 2017 All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-08-11
+ *
+ * Container de funções utilitárias para
+ * padronizar menssagens de erro/depuração/log.
+ */
 
 
 #ifndef LOG_HPP
@@ -29,7 +29,7 @@ namespace Log {
  * @author Micael Levi
  * @date 2017-08-31
  */
-void _variadic_printf(FILE* stream, const char* fmt, ...){
+void variadic_printf(FILE* stream, const char* fmt, ...){
   va_list args;
   va_start(args, fmt);
   vfprintf(stream, fmt, args);
@@ -37,9 +37,15 @@ void _variadic_printf(FILE* stream, const char* fmt, ...){
 }
 
 
-// https://stackoverflow.com/questions/27375089/what-is-the-easiest-way-to-print-a-variadic-parameter-pack-using-stdostream
+/**
+ *
+ * @tparam separator O caractere que irá separar os valores passados.
+ *
+ * @author https://stackoverflow.com/questions/27375089/what-is-the-easiest-way-to-print-a-variadic-parameter-pack-using-stdostream
+ * @date 2017-08-31
+ */
 template<const char separator = ' ', typename Arg, typename... Args>
-void _variadic_print(std::ostream& out, Arg&& arg, Args&&... args){
+void variadic_print(std::ostream& out, Arg&& arg, Args&&... args){
   out << std::forward<Arg>(arg);
   using expander = int[];
   (void)expander{0, (void(out << separator << std::forward<Args>(args)), 0)...};
@@ -55,7 +61,7 @@ void _variadic_print(std::ostream& out, Arg&& arg, Args&&... args){
  */
 template<int code = EXIT_FAILURE, typename... Args>
 void errorMessageExit(Args... args){
-  _variadic_print(std::cerr, "[ERRO]", args..., '\n');
+  variadic_print(std::cerr, "[ERRO]", args..., '\n');
   exit(code);
 }
 
@@ -69,7 +75,7 @@ void errorMessageExit(Args... args){
  */
 template<typename... Args>
 void basicMessage(Args... args){
-  _variadic_print(std::cout, args..., '\n');
+  variadic_print(std::cout, args..., '\n');
 }
 
 /**

@@ -1,11 +1,11 @@
-//
-//  [externalHash.hpp]
-//  Created by Micael Levi and Victor Meireles on 2017-08-11
-//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
-//
-//  Funções e definições específicas para o uso da hash
-//  que indexará o arquivo de dados.
-//
+/*
+ * Copyright (c) 2017 All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-08-11
+ *
+ * Funções e definições específicas para o uso da hash
+ * que indexará o arquivo de dados.
+ */
 
 
 #ifndef EXTERNAL_HASH_HPP

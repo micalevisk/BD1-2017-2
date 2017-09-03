@@ -1,10 +1,11 @@
-//
-//  [parametros.h]
-//  Created by Micael Levi and Victor Meireles on 2017-08-11
-//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
-//
-//  Guarda valores/funções que são comum os programas desenvolvidos.
-//
+/*
+ * Copyright (c) 2017 All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-08-11
+ *
+ * Guarda valores/funções que são comum os programas desenvolvidos.
+ */
+
 
 
 #ifndef PARAMETROS_H

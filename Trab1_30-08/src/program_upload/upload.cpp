@@ -1,24 +1,24 @@
 /*
- *  [upload.cpp]
- *  Created by Micael Levi and Victor Meireles on 2017-08-26
- *  Copyright (c) 2017 mllc@icomp.ufam.edu.br; All rights reserved.
+ * Copyright (c) 2017. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-09-02
  *
- *  Recebe o caminho para o arquivo CSV
- *  para criar três arquivos binários
- *  o arquivo de dados, usando hashing estática;
- *  o arquivo de índice primário, organizado por B-Tree indexada pelo ID do artigo;
- *  o arquivo de índice secundário, organizado por B-Tree indexada pelo TITULO do artigo;
- *  Dessa forma ele fará a carga inicial da massa de dados de testes.
+ * Recebe o caminho para o arquivo CSV
+ * para criar três arquivos binários
+ * o arquivo de dados, usando hashing estática;
+ * o arquivo de índice primário, organizado por B-Tree indexada pelo ID do artigo;
+ * o arquivo de índice secundário, organizado por B-Tree indexada pelo TITULO do artigo;
+ * Dessa forma ele fará a carga inicial da massa de dados de testes.
  *
- *  Macros disponíveis:
- *  DEBUG - mostra informações (na saída de erro) para a depuração.
- *  TEST  - utilizar versão reduzida dos registros.
+ * Macros disponíveis:
+ * DEBUG - mostra informações (na saída de erro) para a depuração.
+ * TEST  - utilizar versão reduzida dos registros.
  *
- *  Para usar este programa, compile:
- *  $ g++ -std=c++11 -I../../include upload.cpp -o ../../upload
- *  E execute:
- *  (no diretório raiz do trabalho)
- *  upload <path/to/data.csv>
+ * Para usar este programa, compile:
+ * $ g++ -std=c++11 -I../../include upload.cpp -o ../../upload
+ * E execute:
+ * (no diretório raiz do trabalho)
+ * upload <path/to/data.csv>
  */
 
 

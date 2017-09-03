@@ -1,11 +1,11 @@
-//
-//  [stringUtils.hpp]
-//  Created by Micael Levi and Victor Meireles on 2017-08-11
-//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
-//
-//  Container de funções utilitárias que trabalham
-//  em cima de uma ou mais strings.
-//
+/*
+ * Copyright (c) 2017 All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-08-11
+ *
+ * Container de funções utilitárias que trabalham
+ * sobre o tipo std::string ou char*
+ */
 
 
 #ifndef STRING_UTILS_HPP

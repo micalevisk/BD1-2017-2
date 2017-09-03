@@ -1,22 +1,22 @@
 /*
- *  [findrec.cpp]
- *  Created by Micael Levi and Victor Meireles on 2017-09-02
- *  Copyright (c) 2017 mllc@icomp.ufam.edu.br; All rights reserved.
+ * Copyright (c) 2017. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-09-02
  *
- *  Utiliza o arquivo de dados binário
- *  criado pelo programa 'upload' para procurar em tempo ótimo
- *  um registro do tipo Artigo.
- *  Além de exibir informações sobre a quantidade de blocos lidos e a total.
+ * Utiliza o arquivo de dados binário
+ * criado pelo programa 'upload' para procurar em tempo ótimo
+ * um registro do tipo Artigo.
+ * Além de exibir informações sobre a quantidade de blocos lidos e a total.
  *
- *  Macros disponíveis:
- *  DEBUG - mostra informações (na saída de erro) para a depuração.
- *  TEST  - utilizar versão reduzida dos registros.
+ * Macros disponíveis:
+ * DEBUG - mostra informações (na saída de erro) para a depuração.
+ * TEST  - utilizar versão reduzida dos registros.
  *
- *  Para usar este programa, compile:
- *  $ g++ -std=c++11 -I../../include findrec.cpp -o ../../findrec
- *  E execute:
- *  (no diretório raiz do trabalho)
- *  findrec <record_id> [path/to/hashfile]
+ * Para usar este programa, compile:
+ * $ g++ -std=c++11 -I../../include findrec.cpp -o ../../findrec
+ * E execute:
+ * (no diretório raiz do trabalho)
+ * findrec <record_id> [path/to/hashfile]
  */
 
 

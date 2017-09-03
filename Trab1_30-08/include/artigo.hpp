@@ -1,12 +1,12 @@
-//
-//  [artigo.hpp]
-//  Created by Micael Levi and Victor Meireles on 2017-08-11
-//  Copyright (c) 2017 mllc@icomp.ufam.edu.br All rights reserved.
-//
-//  Contém definições e estruturas relacionadas
-//  ao tipo de registro que será lido da massa de dados.
-//  Além de constantes comuns aos programas.
-//
+/*
+ * Copyright (c) 2017 All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * Created by Micael Levi and Victor Meireles on 2017-08-11
+ *
+ * Contém definições e estruturas relacionadas
+ * ao tipo de registro que será lido da massa de dados.
+ * Além de constantes comuns aos programas.
+ */
 
 
 #ifndef ARTIGO_HPP
