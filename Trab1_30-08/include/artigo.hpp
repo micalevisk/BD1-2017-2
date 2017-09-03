@@ -22,7 +22,6 @@
 // ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
 #define Artigo struct __Artigo
 #define ARTIGO_SIZE (sizeof(Artigo)) // R
-#define QTD_CAMPOS_ARTIGO 7
 
 #ifndef TEST // caso seja o cenário real (especificado)
   #define ARTIGO_TITULO_MAX_SIZE 300
