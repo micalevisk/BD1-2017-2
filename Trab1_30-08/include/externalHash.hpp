@@ -60,10 +60,10 @@ private:
   const unsigned long BLOCKING_FACTOR = (BLOCO_SIZE / RECORD_SIZE); // fator de bloco bfr = quantidade máxima de registros por bloco
   const char* pathToHashFile_; // caminho para o arquivo de dados que será criado
   F getKey_; // função que retorna a chave de um registro para ser usado na função de espalhamento
+  unsigned long totalBlocks_; // contabiliza a quantidade de blocos que foram alocados
 
 public:
   std::fstream streamHashFile;
-
 
   /**
    * Construtor utilizado para inicializar
@@ -75,9 +75,11 @@ public:
    * @author Micael Levi
    * @date 2017-08-30
    */
-  ExternalHash(const char* pathToHashFile, const F& getKey) : pathToHashFile_(pathToHashFile), getKey_(getKey) {
+  ExternalHash(const char* pathToHashFile, const F& getKey) : pathToHashFile_(pathToHashFile), getKey_(getKey), totalBlocks_(0) {
     #ifdef DEBUG
       fprintf(stdout, "- externalHash[%u] Hash externa inicializada com os parâmetros\n", __LINE__);
+      fprintf(stdout, "\tQTD_BUCKETS = %ld\n", QTD_BUCKETS);
+      fprintf(stdout, "\tQTD_BLOCOS_POR_BUCKET = %ld\n", QTD_BLOCOS_POR_BUCKET);
       fprintf(stdout, "\tRECORD_SIZE = %ld\n", RECORD_SIZE);
       fprintf(stdout, "\tBLOCKING_FACTOR = %lu\n", BLOCKING_FACTOR);
       fprintf(stdout, "\tpathToHashFile_ = '%s'\n", pathToHashFile_);
@@ -91,10 +93,10 @@ public:
    * @author Micael Levi
    * @date 2017-08-30
    */
-  void create(){
+  void create(void){
     // ===================== alocação do arquivo de dados ===================== //
     streamHashFile.open(pathToHashFile_, std::fstream::in | std::fstream::out | std::fstream::trunc | std::ios::binary);
-    if (!streamHashFile.is_open())  Log::errorMessageExit("ao criar o arquivo de dados");
+    if (!streamHashFile.is_open()) Log::errorMessageExit("ao criar o arquivo de dados com nome", pathToHashFile_);
     Log::basicMessage("\talocando os", QTD_BUCKETS, "buckets na hash externa ...");
 
     Bloco bufferPage = { 0 }; // buffer pra Bloco (ou página, se estiver na MP) com 0 registros
@@ -104,9 +106,12 @@ public:
       for (unsigned long numPagina=0; numPagina < QTD_BLOCOS_POR_BUCKET; ++numPagina) {
         // escrever 1 bloco, i.e., alocar espaço para os registros
         streamHashFile.write((char*)&bufferPage, BLOCO_SIZE);
+        // contabilizando o novo bloco
+        ++totalBlocks_;
       }
     }
 
+    if (totalBlocks_ != (QTD_BUCKETS * QTD_BLOCOS_POR_BUCKET)) Log::errorMessageExit((QTD_BUCKETS * QTD_BLOCOS_POR_BUCKET) - totalBlocks_, " blocos nao alocados");
     Log::basicMessage("\tarquivo de dados em hash criado em:", pathToHashFile_);
 
     #ifdef DEBUG
@@ -121,15 +126,6 @@ public:
   }
 
   /**
-   * Abre o arquivo de dados para leitura.
-   *
-   * @author Micael Levi
-   * @date 2017-08-30
-   */
-  void findRecordById(){
-  }
-
-  /**
    * Fechar a stream do arquivo de dados
    * que foi criado (e aberto) pelo método #create,
    * se ele estiver aberto.
@@ -137,7 +133,7 @@ public:
    * @author Micael Levi
    * @date 2017-08-30
    */
-  void closeStream(){
+  void closeStream(void){
     streamHashFile.close();
   }
 
@@ -148,7 +144,7 @@ public:
    * @author Micael Levi
    * @date 2017-08-30
    */
-  void deleteHashfile(){
+  void deleteHashfile(void){
     closeStream();
     remove(pathToHashFile_);
     #ifdef DEBUG
@@ -185,8 +181,7 @@ public:
    * @date 2017-08-30
    */
   bool insertRecordOnHashFile(const TypeRecord& record){
-
-    // calcular o bucket que será inserido
+    // identifcar o bucket ao qual o registro será inserido
     unsigned long bucketNumber = applyHashOn(record);
 
     // mover cursor do arquivo de dados para o bucket correspondente, i.e., byte: bucketNumber * (m * B)
@@ -194,7 +189,7 @@ public:
 
     // carregar bloco(s) do disco enquanto não houver espaço para inserir, i.e., encontrar bloco com espaço
     Bloco bufferPage = { 0 }; // quando o bloco está na memória, ele é chamado de "página"
-    unsigned currPage;
+    unsigned long currPage;
 
     for (currPage = 0; currPage < QTD_BLOCOS_POR_BUCKET; ++currPage) {
       // ler bloco encontrado ao mover cursor
@@ -219,6 +214,77 @@ public:
 
     return true;
   }
+
+  /**
+   * Abre o arquivo de dados para leitura.
+   *
+   * @param record O registro que será buscado, i.e., a chave de pesquisa deve ser obtida por ele.
+   * @return A quantidade de blocos lidos para encontrar o tal registro.
+   *
+   * @author Micael Levi
+   * @date 2017-08-30
+   */
+  unsigned long findRecord(TypeRecord& record){ // FIXME
+    // ===================== leitura do arquivo de dados ===================== //
+    std::ifstream streamHashFileInput(pathToHashFile_, std::ios::binary);
+    if (!streamHashFileInput.is_open()) Log::errorMessageExit("ao abrir o arquivo de dados de nome", pathToHashFile_);
+    #ifdef DEBUG
+      fprintf(stdout, "- externalHash[%u] lendo o arquivo de dados...\n", __LINE__);
+    #endif
+
+    // identificar o bucket ao qual o registro buscado pertence
+    unsigned long bucketNumber = applyHashOn(record);
+    auto findKey = getKey_(record);
+    #ifdef DEBUG
+      fprintf(stdout, "- externalHash[%u] buscando pela chave %ld\n", __LINE__, findKey);
+    #endif
+
+    // ir para o bucket encontrado,
+    // i.e., mover cursor do arquivo de dados para o bloco âncora do bucket
+    streamHashFileInput.seekg(bucketNumber * QTD_BLOCOS_POR_BUCKET * BLOCO_SIZE, std::ios::beg);
+    #ifdef DEBUG
+      fprintf(stdout, "- externalHash[%u] cursor movido para posição %ld\n", __LINE__, bucketNumber * QTD_BLOCOS_POR_BUCKET * BLOCO_SIZE);
+    #endif
+
+    // procurar em cada bloco desse bucket o registro
+    Bloco bufferPage = { 0 }; // buffer pra o bloco que será carregado
+
+    unsigned long currPage;
+    for (currPage = 0; currPage < QTD_BLOCOS_POR_BUCKET; ++currPage) {
+      #ifdef DEBUG
+        fprintf(stdout, "- externalHash[%u] bloco corrente = %lu\n", __LINE__, currPage);
+      #endif
+      streamHashFileInput.read((char*)&bufferPage, BLOCO_SIZE); // ler bloco encontrado ao mover cursor
+
+      // iterando sobre os registros no bloco até encontrar o procurado ou último, caso não encontre
+      TypeRecord* records = (TypeRecord*) bufferPage.dados; // trata os dados como um arranjo de registros
+      for (unsigned long i = 0; i < bufferPage.qtdRegistros; ++i) {
+        TypeRecord currRecord = records[i];
+        if (findKey == getKey_(currRecord)) {
+          #ifdef DEBUG
+            fprintf(stdout, "- externalHash[%u] registro encontrado na posição %lu do bloco %lu (bucket %lu)\n", __LINE__, i, currPage, bucketNumber);
+          #endif
+          return currPage+1;
+        }
+      }
+    }
+
+    return (currPage < QTD_BLOCOS_POR_BUCKET) ? currPage : 0;
+  }
+
+  /**
+   * Para obter a quantidade total de blocos alocados
+   * nesta hash externa.
+   *
+   * @return O número de blocos alocados.
+   *
+   * @author Micael Levi
+   * @date 2017-08-30
+   */
+  unsigned long getTotalBlocks(void){
+    return totalBlocks_;
+  }
+
 
 };
 
