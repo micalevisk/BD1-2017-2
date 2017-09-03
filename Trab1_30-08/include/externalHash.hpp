@@ -43,8 +43,8 @@
  * seguidos dos mesmos.
  */
 struct __Bloco {// 4096 bytes
-  unsigned qtdRegistros;// (entre 0 e FATOR_BLOCO - 1) 8 bytes
-  char dados[4092];// para completar os 4KB
+  unsigned long qtdRegistros;// (entre 0 e FATOR_BLOCO - 1) 8 bytes
+  char dados[4084];// para completar os 4KB
 };
 
 
