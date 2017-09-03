@@ -17,7 +17,6 @@
 #include "parametros.h"
 #include "stringUtils.hpp"
 #include <fstream>
-#include <iostream>
 
 
 // ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
@@ -28,13 +27,13 @@
 #ifndef TEST // caso seja o cenário real (especificado)
   #define ARTIGO_TITULO_MAX_SIZE 300
   #define ARTIGO_ATUALIZACAO_MAX_SIZE 19
-  #define ARTIGO_ATORES_MAX_SIZE 1024
+  #define ARTIGO_AUTORES_MAX_SIZE 1024
   #define ARTIGO_SNIPPET_MAX_SIZE 1024
 #else // cenário para fins de teste
   // ajustando os tamanhos para que o bfr seja 12
   #define ARTIGO_TITULO_MAX_SIZE 100
   #define ARTIGO_ATUALIZACAO_MAX_SIZE 19
-  #define ARTIGO_ATORES_MAX_SIZE 100
+  #define ARTIGO_AUTORES_MAX_SIZE 100
   #define ARTIGO_SNIPPET_MAX_SIZE 100
 #endif
 
@@ -54,7 +53,7 @@ struct __Artigo {// 2384 bytes no cenário real
 
   char atualizacao[ARTIGO_ATUALIZACAO_MAX_SIZE+1];
   char titulo[ARTIGO_TITULO_MAX_SIZE+1];
-  char autores[ARTIGO_ATORES_MAX_SIZE+1];
+  char autores[ARTIGO_AUTORES_MAX_SIZE+1];
   char snippet[ARTIGO_SNIPPET_MAX_SIZE+1];
 };
 
@@ -168,7 +167,7 @@ Artigo* getRecordArtigoFrom(std::istream& inputStream){ // FIXME alguns registro
     return nullptr;
   }
 
-  StringUtils::strcpy(record->autores, getNextFieldFrom(inputStream), ARTIGO_ATORES_MAX_SIZE);
+  StringUtils::strcpy(record->autores, getNextFieldFrom(inputStream), ARTIGO_AUTORES_MAX_SIZE);
   clearFieldIfInvalid(record->autores);
 
   try {
