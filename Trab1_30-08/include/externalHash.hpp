@@ -5,6 +5,12 @@
  *
  * Funções e definições específicas para o uso da hash
  * que indexará o arquivo de dados.
+ *
+ * Macros disponívels
+ * QTD_BLOCOS_POR_BUCKET - definir a quantidade de blocos em cada bucket (1 padrão)
+ * QTD_BUCKETS           - definir a quantidade de buckets na hash externa (1549147 padrão)
+ * TEST                  - para usar a versão reduzia de buckets (false padrão)
+ * DEBUG                 - mostra informações (na saída de erro) para a depuração.
  */
 
 
@@ -28,11 +34,19 @@
 #define BLOCO_SIZE (sizeof(Bloco)) // B
 
 #ifdef TEST
-  #define QTD_BUCKETS 128000 // causará 11 colisões, i.e., 1 bloco precisa ter espaço pra 12 registros
+  #ifndef QTD_BUCKETS
+    #define QTD_BUCKETS 128000 // causará 11 colisões, i.e., 1 bloco precisa ter espaço pra 12 registros
+  #endif
 #else
-  #define QTD_BUCKETS 1549147 // M
+  #ifndef QTD_BUCKETS // M
+    #define QTD_BUCKETS 1549147
+  #endif
 #endif
-#define QTD_BLOCOS_POR_BUCKET 1 // m
+
+#ifndef QTD_BLOCOS_POR_BUCKET // m
+  #define QTD_BLOCOS_POR_BUCKET 1
+#endif
+
 #define BUCKET_SIZE (QTD_BLOCOS_POR_BUCKET * BLOCO_SIZE) // m * B
 
 
@@ -97,7 +111,7 @@ public:
     // ===================== alocação do arquivo de dados ===================== //
     streamHashFile.open(pathToHashFile_, std::fstream::in | std::fstream::out | std::fstream::trunc | std::ios::binary);
     if (!streamHashFile.is_open()) Log::errorMessageExit("ao criar o arquivo de dados com nome", pathToHashFile_);
-    Log::basicMessage("\talocando os", QTD_BUCKETS, "buckets na hash externa ...");
+    Log::basicMessage("\talocando os", QTD_BUCKETS, "(", QTD_BLOCOS_POR_BUCKET, "blocos por bucket", ")", "buckets na hash externa ...");
 
     Bloco bufferPage = { 0 }; // buffer pra Bloco (ou página, se estiver na MP) com 0 registros
     // escrevendo os buckets no arquivo
