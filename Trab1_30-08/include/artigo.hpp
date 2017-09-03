@@ -60,6 +60,24 @@ struct __Artigo {// 2384 bytes no cenário real
 
 
 /**
+ * Para printar os valores de um Artigo.
+ *
+ * @author Micael Levi
+ * @date 2017-08-31
+ */
+std::ostream& operator <<(std::ostream& out, const Artigo& artigo){
+  out << "ID: " << artigo.id << '\n'
+      << "TITULO: " << artigo.titulo << '\n'
+      << "ANO: " << artigo.ano << '\n'
+      << "AUTORES: " << artigo.autores << '\n'
+      << "CITACOES: " << artigo.citacoes << '\n'
+      << "ATUALIZACAO: " << artigo.atualizacao << '\n'
+      << "SNIPPET: " << artigo.snippet;
+  return out;
+}
+
+
+/**
  * Retorna o id de um dado artigo (getter id).
  *
  * @param artigo O objeto alvo.
