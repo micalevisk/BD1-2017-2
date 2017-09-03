@@ -15,6 +15,7 @@
 
 #include <cstdio>
 #include <cstdarg>
+#include <iostream>
 
 
 namespace Log {
@@ -28,11 +29,47 @@ namespace Log {
  * @author Micael Levi
  * @date 2017-08-31
  */
-void _variadic_(FILE* stream, const char* fmt, ...){
+void _variadic_printf(FILE* stream, const char* fmt, ...){
   va_list args;
   va_start(args, fmt);
   vfprintf(stream, fmt, args);
   va_end(args);
+}
+
+
+// https://stackoverflow.com/questions/27375089/what-is-the-easiest-way-to-print-a-variadic-parameter-pack-using-stdostream
+template<const char separator = ' ', typename Arg, typename... Args>
+void _variadic_print(std::ostream& out, Arg&& arg, Args&&... args){
+  out << std::forward<Arg>(arg);
+  using expander = int[];
+  (void)expander{0, (void(out << separator << std::forward<Args>(args)), 0)...};
+}
+
+
+/**
+ *
+ * @tparam code O número do erro que será retornado pelo processo.
+ *
+ * @author Micael Levi
+ * @date 2017-08-31
+ */
+template<int code = EXIT_FAILURE, typename... Args>
+void errorMessageExit(Args... args){
+  _variadic_print(std::cerr, "[ERRO]", args..., '\n');
+  exit(code);
+}
+
+
+/**
+ *
+ *
+ *
+ * @author Micael Levi
+ * @date 2017-08-31
+ */
+template<typename... Args>
+void basicMessage(Args... args){
+  _variadic_print(std::cout, args..., '\n');
 }
 
 /**
