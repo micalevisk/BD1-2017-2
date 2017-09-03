@@ -181,6 +181,8 @@ public:
    * @date 2017-08-30
    */
   bool insertRecordOnHashFile(const TypeRecord& record){
+    if (!streamHashFile.is_open()) return false;
+
     // identifcar o bucket ao qual o registro será inserido
     unsigned long bucketNumber = applyHashOn(record);
 
@@ -191,22 +193,29 @@ public:
     Bloco bufferPage = { 0 }; // quando o bloco está na memória, ele é chamado de "página"
     unsigned long currPage;
 
+    // iterando sobre os blocos do bucket encontrado
     for (currPage = 0; currPage < QTD_BLOCOS_POR_BUCKET; ++currPage) {
-      // ler bloco encontrado ao mover cursor
+      // ler bloco no byte corrente
       streamHashFile.read((char*)&bufferPage, BLOCO_SIZE);
 
       // bloco válido encontrado;
       // os próximos sempre estarão livres (se existirem) mas o primeiro livre encontrado é o escolhido
-      // ocasionando um crescimento top-down do bucket
+      // ocasionando um crescimento top-down no bucket
       if (bufferPage.qtdRegistros < BLOCKING_FACTOR) break; // para quebrar o loop e evitar o incremento de currPage
     }
 
     // currPage sempre será menor que QTD_BLOCOS_POR_BUCKET se algum bloco válido foi encontrado
     if (currPage >= QTD_BLOCOS_POR_BUCKET) return false;
 
-    // atualizar o bloco encontrado, i.e., inserir o novo registro (ainda em memória principal)
-    bufferPage.qtdRegistros++;
-    std::memcpy(&bufferPage.dados[currPage * RECORD_SIZE], (char*)&record, RECORD_SIZE);
+    // recupera a posição que o registro estará no bloco e atualiza o número de registro no bloco
+    unsigned long indexRecord = bufferPage.qtdRegistros++; // pós-incremento pois os índices começam em 0
+    // std::memcpy(&bufferPage.dados[indexRecord * RECORD_SIZE], (char*)&record, RECORD_SIZE);
+    TypeRecord* records = (TypeRecord*) bufferPage.dados; // trata os dados como um arranjo de registros
+    records[indexRecord] = record;
+
+    #ifdef DEBUG
+      fprintf(stdout, "- externalHash[%u] registro inserido no bloco %lu (bucket %lu) na posição %lu\n", __LINE__, currPage, bucketNumber, indexRecord);
+    #endif
 
     // reescrevendo no arquivo de dados o bloco encontrado que foi atualizado
     streamHashFile.seekp(- BLOCO_SIZE, std::ios::cur); // voltar para o primeiro byte do bloco encontrado
@@ -216,15 +225,18 @@ public:
   }
 
   /**
-   * Abre o arquivo de dados para leitura.
+   * Abre o arquivo de dados para leitura
+   * e procura um registro de acordo com o valor do campo de hashing.
    *
    * @param record O registro que será buscado, i.e., a chave de pesquisa deve ser obtida por ele.
-   * @return A quantidade de blocos lidos para encontrar o tal registro.
+   * @param recordFind Guardará true se o registro foi encontrado, false caso contrário.
+   * @return A quantidade de blocos lidos para encontrar (ou não) tal registro.
    *
    * @author Micael Levi
    * @date 2017-08-30
    */
-  unsigned long findRecord(TypeRecord& record){ // FIXME
+  unsigned long findRecord(TypeRecord& record, bool& recordFind){
+    recordFind = false;
     // ===================== leitura do arquivo de dados ===================== //
     std::ifstream streamHashFileInput(pathToHashFile_, std::ios::binary);
     if (!streamHashFileInput.is_open()) Log::errorMessageExit("ao abrir o arquivo de dados de nome", pathToHashFile_);
@@ -246,30 +258,36 @@ public:
       fprintf(stdout, "- externalHash[%u] cursor movido para posição %ld\n", __LINE__, bucketNumber * QTD_BLOCOS_POR_BUCKET * BLOCO_SIZE);
     #endif
 
-    // procurar em cada bloco desse bucket o registro
+    // ========== procurar o registro em cada bloco desse bucket ============= //
     Bloco bufferPage = { 0 }; // buffer pra o bloco que será carregado
-
     unsigned long currPage;
+
+    // iternado sobre os blocos do buket
     for (currPage = 0; currPage < QTD_BLOCOS_POR_BUCKET; ++currPage) {
       #ifdef DEBUG
         fprintf(stdout, "- externalHash[%u] bloco corrente = %lu\n", __LINE__, currPage);
       #endif
       streamHashFileInput.read((char*)&bufferPage, BLOCO_SIZE); // ler bloco encontrado ao mover cursor
 
-      // iterando sobre os registros no bloco até encontrar o procurado ou último, caso não encontre
+      // iterando sobre os registros no bloco até encontrar o procurado (ou o último caso não encontre)
       TypeRecord* records = (TypeRecord*) bufferPage.dados; // trata os dados como um arranjo de registros
       for (unsigned long i = 0; i < bufferPage.qtdRegistros; ++i) {
         TypeRecord currRecord = records[i];
-        if (findKey == getKey_(currRecord)) {
+        // std::memcpy(&currRecord, (char*)&bufferPage.dados[i * RECORD_SIZE], RECORD_SIZE);
+
+        if (findKey == getKey_(currRecord)) { // encontrou o registro
           #ifdef DEBUG
             fprintf(stdout, "- externalHash[%u] registro encontrado na posição %lu do bloco %lu (bucket %lu)\n", __LINE__, i, currPage, bucketNumber);
           #endif
+          recordFind = true;
+          record = currRecord;
+
           return currPage+1;
         }
       }
     }
 
-    return (currPage < QTD_BLOCOS_POR_BUCKET) ? currPage : 0;
+    return currPage; // registro não encontrado
   }
 
   /**
