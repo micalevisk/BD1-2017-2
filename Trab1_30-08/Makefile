@@ -6,6 +6,7 @@
 
 RM := rm -rf
 OBJECTS_DIR := objects
+ARQUIVOS_GERADOS := docs/*
 
 CXX := gcc -std=c++11
 IDIR := ./include
@@ -16,6 +17,10 @@ LDLIBS  := -lm -lstdc++
 SOURCES1 := $(addprefix src/program_upload/, upload.cpp)
 OBJECTS1 := $(SOURCES1:%.cpp=$(OBJECTS_DIR)/%.o)
 EXECUTABLE1 := upload
+
+SOURCES2 := $(addprefix src/program_findrec/, findrec.cpp)
+OBJECTS2 := $(SOURCES2:%.cpp=$(OBJECTS_DIR)/%.o)
+EXECUTABLE2 := findrec
 
 
 
@@ -29,21 +34,24 @@ endif
 ##########################################
 
 
-all: $(EXECUTABLE1)
+all: $(EXECUTABLE1) $(EXECUTABLE2)
 
 .SECONDEXPANSION:
 
-$(OBJECTS1) : $$(patsubst $(OBJECTS_DIR)/%.o, %.cpp, $$@)
+$(OBJECTS1) $(OBJECTS2) : $$(patsubst $(OBJECTS_DIR)/%.o, %.cpp, $$@)
 	mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 
-$(EXECUTABLE1) : $(OBJECTS1)
+$(EXECUTABLE1): $(OBJECTS1)
+	$(CXX) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
+$(EXECUTABLE2): $(OBJECTS2)
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 
 clean:
-	$(RM) $(EXECUTABLE1) $(OBJECTS_DIR)
+	$(RM) $(EXECUTABLE1) $(EXECUTABLE2) $(OBJECTS_DIR) $(ARQUIVOS_GERADOS)
 
 mostlyclean:
 	$(RM) $(OBJECTS_DIR)
