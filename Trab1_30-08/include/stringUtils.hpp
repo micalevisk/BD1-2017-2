@@ -240,23 +240,37 @@ std::vector<std::string> split(std::string str, const std::string &delim){
 }
 
 /**
- * Copia os N primeiros caracteres de uma string
- * para um vetor de caracteres.
+ * Converte de std::string para cadeia de caracteres.
  *
  * @param str A string alvo.
  * @param asCharArray O destino da string (memória previamente alocada).
- * @param length Quantidade de caracteres que serão copiados da string alvo.
+ * @return A cadeia.
  *
  * @author Micael Levi
  * @date 2017-08-30
  */
-void stringToCharArray(const std::string& str, char* asCharArray, size_t length){
-  #ifdef TEST // significa que 'length' será menor ou igual a str.length()
-  std::memcpy(asCharArray, &str[0], length);
-  // str.resize(length);
-  #else // previnir leitura de uma quantia de bytes maior que o de 'str'
+char* stringToCharArray(const std::string& str, char* asCharArray){
   std::strcpy(asCharArray, str.c_str());
-  #endif
+  return asCharArray;
+}
+
+/**
+ * Copia uma cadeia de caracteres para outra
+ * de forma segura e com delimitação de comprimento.
+ *
+ * @param dest A cadeia alvo.
+ * @param orig A cadeia que contém o conteúdo a ser copiado.
+ * @param length A quantidade de bytes que serão copiados de 'orig'.
+ * @return True se foi copiado com sucesso.
+ *
+ * @author Micael Levi
+ * @date 2017-09-03
+ */
+bool strcpy(char* dest, char* orig, size_t length){
+  if (!dest || !orig) return false;
+  orig[length+1] = '\0';
+  std::strcpy(dest, orig);
+  return true;
 }
 
 
