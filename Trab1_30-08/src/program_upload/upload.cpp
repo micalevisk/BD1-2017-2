@@ -35,7 +35,7 @@ int main(const int argc, const char* argv[]){
   if (argc != 2) Log::errorMessageExit("use:", argv[0], "<path/to/data.csv>");
 
   const char* PATH_ARQUIVO_COM_DADOS = argv[1];
-  ifstream arqComDados; // arquivo que contém a hash e arquivo de entrada, respectivamente
+  ifstream arqComDados; // arquivo de entrada
   ExternalHash<Artigo, getArtigoId_pfn> hashExterna(PATH_HASH_FILE, getArtigoId);
 
   arqComDados.open(PATH_ARQUIVO_COM_DADOS);
