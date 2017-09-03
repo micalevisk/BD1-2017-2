@@ -251,9 +251,12 @@ std::vector<std::string> split(std::string str, const std::string &delim){
  * @date 2017-08-30
  */
 void stringToCharArray(const std::string& str, char* asCharArray, size_t length){
+  #ifdef TEST // significa que 'length' será menor ou igual a str.length()
   std::memcpy(asCharArray, &str[0], length);
   // str.resize(length);
-  //std::strcpy(asCharArray, str.c_str());
+  #else // previnir leitura de uma quantia de bytes maior que o de 'str'
+  std::strcpy(asCharArray, str.c_str());
+  #endif
 }
 
 
