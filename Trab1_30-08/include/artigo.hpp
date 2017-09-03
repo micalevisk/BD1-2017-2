@@ -26,7 +26,7 @@
 #define ARTIGO_SIZE (sizeof(Artigo)) // R
 #define QTD_CAMPOS_ARTIGO 7
 
-#ifdef CENARIO_REAL // caso seja o cenário real (especificado)
+#ifndef TEST // caso seja o cenário real (especificado)
   #define ARTIGO_TITULO_MAX_SIZE 300
   #define ARTIGO_ATUALIZACAO_MAX_SIZE 19
   #define ARTIGO_ATORES_MAX_SIZE 1024
@@ -124,20 +124,37 @@ Artigo* getRecordArtigoFrom(std::istream& inputStream){
 
   Artigo* record = new Artigo;
 
-  record->id = atoi(firstField);
+  try {
+    record->id = StringUtils::stringToInt(firstField);
+  } catch (std::exception const& e) {
+    return nullptr;
+  }
 
-  strcpy(record->titulo, getNextFieldFrom(inputStream));
-  // StringUtils::stringToCharArray(campoCurr, record->titulo, ARTIGO_TITULO_MAX_SIZE);
+  // strcpy(record->titulo, getNextFieldFrom(inputStream));
+  StringUtils::stringToCharArray(getNextFieldFrom(inputStream), record->titulo, ARTIGO_TITULO_MAX_SIZE);
 
-  record->ano = atoi(getNextFieldFrom(inputStream));
+  // record->ano = atoi(getNextFieldFrom(inputStream));
+  try {
+    record->ano = StringUtils::stringToInt( getNextFieldFrom(inputStream) );
+  } catch (std::exception const& e) {
+    return nullptr;
+  }
 
-  strcpy(record->autores, getNextFieldFrom(inputStream));
+  // strcpy(record->autores, getNextFieldFrom(inputStream));
+  StringUtils::stringToCharArray(getNextFieldFrom(inputStream), record->autores, ARTIGO_ATORES_MAX_SIZE);
 
-  record->citacoes = atoi(getNextFieldFrom(inputStream));
+  // record->citacoes = atoi(getNextFieldFrom(inputStream));
+  try {
+    record->citacoes = StringUtils::stringToInt( getNextFieldFrom(inputStream) );
+  } catch (std::exception const& e) {
+    return nullptr;
+  }
 
-  strcpy(record->atualizacao, getNextFieldFrom(inputStream));
+  // strcpy(record->atualizacao, getNextFieldFrom(inputStream));
+  StringUtils::stringToCharArray(getNextFieldFrom(inputStream), record->atualizacao, ARTIGO_ATUALIZACAO_MAX_SIZE);
 
-  strcpy(record->snippet, getNextFieldFrom(inputStream, '\n'));
+  // strcpy(record->snippet, getNextFieldFrom(inputStream, '\n'));
+  StringUtils::stringToCharArray(getNextFieldFrom(inputStream, '\n'), record->snippet, ARTIGO_SNIPPET_MAX_SIZE);
 
   return record;
 }
