@@ -20,7 +20,6 @@
  */
 
 
-#include "parametros.h"
 #include "artigo.hpp"
 #include "externalHash.hpp"
 #include <iostream>
@@ -55,9 +54,7 @@ int main(const int argc, const char* argv[]){
 
   Log::basicMessage("Quantidade de blocos lidos =", qtdBlocosCarregados);
   Log::basicMessage("Quantidade total de blocos no arquivo de dados =", QTD_BLOCOS_POR_BUCKET * QTD_BUCKETS);
-  if (registroEncontrado) cout << "\n----------------\n" << artigo << "\n----------------\n" << endl;
-
-
+  if (registroEncontrado) cout << "\n----------------\n" << artigo << "\n----------------\n";
 
 
   return 0;

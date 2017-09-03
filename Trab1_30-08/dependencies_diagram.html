@@ -9,7 +9,6 @@
     graph TB
 
       PARAMETROS(parametros.h) ==> |incluído por| ARTIGO(artigo.hpp)
-      PARAMETROS(parametros.h) ==> FINDREC(findrec.cpp)
 
       STRING_UTILS(stringUtils.hpp) ==> ARTIGO(artigo.hpp)
       ARTIGO(artigo.hpp) ==> UPLOAD(upload.cpp)
