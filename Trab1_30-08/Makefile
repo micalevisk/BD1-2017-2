@@ -7,11 +7,11 @@
 RM := rm -rf
 OBJECTS_DIR := objects
 
-CXX := g++ -std=c++11
+CXX := gcc -std=c++11
 IDIR := ./include
 CXXFLAGS := -I$(IDIR)
 LDFLAGS := -Wall
-LDLIBS  := -lm
+LDLIBS  := -lm -lstdc++
 
 SOURCES1 := $(addprefix src/program_upload/, upload.cpp)
 OBJECTS1 := $(SOURCES1:%.cpp=$(OBJECTS_DIR)/%.o)
