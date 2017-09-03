@@ -12,6 +12,10 @@
 
 
 
+#ifndef __cplusplus
+#error C++ compiler required.
+#endif
+
 // ============= CAMINHOS PARA OS ARQUIVOS QUE SERÃO CRIADOS ============= //
 #define DIR_ARQUIVOS_CRIADOS "docs/"
 
