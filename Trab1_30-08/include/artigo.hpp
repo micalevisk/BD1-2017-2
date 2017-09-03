@@ -17,6 +17,7 @@
 #include "parametros.h"
 #include "stringUtils.hpp"
 #include <fstream>
+#include <iostream>
 
 
 // ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
@@ -92,6 +93,21 @@ int getArtigoId(const Artigo& artigo){
 
 
 /**
+ * Apaga o conteúdo de uma cadeia de caracteres se tiver valor inválido,
+ * i.e., adiciona o caractere nulo no primeiro byte da cadeia.
+ *
+ * @param str A string alvo
+ *
+ * @author Micael Levi
+ * @date 2017-09-03
+ */
+static void clearFieldIfInvalid(char* field){
+  if (!field || std::strlen(field) < 0) return;
+  if (!strcmp(field, INVALID_FIELD)) field[0] = '\0';
+}
+
+
+/**
  * Função específica para o formato do CSV que será lido.
  * Retorna o valor de um campo lido,
  * i.e., contéudo sem as aspas duplas no início e fim (se tiver).
@@ -131,7 +147,7 @@ static char* getNextFieldFrom(std::istream& inputStream, const char& delimiter =
  * @author Victor Meireles
  * @date 2017-09-01
  */
-Artigo* getRecordArtigoFrom(std::istream& inputStream){
+Artigo* getRecordArtigoFrom(std::istream& inputStream){ // FIXME alguns registros ficam com titulo misturado com autores
   char* firstField = getNextFieldFrom(inputStream);
   if (!strcmp(firstField, INVALID_FIELD)) return nullptr;
 
@@ -143,31 +159,30 @@ Artigo* getRecordArtigoFrom(std::istream& inputStream){
     return nullptr;
   }
 
-  // strcpy(record->titulo, getNextFieldFrom(inputStream));
-  StringUtils::stringToCharArray(getNextFieldFrom(inputStream), record->titulo, ARTIGO_TITULO_MAX_SIZE);
+  StringUtils::strcpy(record->titulo, getNextFieldFrom(inputStream), ARTIGO_TITULO_MAX_SIZE);
+  clearFieldIfInvalid(record->titulo);
 
-  // record->ano = atoi(getNextFieldFrom(inputStream));
   try {
     record->ano = StringUtils::stringToInt( getNextFieldFrom(inputStream) );
   } catch (std::exception const& e) {
     return nullptr;
   }
 
-  // strcpy(record->autores, getNextFieldFrom(inputStream));
-  StringUtils::stringToCharArray(getNextFieldFrom(inputStream), record->autores, ARTIGO_ATORES_MAX_SIZE);
+  StringUtils::strcpy(record->autores, getNextFieldFrom(inputStream), ARTIGO_ATORES_MAX_SIZE);
+  clearFieldIfInvalid(record->autores);
 
-  // record->citacoes = atoi(getNextFieldFrom(inputStream));
   try {
     record->citacoes = StringUtils::stringToInt( getNextFieldFrom(inputStream) );
   } catch (std::exception const& e) {
     return nullptr;
   }
 
-  // strcpy(record->atualizacao, getNextFieldFrom(inputStream));
-  StringUtils::stringToCharArray(getNextFieldFrom(inputStream), record->atualizacao, ARTIGO_ATUALIZACAO_MAX_SIZE);
+  StringUtils::strcpy(record->atualizacao, getNextFieldFrom(inputStream), ARTIGO_ATUALIZACAO_MAX_SIZE);
+  clearFieldIfInvalid(record->atualizacao);
 
-  // strcpy(record->snippet, getNextFieldFrom(inputStream, '\n'));
-  StringUtils::stringToCharArray(getNextFieldFrom(inputStream, '\n'), record->snippet, ARTIGO_SNIPPET_MAX_SIZE);
+  StringUtils::strcpy(record->snippet, getNextFieldFrom(inputStream, '\n'), ARTIGO_SNIPPET_MAX_SIZE);
+  clearFieldIfInvalid(record->snippet);
+
 
   return record;
 }
