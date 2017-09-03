@@ -31,6 +31,12 @@ endif
 ifeq ($(TEST), true)
 	CXXFLAGS += -D TEST
 endif
+ifneq ($(origin QTD_BUCKETS), undefined)
+	CXXFLAGS += -D QTD_BUCKETS=$(QTD_BUCKETS)
+endif
+ifneq ($(origin QTD_BLOCOS_POR_BUCKET), undefined)
+	CXXFLAGS += -D QTD_BLOCOS_POR_BUCKET=$(QTD_BLOCOS_POR_BUCKET)
+endif
 ##########################################
 
 
