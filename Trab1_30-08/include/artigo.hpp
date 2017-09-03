@@ -14,12 +14,10 @@
 
 
 
+#include "parametros.h"
 #include "stringUtils.hpp"
 #include <fstream>
 
-// ============= CAMINHOS PARA OS ARQUIVOS QUE SERÃO CRIADOS ============= //
-#define DIR_ARQUIVOS_CRIADOS "docs/"
-#define PATH_HASH_FILE DIR_ARQUIVOS_CRIADOS"__hashfile"
 
 // ============= PARÂMETROS DE ACORDO COM O TIPO DE REGISTRO ============= //
 #define Artigo struct __Artigo
@@ -32,9 +30,6 @@
   #define ARTIGO_ATORES_MAX_SIZE 1024
   #define ARTIGO_SNIPPET_MAX_SIZE 1024
 #else // cenário para fins de teste
-  #undef QTD_BUCKETS
-  #define QTD_BUCKETS 128000 // causará 11 colisões, i.e., 1 bloco precisa ter espaço pra 12 registros
-
   // ajustando os tamanhos para que o bfr seja 12
   #define ARTIGO_TITULO_MAX_SIZE 100
   #define ARTIGO_ATUALIZACAO_MAX_SIZE 19

@@ -8,16 +8,19 @@
   <div class="mermaid">
     graph TB
 
+      PARAMETROS(parametros.h)
       EXTERNAL_HASH(externalHash.hpp) ==> UPLOAD(upload.cpp)
-      ARTIGO(artigo.hpp) ==> EXTERNAL_HASH(externalHash.hpp)
+      ARTIGO(artigo.hpp) ==> UPLOAD(upload.cpp)
+      PARAMETROS(parametros.h) ==> ARTIGO(artigo.hpp)
       STRING_UTILS(stringUtils.hpp) ==> ARTIGO(artigo.hpp)
       LOG(log.hpp) ==> EXTERNAL_HASH(externalHash.hpp)
 
 
-      classDef dot_h fill:#83e6e0, stroke:#75d2cd, stroke-width:2px;
+      classDef dot_h fill:#bcd0f7, stroke:#aabcdf, stroke-width:2px;
       classDef dot_hpp fill:#bcbcf7, stroke:#a3a3d5, stroke-width:2px;
       classDef dot_cpp fill:#fa9461, stroke:#f0793d, stroke-width:2px;
 
+      class PARAMETROS dot_h
       class UPLOAD dot_cpp
       class EXTERNAL_HASH dot_hpp
       class ARTIGO dot_hpp

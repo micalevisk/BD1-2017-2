@@ -13,7 +13,6 @@
 
 
 
-#include "artigo.hpp"
 #include "log.hpp"
 #include <iostream>
 #include <fstream>
@@ -28,12 +27,13 @@
 #define Bloco struct __Bloco
 #define BLOCO_SIZE (sizeof(Bloco)) // B
 
-#ifndef QTD_BUCKETS
+#ifdef TEST
+  #define QTD_BUCKETS 128000 // causará 11 colisões, i.e., 1 bloco precisa ter espaço pra 12 registros
+#else
   #define QTD_BUCKETS 1549147 // M
 #endif
 #define QTD_BLOCOS_POR_BUCKET 1 // m
 #define BUCKET_SIZE (QTD_BLOCOS_POR_BUCKET * BLOCO_SIZE) // m * B
-// #define FATOR_BLOCO (BLOCO_SIZE / ARTIGO_SIZE) // bfr = quantidade máxima de registros por bloco
 
 
 /**
@@ -57,7 +57,7 @@ class ExternalHash {
 
 private:
   const size_t RECORD_SIZE = sizeof(TypeRecord); // tamanho de um registro
-  const unsigned long BLOCKING_FACTOR = (BLOCO_SIZE / RECORD_SIZE); // fator de bloco
+  const unsigned long BLOCKING_FACTOR = (BLOCO_SIZE / RECORD_SIZE); // fator de bloco bfr = quantidade máxima de registros por bloco
   const char* pathToHashFile_; // caminho para o arquivo de dados que será criado
   F getKey_; // função que retorna a chave de um registro para ser usado na função de espalhamento
 
@@ -118,6 +118,15 @@ public:
        fprintf(stdout, "\tBlock size in bytes: %ld\n" , results.st_blksize);
       }
     #endif
+  }
+
+  /**
+   * Abre o arquivo de dados para leitura.
+   *
+   * @author Micael Levi
+   * @date 2017-08-30
+   */
+  void findRecordById(){
   }
 
   /**
