@@ -3,6 +3,13 @@
 ##	Created by Micael Levi on 2017-08-31
 ##	Copyright (c) 2017 mllc@icomp.ufam.edu.br; All rights reserved.
 ##
+##	Macros definidas nos códigos-fonte por padrão:
+##	DEBUG (false)
+##	TEST (false)
+##	FIELD_MAX_SIZE (2048)
+##	QTD_BUCKETS (1549147)
+##	QTD_BLOCOS_POR_BUCKET (1)
+##
 
 RM := rm -rf
 OBJECTS_DIR := objects
@@ -30,6 +37,9 @@ ifeq ($(DEBUG), true)
 endif
 ifeq ($(TEST), true)
 	CXXFLAGS += -D TEST
+endif
+ifneq ($(origin FIELD_MAX_SIZE), undefined)
+	CXXFLAGS += -D FIELD_MAX_SIZE=$(FIELD_MAX_SIZE)
 endif
 ifneq ($(origin QTD_BUCKETS), undefined)
 	CXXFLAGS += -D QTD_BUCKETS=$(QTD_BUCKETS)
