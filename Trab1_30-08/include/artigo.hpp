@@ -91,7 +91,7 @@ int getArtigoId(const Artigo& artigo){
  * Apaga o conteúdo de uma cadeia de caracteres se tiver valor inválido,
  * i.e., adiciona o caractere nulo no primeiro byte da cadeia.
  *
- * @param str A string alvo
+ * @param field A string alvo
  *
  * @author Micael Levi
  * @date 2017-09-03
