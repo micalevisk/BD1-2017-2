@@ -76,6 +76,25 @@ private:
   F getKey_; // função que retorna a chave de um registro para ser usado na função de espalhamento
   unsigned long totalBlocks_; // contabiliza a quantidade de blocos que foram alocados
 
+  /**
+   * Aplica a função de hash escolhida
+   * que mapeia um registro para o seu bucket na hash externa.
+   * A função escolhida foi
+   * h(k) = k MOD M
+   * Onde 'k' é a chave e 'M' é a quantidade de buckets na hash.
+   * A implementação abaixo está totalmente neutra.
+   *
+   * @param data O dado sobre o qual a hash será aplicada.
+   * @param getKey Função que retorna (número) a chave que será usada pela função hash.
+   * @return O número do bucket que o dado deve estar.
+   *
+   * @author Micael Levi
+   * @date 2017-08-30
+   */
+  unsigned long applyHashOn(TypeRecord data){
+    return getKey_(data) % QTD_BUCKETS;
+  }
+
 public:
   std::fstream streamHashFile;
 
@@ -164,25 +183,6 @@ public:
     #ifdef DEBUG
       fprintf(stdout, "- externalHash[%d] Arquivo '%s' foi removido!\n", __LINE__, pathToHashFile_);
     #endif
-  }
-
-  /**
-   * Aplica a função de hash escolhida
-   * que mapeia um registro para o seu bucket na hash externa.
-   * A função escolhida foi
-   * h(k) = k MOD M
-   * Onde 'k' é a chave e 'M' é a quantidade de buckets na hash.
-   * A implementação abaixo está totalmente neutra.
-   *
-   * @param data O dado sobre o qual a hash será aplicada.
-   * @param getKey Função que retorna (número) a chave que será usada pela função hash.
-   * @return O número do bucket que o dado deve estar.
-   *
-   * @author Micael Levi
-   * @date 2017-08-30
-   */
-  unsigned long applyHashOn(TypeRecord data){
-    return getKey_(data) % QTD_BUCKETS;
   }
 
   /**
