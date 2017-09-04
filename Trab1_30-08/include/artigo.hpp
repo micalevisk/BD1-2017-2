@@ -46,10 +46,7 @@ typedef int(*getArtigoId_pfn)(const Artigo&);
  * Está organizado de maneira a reduzir o "structure padding".
  */
 struct __Artigo {// 2384 bytes no cenário real
-  int id;
-  int ano;
-  int citacoes;
-
+  int id, ano, citacoes;
   char atualizacao[ARTIGO_ATUALIZACAO_MAX_SIZE+1];
   char titulo[ARTIGO_TITULO_MAX_SIZE+1];
   char autores[ARTIGO_AUTORES_MAX_SIZE+1];
