@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://unpkg.com/mermaid@7.0.3/dist/mermaid.min.css">
+</head>
+<body>
+  <div class="mermaid">
+    graph TB
+
+      PARAMETROS(parametros.h) ==> |incluído por| ARTIGO(artigo.hpp)
+
+      STRING_UTILS(stringUtils.hpp) ==> ARTIGO(artigo.hpp)
+      ARTIGO(artigo.hpp) ==> UPLOAD(upload.cpp)
+      ARTIGO(artigo.hpp) ==> FINDREC(findrec.cpp)
+
+      LOG(log.hpp) ==> EXTERNAL_HASH(externalHash.hpp)
+      EXTERNAL_HASH(externalHash.hpp) ==> UPLOAD(upload.cpp)
+      EXTERNAL_HASH(externalHash.hpp) ==> FINDREC(findrec.cpp)
+
+
+      classDef dot_h fill:#bcd0f7, stroke:#aabcdf, stroke-width:2px;
+      classDef dot_hpp fill:#bcbcf7, stroke:#a3a3d5, stroke-width:2px;
+      classDef dot_cpp fill:#fa9461, stroke:#f0793d, stroke-width:2px;
+
+      class UPLOAD dot_cpp
+      class FINDREC dot_cpp
+      class PARAMETROS dot_h
+      class EXTERNAL_HASH dot_hpp
+      class ARTIGO dot_hpp
+      class STRING_UTILS dot_hpp
+      class LOG dot_hpp
+  </div>
+  <script src="https://unpkg.com/mermaid@7.0.3/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>
+
+<!-- (c) https://mermaidjs.github.io/ -->
+<!-- http://rich-iannone.github.io/DiagrammeR/mermaid.html -->

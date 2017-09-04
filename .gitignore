@@ -1,4 +1,5 @@
-# Created by https://www.gitignore.io/api/c++,linux,cmake,windows,vim,emacs
+
+# Created by https://www.gitignore.io/api/c++,linux,windows,vim,emacs,code
 
 ### C++ ###
 # Prerequisites
@@ -34,16 +35,12 @@
 *.out
 *.app
 
-### CMake ###
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
+### Code ###
+# Visual Studio Code - https://code.visualstudio.com/
+.settings/
+.vscode/
+tsconfig.json
+jsconfig.json
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -140,4 +137,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/c++,linux,cmake,windows,vim,emacs
+# End of https://www.gitignore.io/api/c++,linux,windows,vim,emacs,code
+
+*.stackdump
+_*
+!__tests__
