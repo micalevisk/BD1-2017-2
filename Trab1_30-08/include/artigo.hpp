@@ -23,6 +23,10 @@
 #define Artigo struct __Artigo
 #define ARTIGO_SIZE (sizeof(Artigo)) // R
 
+#ifndef FIELD_MAX_SIZE
+  #define FIELD_MAX_SIZE 2048
+#endif
+
 #ifndef TEST // caso seja o cenário real (especificado)
   #define ARTIGO_TITULO_MAX_SIZE 300
   #define ARTIGO_ATUALIZACAO_MAX_SIZE 19
@@ -115,7 +119,7 @@ static void clearFieldIfInvalid(char* field){
  * @date 2017-09-01
  */
 static char* getNextFieldFrom(std::istream& inputStream, const char& delimiter = ';'){
-  char *field = new char[ARTIGO_SNIPPET_MAX_SIZE+1]; // o tamanho do maior campo é o do snippet
+  char *field = new char[FIELD_MAX_SIZE+1]; // buffer alocado com o tamanho do maior campo possível
   bool isEvenQuotes = false; // flag para marcar se o número de aspas duplas é par
   unsigned long i = 0;
 
@@ -142,7 +146,7 @@ static char* getNextFieldFrom(std::istream& inputStream, const char& delimiter =
  * @author Victor Meireles
  * @date 2017-09-01
  */
-Artigo* getRecordArtigoFrom(std::istream& inputStream){ // FIXME alguns registros ficam com titulo misturado com autores
+Artigo* getRecordArtigoFrom(std::istream& inputStream){
   char* firstField = getNextFieldFrom(inputStream);
   if (!strcmp(firstField, INVALID_FIELD)) return nullptr;
 
