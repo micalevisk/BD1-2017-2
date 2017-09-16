@@ -13,7 +13,7 @@
 
 RM := rm -rf
 OBJECTS_DIR := objects
-ARQUIVOS_GERADOS := docs/*
+ARQUIVOS_GERADOS := docs/generatedfiles/*
 
 CXX := gcc -std=c++11
 IDIR := ./include

@@ -18,7 +18,7 @@
 #endif
 
 // ============= CAMINHOS PARA OS ARQUIVOS QUE SERÃO CRIADOS ============= //
-#define DIR_ARQUIVOS_CRIADOS "docs/"
+#define DIR_ARQUIVOS_CRIADOS "docs/generatedfiles/"
 
 #define PATH_HASH_FILE DIR_ARQUIVOS_CRIADOS"__hashfile"
 #define PATH_PRIMARY_INDEX_FILE DIR_ARQUIVOS_CRIADOS"__primary_index"
