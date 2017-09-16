@@ -1,0 +1,44 @@
+\documentclass[a4paper, 12pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\input{preambulo/header}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------- parâmetros para a capa -----------%
+\def \nomeProfessor{Altigran Soares da Silva}
+\def \codigoTurma{CB01}
+\def \nomeMateria{Banco de Dados 1}
+\def \codigoMateria{ICC200}
+%----------------------------------------------%
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titulo[Indexação]{03 de Setembro de 2017}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------ sumário ------%
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\pagenumbering{arabic}
+%---------------------%
+
+%---------------------- corpo ----------------------%
+
+\input{secoes/1.tex} %% Introdução
+\newpage
+\input{secoes/2.tex} %% Decisões de Projeto
+
+\input{secoes/3.tex} %% Programas Implementados
+
+%---------------------------------------------------%
+
+
+\bibliographystyle{ieeetr}
+\bibliography{referencias}
+
+
+\end{document}

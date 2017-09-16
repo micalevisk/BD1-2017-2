@@ -1,0 +1,31 @@
+\subsection{Estrutura do Arquivo de Dados}\label{subsec:estrutura_do_arquivo_de_dados}
+
+Para o arquivo de dados, optamos por organizá-lo em \textbf{hash estático} pois os registro possuem um tamanho fixo $R = 2384$ bytes. Assim, como um bloco tem tamanho $B = 4096$ bytes e usando a \textbf{alocação não espalhada}\footnote{Os registros não podem atravessar os limites de bloco.\citar{navathe}} como política de alocação dos registros em um bloco, obtemos o seguinte fator de blocagem $bfr$ (visto que $B \geq R$):
+\begin{equation}\label{eq:binomial_distribution}
+    bfr = \floor{\frac{B}{R}} = 1
+\end{equation}
+
+Então teremos até 1 registro por bloco alocado. Tal decisão implicou em um desperdiço de $B - (bfr * R) = 1704$ bytes ($41,8\%$) por bloco mas simplificou a implementação da inserção e da leitura dos registros.
+
+No hashing externo, o espaço de endereços de destino é feito em buckets\footnote{Um bucket é a unidade de armazenamento que pode armazenar um ou mais blocos.\citar{sudarshan}}.
+Por se tratar de hash estático, a quantidade $M$ de buckets precisa ser fixada. Definimos um valor de $1549147$ buckets. Que foi escolhido devido a dois fatores:
+\begin{itemize}[noitemsep]
+    \item Natureza dos registros que serão mapeados
+    \item Função de hash
+\end{itemize}
+
+
+Para endereçar um registro ao seu respectivo bucket, utilizamos uma função de hash\footnote{Seja $K$ o conjunto de todos os valores de chave de busca e $Eb$ o conjunto de todos os endereços de bucket, uma função de hash é uma função de $K$ para $Eb$.\citar{sudarshan}} $h$ simples mas que garante uma distribuição uniforme, como mostra a equação \equacao{funcao_hash}, onde $k$ é a chave de busca.
+Assim podemos afirmar que não ocorrerão colisões\footnote{Quando um registro é mapeado para um bucket cheio.}, então \textbf{não precisaremos de páginas de overflow}.
+\begin{equation}\label{eq:funcao_hash}
+    h(k) = k \bmod M
+\end{equation}
+
+Sendo $k$ o valor do campo \emph{id} -- pois é uma chave primária -- e $k \in \mathbb{N}$ tal que $1 \leq k \leq 1549146$, a quantidade $M$ de buckets definida anteriormente é suficiente para portar todos os registros sem colisão que serão lidos, já que escolhemos alocar uma quantia $m = 1$ bloco por bucket. Porém, não podem ser inseridos mais do que $1549146$ registros. A distribuição uniforme implica em complexidade $O(1)$ para a busca de registros que estão na hash externa e apenas $1$ acesso a disco.
+
+Com todas essas variáveis definidas, podemos então prever o tamanho do arquivo de dados.
+Basta fazer $B * m * M$ que obteremos $6345306112$ bytes, $\ie$ um pouco mais de $6,3$ gigabytes!
+E esse é uma outra consequência causada pela simplicidade e eficiência da hash.
+
+Pensando nisso, em nossos testes optamos por utilizar uma \emph{versão reduzida} dos registros. Definimos tamanhos diferentes para os campos descritos na tabela \tabela{tipo_registro} a fim de reduzir para $500$ gigabytes o tamanho do arquivo de dados e ``otimizar'' a criação do mesmo.
+Tais alterações estão descritas no código-fonte \texttt{include/externalHash.hpp}.

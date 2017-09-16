@@ -1,0 +1,37 @@
+\section{Programas Implementados}\label{sec:programas_implementados}
+% Antes de detalhar o objetivo de cada fonte, segue uma tabela com as informações listando as funções que foram efetivamente utilizadas.
+% \input{tabelas/codigos_funcoes}
+O objetivo, autor e descrição de cada função implementada estão listados na seção \subsecao{descricao_das_fontes}.
+Abaixo explicaremos brevemente o conteúdo dos códigos-fonte.
+
+O local e nome dos arquivos binários que serão gerados pelos programas está definido no código-fonte \texttt{include/parametros.h}, $\ie$ contém informações que serão utilizadas por todos os programas implementados.
+
+
+O código \texttt{include/artigo.hpp} contém valores específicos para o tipo de registro deste trabalho.
+E a estrutura que comportará tal registro está implementada como:
+\includecode{codigos/struct_artigo.h}
+
+Os campos foram dispostos em ordem crescente pelo tamanho do campo para reduzir o \emph{structure padding}\footnote{Inserção de ``gaps'' pelo compilador para alinhar os membros da estrutura ao seu endereço natural, que deve ser múltiplo do comprimento (em bytes) do campo.\citar{haase}}. Os tamanhos estão como macros no próprio arquivo para tornar o código mais legível e dinâmico, e serão definidos em tempo de compilação. Por padrão possuem os valores descritos na tabela \tabela{tipo_registro}.
+
+O código \texttt{include/externalHash.hpp} implementa a classe \emph{ExternalHash} que, como o nome indica, manterá a hash externa a ser criada.
+Além de uma estrutura para representar um bloco de memória (ou página\footnote{Como é chamado um bloco que está na memória principal.}).
+Ela está definida no arquivo \texttt{externalHash.hpp} pois só será utilizada pela hash externa:
+\includecode{codigos/struct_bloco.h}
+
+Para compilar todos os programas implementados, basta executar o seguinte comando na linha de comandos:
+\shellcmd{make}
+
+\newpage
+
+Ainda podemos setar os valores de algumas macros.
+Estas estão dispostas na tabela \tabela{macros_make} abaixo.
+\input{tabelas/macros_make}
+
+
+\input{secoes/sub-secoes/3.1}
+\input{secoes/sub-secoes/3.2}
+\input{secoes/sub-secoes/3.3}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

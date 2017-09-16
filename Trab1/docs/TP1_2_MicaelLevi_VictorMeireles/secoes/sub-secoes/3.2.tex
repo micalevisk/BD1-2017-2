@@ -1,0 +1,6 @@
+\subsection{Programa \texttt{upload}}\label{subsec:programa_upload}
+
+O código-fonte \texttt{src/upload.cpp} contém apenas uma simples função \texttt{main} que utiliza a interface disposta pela classe \emph{ExternalHash} para realizar o processo de criação do arquivo e alocação do espaço de endereçamento da hash externa através do método \texttt{create}. E logo depois faz o uso de uma função implementada em \texttt{include/artigo.hpp} para ler os registros do arquivo.
+
+Após compilar os programas, para executar o \texttt{upload}, temos que passar o nome do arquivo texto que contém os dados. A forma de uso é esta:
+\shellcmd{upload <path/to/data.csv>}

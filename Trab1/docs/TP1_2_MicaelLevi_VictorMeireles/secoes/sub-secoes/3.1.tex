@@ -1,0 +1,74 @@
+\subsection{Descrição das Fontes}\label{subsec:descricao_das_fontes}
+
+Em termos gerais, seguem as seguintes explicações sobre as fontes desenvolvidas.
+
+No arquivo \texttt{include/artigo.hpp}, temos as funções:
+\begin{enumerate} %%%%%%%% especificação do arquivo artigo.hpp
+\setlength\itemsep{1em}
+
+\item \texttt{\palavraReservada{int} \nomeFuncao{getArtigoId}(\palavraReservada{const} Artigo\& artigo);}\\
+    \noindent \textbf{autor:} Victor Meireles \\
+    \noindent \textbf{objetivo:} Retornar o id de um dado artigo (getter id)
+
+
+\item \texttt{\palavraReservada{static void} \nomeFuncao{clearFieldIfInvalid}(\palavraReservada{char}* field);} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Setar o caractere nulo na posição $0$  da string caso o seu conteúdo seja ``inválido''\footnote{Uma string é dita inválida se o seu conteúdo for igual a string ``-1''.}, $\ie$, campo sem valor ou com lixo de memória.
+
+
+\item \texttt{\palavraReservada{static char}* \nomeFuncao{getNextFieldFrom}(std::istream\& inputStream, \palavraReservada{const char}\& delimiter = \caractere{`;'});} \\
+    \noindent \textbf{autor:} Victor Meireles \\
+    \noindent \textbf{objetivo:} Ler um campo de um registro do arquivo texto
+
+
+\item \texttt{Artigo* \nomeFuncao{getRecordArtigoFrom}(std::istream\& inputStream);} \\
+    \noindent \textbf{autor:} Victor Meireles \\
+    \noindent \textbf{objetivo:} Ler um registro do arquivo texto
+
+\end{enumerate}
+
+\newpage
+O arquivo \texttt{include/externalHash.hpp} contém a classe \emph{ExternalHash} que possui os seguintes métodos públicos:
+\begin{enumerate} %%%%%%%% especificação do arquivo externalHash.hpp
+\setlength\itemsep{1em}
+
+\item \texttt{\palavraReservada{void} \nomeFuncao{create}(\palavraReservada{void});} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Criar o arquivo de dados organizado em hash estático (deixa a stream aberta para uso futuro)
+
+
+\item \texttt{\palavraReservada{void} \nomeFuncao{closeStream}(\palavraReservada{void});} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Fechar a stream do arquivo de dados
+
+
+\item \texttt{\palavraReservada{void} \nomeFuncao{deleteHashfile}(\palavraReservada{void});} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Fechar a stream do arquivo de dados e apagá-lo
+
+
+\item \texttt{\palavraReservada{bool} \nomeFuncao{insertRecordOnHashFile}(\palavraReservada{const} TypeRecord\& record);} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Inserir um registro no arquivo de dados criado
+
+
+\item \texttt{\palavraReservada{unsigned long} \nomeFuncao{findRecord}(TypeRecord\& record, \palavraReservada{bool}\& recordFind);} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Procura um registro de acordo com o valor do campo de hashing
+
+\end{enumerate}
+
+
+As funções que foram utilizadas do \emph{namespace} Log, estão no arquivo \texttt{include/log.hpp}. São estas:
+\begin{enumerate} %%%%%%%% especificação do arquivo log.hpp
+\setlength\itemsep{1em}
+
+\item \texttt{\palavraReservada{template}$<$\palavraReservada{int} code = EXIT\_FAILURE, \palavraReservada{typename}... Args$>$ \\ \palavraReservada{void} \nomeFuncao{errorMessageExit}(Args... args);} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} imprimir uma mensagem de erro referente ao código de erro passado no parâmetro
+    
+\item \texttt{\palavraReservada{template}$<$\palavraReservada{typename}... Args$>$\\ \palavraReservada{void} \nomeFuncao{errorMessageExit}(Args... args);} \\
+    \noindent \textbf{autor:} Micael Levi \\
+    \noindent \textbf{objetivo:} Imprimir uma mensagem comum de log
+
+\end{enumerate}
