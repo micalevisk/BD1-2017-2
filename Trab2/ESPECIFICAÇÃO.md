@@ -95,4 +95,4 @@ Cada um dos 3 arquivos acima deve ser copiado em uma pasta do Google Drive que f
 <!-- REFERENCES -->
 [wiki-bdr]: https://pt.wikipedia.org/wiki/Banco_de_dados_relacional  "Definição de Banco de Dados Relacional"
 [wiki-dashboard]: https://pt.wikipedia.org/wiki/Painel_de_bordo "Definição de Dashboard"
-[dados-entrada]: https://snap.stanford.edu/data/amazon-meta.html "Stanford Network Analysis Project
+[dados-entrada]: https://snap.stanford.edu/data/amazon-meta.html "Stanford Network Analysis Project"
