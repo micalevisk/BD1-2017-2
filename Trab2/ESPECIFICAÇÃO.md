@@ -13,14 +13,22 @@ Os dados para o banco de dados serão fornecidos de um arquivo (texto) de entrad
 ## Arquivo de Entrada
 O arquivo de onde serão extraídos os dados de entrada será o "[Amazon product co-purchasing network metadata][dados-entrada]".
 Os dados foram coletados em 2006 do site Amazon e informações de produto e comentários de clientes sobre 548.552 produtosd diferentes.
-Para cada produto, a seguinte informação está disponível:
+Para cada produto, a seguinte informação PODE estar disponível:
 
-+ Título
-+ Posição no ranking de vendas (_salesrank_)
-+ Lista de produtos "similares" (que foram adquiridos junto com o produto)
-+ Informação de categorização do produto -- Categorias e subcategorias ao qual o produto pertence
-+ Comentários sobre os produtos:
-  - Informação data, id do cliente, classificação, números de votos, o número de pessoas que acharam a avaliação útil
++ Título [_title_]
++ Grupo [_group_]
++ Posição no ranking de vendas [_salesrank_]
++ Lista de produtos "similares" [_similiar_] (que foram adquiridos junto com o produto; a quantidade seguida pelos ASINs)
++ Informação de categorização do produto [_categories_] - Categorias e subcategorias ao qual o produto pertence
++ Comentários sobre os produtos [_reviews_]:
+  - Total de comentários [_total_]
+  - Total de downloads [_downloaded_]
+  - Média dos votos [_avg rating_]
+  - Informação data (início da linha)
+  - id do cliente [_cutomer_]
+  - classificação [_rating_]
+  - números de votos [_votes_]
+  - o número de pessoas que acharam a avaliação útil [_helpful_]
 
 ```
 Id:   15
@@ -46,7 +54,7 @@ ASIN: 1559362022
 > Data format:
 
 + **Id**: Product id (number 0, ..., 548551)
-+ **ASIN**: Amazon Standard Identification Number
++ **ASIN**: Amazon Standard Identification Number (postive)
 + **title**: Name/title of the product
 + **group**: Product group (Book, DVD, Video or Music)
 + **salesrank**: Amazon Salesrank
