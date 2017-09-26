@@ -12,7 +12,7 @@ Os dados para o banco de dados serão fornecidos de um arquivo (texto) de entrad
 
 ## Arquivo de Entrada
 O arquivo de onde serão extraídos os dados de entrada será o "[Amazon product co-purchasing network metadata][dados-entrada]".
-Os dados foram coletados em 2006 do site Amazon e informações de produto e comentários de clientes sobre 548.552 produtosd diferentes.
+Os dados foram coletados em 2006 do site Amazon e informações de produto e comentários de clientes sobre 548.552 produtos diferentes.
 Para cada produto, a seguinte informação PODE estar disponível:
 
 + Título [_title_]
