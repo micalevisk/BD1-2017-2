@@ -54,7 +54,7 @@ ASIN: 1559362022
 > Data format:
 
 + **Id**: Product id (number 0, ..., 548551)
-+ **ASIN**: Amazon Standard Identification Number (postive)
++ **ASIN**: Amazon Standard Identification Number (alfanum)
 + **title**: Name/title of the product
 + **group**: Product group (Book, DVD, Video or Music)
 + **salesrank**: Amazon Salesrank
