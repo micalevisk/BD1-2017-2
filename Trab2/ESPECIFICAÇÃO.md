@@ -69,7 +69,7 @@ O esquema de bancos de dados a ser desenvolvido deverá seguir o modelo relacion
 Seu desenvolvimento deverá seguir a técnica ascendente (_bottom-up_) de projeto de banco de dados relacionais e deve necessariamente observar as regras de uma das formas normais de alto nível tais como a **Forma Normal de Boyce-Codd**, **Terceira Forma Normal** ou **Quarta Forma Normal**.
 
 ## Sobre o Dashboard
-O painel de bordo a ser implementado deve dar suporte a pelo menos as seguintes consultas, as quais devem todas ser implementadas com consultadas em linguagem SQL:
+O painel de bordo a ser implementado deve dar suporte a pelo menos as seguintes consultas, as quais devem todas ser implementadas com consultas em linguagem SQL:
 
 <ol type="a">
  <li>Dado produto, listar os 5 comentários mais úteis e com maior avaliação e os 5 comentários mais úteis e com menor avaliação</li>
