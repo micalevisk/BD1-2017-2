@@ -742,7 +742,6 @@ ASIN: B000000DIU
     1999-8-11  cutomer: A35E8OP7TNKDTF  rating: 4  votes:   0  helpful:   0
     2000-5-1  cutomer: A1LT1CBC0VNDJV  rating: 5  votes:   0  helpful:   0
 
-
 Id:   55
 ASIN: B000002U39
   title: Vintage Collections Series
