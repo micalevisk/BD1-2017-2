@@ -57,7 +57,7 @@ ASIN: 1559362022
 + **ASIN**: Amazon Standard Identification Number (10-character alphanumeric unique identifier)
 + **title**: Name/title of the product
 + **group**: Product group (Book, DVD, Video or Music)
-+ **salesrank**: Amazon Salesrank
++ **salesrank**: Amazon Salesrank <!-- exemplos gráficos https://www.ranktracer.com/amazon-sales-rank.php -->
 + **similar**: ASINs of co-purchased products (people who buy X also buy Y)
 + **categories**: Location in product category hierarchy to which the product belongs (separated by |, category id in [])
 + **reviews**: Product review information: time, user id, rating, total number of votes on the review, total number of helpfulness votes (how many people found the review to be helpful)
