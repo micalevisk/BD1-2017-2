@@ -1,5 +1,9 @@
 # Little informations about Amazon Share the Love products
-Total items: 5
+Total items: 6
+
+Id:   0
+ASIN: 0771044445
+  discontinued product
 
 Id:   1
 ASIN: 0486287785
