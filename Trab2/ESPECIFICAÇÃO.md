@@ -18,8 +18,8 @@ Para cada produto, a seguinte informação PODE estar disponível:
 + Título [_title_]
 + Grupo [_group_]
 + Posição no ranking de vendas [_salesrank_]
-+ Lista de produtos "similares" [_similiar_] (que foram adquiridos junto com o produto; a quantidade seguida pelos ASINs)
-+ Informação de categorização do produto [_categories_] - Categorias e subcategorias ao qual o produto pertence
++ Lista de produtos "similares" [_similiar_]  (que foram adquiridos junto com o produto; a quantidade seguida pelos ASINs)
++ Informação de categorização do produto [_categories_] - Categorias e subcategorias ao qual o produto pertence (nome opcional e id)
 + Comentários sobre os produtos [_reviews_]:
   - Total de comentários [_total_]
   - Total de downloads [_downloaded_]
@@ -51,6 +51,14 @@ ASIN: 1559362022
     2004-2-24  cutomer: A2C5K0QTLL9UAT  rating: 5  votes:   2  helpful:   2
     2004-10-13  cutomer:  A5XYF0Z3UH4HB  rating: 5  votes:   1  helpful:   1
 ```
+
+O produto acima está em três categorias (com respectivas subcategorias):
+```
+Books > Subjects > Literature & Fiction > Drama           > United States
+Books > Subjects > Arts & Photography   > Performing Arts > Theater > General
+Books > Subjects > Literature & Fiction > Authors, A-Z    > ( B )   > Bogosian, Eric
+```
+
 > Data format:
 
 + **Id**: Product id (number 0, ..., 548551)
@@ -59,7 +67,7 @@ ASIN: 1559362022
 + **group**: Product group (Book, DVD, Video or Music)
 + **salesrank**: Amazon Salesrank <!-- exemplos gráficos https://www.ranktracer.com/amazon-sales-rank.php -->
 + **similar**: ASINs of co-purchased products (people who buy X also buy Y)
-+ **categories**: Location in product category hierarchy to which the product belongs (separated by |, category id in [])
++ **categories**: Location in product category hierarchy to which the product belongs (separated by |, category id in []) <!-- explicação https://authorcentral.amazon.com/gp/help?ie=UTF8&topicID=201231280 -->
 + **reviews**: Product review information: time, user id, rating, total number of votes on the review, total number of helpfulness votes (how many people found the review to be helpful)
 ---
 
