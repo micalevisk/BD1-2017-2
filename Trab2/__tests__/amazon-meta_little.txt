@@ -47,7 +47,7 @@ ASIN: B00004W1W1
   categories: 2
    |Music[5174]|Styles[301668]|Jazz[34]|General[63926]
    |Music[5174]|Specialty Stores[468040]|Indie Music[266023]|Jazz[171246]|General[520200]
-  reviews: total: 0  downloaded: 0  avg rating: 0
+  reviews: total: 3  downloaded: 0  avg rating: 0
 
 Id:   5
 ASIN: 0393049388
@@ -59,7 +59,7 @@ ASIN: 0393049388
    |Books[283155]|Subjects[1000]|Literature & Fiction[17]|General[10125]|Contemporary[10129]
    |Books[283155]|Subjects[1000]|Mystery & Thrillers[18]|Mystery[10457]|General[10466]
    |Books[283155]|Subjects[1000]|Mystery & Thrillers[18]|General[605116]
-  reviews: total: 3  downloaded: 3  avg rating: 3
+  reviews: total: 4  downloaded: 3  avg rating: 3
     2001-6-14  cutomer:  AA90ANPKJB452  rating: 4  votes:   4  helpful:   1
     2001-8-20  cutomer: A382XQ7SYXEW1Q  rating: 2  votes:   2  helpful:   2
     2002-8-5  cutomer: A12MOYPCEJUGW6  rating: 3  votes:   0  helpful:   0
