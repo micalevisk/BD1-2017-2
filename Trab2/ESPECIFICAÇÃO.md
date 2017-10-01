@@ -52,7 +52,8 @@ ASIN: 1559362022
     2004-10-13  cutomer:  A5XYF0Z3UH4HB  rating: 5  votes:   1  helpful:   1
 ```
 
-O produto acima está em três categorias (com respectivas subcategorias):
+O produto acima tem um total de `8` comentários onde `8` estão listados (_downloaded_),
+e está em três categorias (com respectivas subcategorias):
 ```
 Books > Subjects > Literature & Fiction > Drama           > United States
 Books > Subjects > Arts & Photography   > Performing Arts > Theater > General
