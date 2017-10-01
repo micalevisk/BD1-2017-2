@@ -63,3 +63,14 @@ ASIN: 0393049388
     2001-6-14  cutomer:  AA90ANPKJB452  rating: 4  votes:   4  helpful:   1
     2001-8-20  cutomer: A382XQ7SYXEW1Q  rating: 2  votes:   2  helpful:   2
     2002-8-5  cutomer: A12MOYPCEJUGW6  rating: 3  votes:   0  helpful:   0
+
+Id:   6
+ASIN: 0899225306
+  title: Nave: Índice Temático De La Biblia
+  group: Book
+  salesrank: 1768941
+  similar: 0
+  categories: 2
+   |Books[283155]|Subjects[1000]|Religion & Spirituality[22]|Christianity[12290]|Reference[172810]|Concordances[12163]
+   |Books[283155]|Subjects[1000]|Religion & Spirituality[22]|Christianity[12290]|Bibles[12059]|Study Guides, History & Reference[764438]|General[572094]
+  reviews: total: 0  downloaded: 0  avg rating: 0

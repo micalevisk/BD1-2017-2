@@ -1,5 +1,5 @@
 # Some informations about Amazon Share the Love products
-Total items: 55
+Total items: 56
 
 Id:   1
 ASIN: 0486287785
@@ -769,3 +769,14 @@ ASIN: B000002U39
     2000-12-22  cutomer:  AY6RI38A899P8  rating: 5  votes:   6  helpful:   6
     2002-6-9  cutomer:  ACFXNLOFYD7RV  rating: 5  votes:   3  helpful:   3
     2002-6-9  cutomer:  ACFXNLOFYD7RV  rating: 5  votes:   5  helpful:   5
+
+Id:   56
+ASIN: 0899225306
+  title: Nave: Índice Temático De La Biblia
+  group: Book
+  salesrank: 1768941
+  similar: 0
+  categories: 2
+   |Books[283155]|Subjects[1000]|Religion & Spirituality[22]|Christianity[12290]|Reference[172810]|Concordances[12163]
+   |Books[283155]|Subjects[1000]|Religion & Spirituality[22]|Christianity[12290]|Bibles[12059]|Study Guides, History & Reference[764438]|General[572094]
+  reviews: total: 0  downloaded: 0  avg rating: 0
