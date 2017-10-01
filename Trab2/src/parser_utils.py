@@ -17,7 +17,7 @@ SALESRANK = r'^salesrank:\s*(\d+)$' ## [1]:valor
 SIMILAR   = r'^similar:\s*(?P<count>\d+)(?:\s+(?P<asins>.+))?' ## [count]:quantidade de items em [asins]:ASINs de outros produtos, separados por espaço (opcional)
 CATEGORIES= r'^categories:\s*(\d+)$' ## [1]:quantidade de categorias
 CATEGORY  = r'(?P<cname>.+)?\[\s*(?P<cid>\d+)\s*\]' ## [cname]:nome da categoria (opcional) [cid]:id da categoria
-REVIEWS   = r'^reviews:\s*total:\s*(?P<count>\d+)\s+downloaded:\s*(?P<downloaded>\d+)\s*avg\s+rating:\s*(?P<avgrating>\d+)$' ## [count]:quantidade de comentários [downloaded]:quantidade de downloads [avgrating]:média dos votos
+REVIEWS   = r'^reviews:\s*total:\s*(?P<total>\d+)\s+downloaded:\s*(?P<count>\d+)\s*avg\s+rating:\s*(?P<avgrating>\d+)$' ## [total]:quantidade de comentários [count]:quantidade de comentários listados no dump [avgrating]:média dos votos
 REVIEW    = r'^(?P<date>.+)\s+cutomer:\s*(?P<uid>\w+)\s+rating:\s*(?P<rating>\d+)\s+votes:\s*(?P<votes>\d+)\s+helpful:\s*(?P<helpful>\d+)$' ## [date]:dia da publicação [uid]:user id [rating]:avaliação do usuário [votes]:número de votos do usuário [helpful]:número de votos de utilidade
 
 
@@ -85,13 +85,13 @@ def search_categories(text:str) -> int:
     # return int( match.group(1) ) if match else None
 
 def search_reviews(text:str) -> object:
-    ''' Retorna um dicionário (count:int, downloaded:int, avgrating:float) representando dados sobre os comentários do produto '''
+    ''' Retorna um dicionário (count:int, total:int, avgrating:float) representando dados sobre os comentários do produto '''
     match = search(REVIEWS, text)
     if match:
         return {
-            'count'     : int( match.group('count') ),
-            'downloaded': int( match.group('downloaded') ),
-            'avgrating' : float( match.group('avgrating') )
+            'count'    : int( match.group('count') ),
+            'total'    : int( match.group('total') ),
+            'avgrating': float( match.group('avgrating') )
         }
 
 
