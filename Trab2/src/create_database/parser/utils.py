@@ -18,7 +18,7 @@ SIMILAR   = r'^similar:\s*(?P<count>\d+)(?:\s+(?P<asins>.+))?' ## [count]:quanti
 CATEGORIES= r'^categories:\s*(\d+)$' ## [1]:quantidade de categorias
 CATEGORY  = r'(?P<cname>.+)?\[\s*(?P<cid>\d+)\s*\]' ## [cname]:nome da categoria (opcional) [cid]:id da categoria
 REVIEWS   = r'^reviews:\s*total:\s*(?P<total>\d+)\s+downloaded:\s*(?P<count>\d+)\s*avg\s+rating:\s*(?P<avgrating>\d+)$' ## [total]:quantidade de comentários [count]:quantidade de comentários listados no dump [avgrating]:média dos votos
-REVIEW    = r'^(?P<date>.+)\s+cutomer:\s*(?P<uid>\w+)\s+rating:\s*(?P<rating>\d+)\s+votes:\s*(?P<votes>\d+)\s+helpful:\s*(?P<helpful>\d+)$' ## [date]:dia da publicação [uid]:user id [rating]:avaliação do usuário [votes]:número de votos do usuário [helpful]:número de votos de utilidade
+REVIEW    = r'^(?P<date>.+)\s+cutomer:\s*(?P<cutomer>\w+)\s+rating:\s*(?P<rating>\d+)\s+votes:\s*(?P<votes>\d+)\s+helpful:\s*(?P<helpful>\d+)$' ## [date]:dia da publicação [cutomer]:customer id [rating]:avaliação do usuário [votes]:número de votos do usuário [helpful]:número de votos de utilidade
 
 
 def split_similars(text:str) -> [str]:
@@ -39,7 +39,6 @@ def search_id(text:str) -> int:
     match = search(PID, text)
     if match:
         return int( match.group(1) )
-    # return int( match.group(1) ) if match else None
 
 def search_asin(text:str) -> str:
     ''' Retorna o 'ASIN' do produto '''
@@ -52,21 +51,18 @@ def search_title(text:str) -> str:
     match = search(TITLE, text)
     if match:
         return match.group(1)
-    # return match.group(1) if match else None
 
 def search_group(text:str) -> str:
     ''' Retorna o 'group' do produto '''
     match = search(GROUP, text)
     if match:
         return match.group(1)
-    # return match.group(1) if match else None
 
 def search_salesrank(text:str) -> int:
     ''' Retorna o 'salesrank' do produto '''
     match = search(SALESRANK, text)
     if match:
         return int( match.group(1) )
-    # return int( match.group(1) ) if match else None
 
 def search_similar(text:str) -> object:
     ''' Retorna um dicionário (count:int, asins:[str]) representando o campo 'similar' do produto  '''
@@ -82,7 +78,6 @@ def search_categories(text:str) -> int:
     match = search(CATEGORIES, text)
     if match:
         return int( match.group(1) )
-    # return int( match.group(1) ) if match else None
 
 def search_reviews(text:str) -> object:
     ''' Retorna um dicionário (count:int, total:int, avgrating:float) representando dados sobre os comentários do produto '''
@@ -105,13 +100,13 @@ def get_category(text:str) -> object:
         }
 
 def get_review(text:str) -> object:
-    ''' Retorna um dicionário (date:str, uid:str, rating:int, votes:int, helpful:int) representando um comentário de um usuário sobre o produto '''
+    ''' Retorna um dicionário (date:str, cutomer:str, rating:int, votes:int, helpful:int) representando um comentário de um usuário sobre o produto '''
     match = search(REVIEW, text)
     if match:
         return {
-            'date': match.group('date'),
-            'uid' : match.group('uid'),
-            'rating': int( match.group('rating') ),
-            'votes': int( match.group('votes')),
+            'date'   : match.group('date'),
+            'cutomer': match.group('cutomer'),
+            'rating' : int( match.group('rating') ),
+            'votes'  : int( match.group('votes')),
             'helpful': int( match.group('helpful'))
         }
