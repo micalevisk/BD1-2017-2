@@ -72,7 +72,7 @@ def parse(filepath:str, dbconnection:object):
                 currProductDetails.reviewsinfo = {}
 
                 currProductDetails.reviewsinfo.update(reviewsInfo)
-                for i in range(reviewsInfo['count']):
+                for i in range(reviewsInfo['downloaded']):
                     currProductDetails.reviews.insert(i, get_review( getNormalizedNextLine() ))
 
             ## debug only
