@@ -9,15 +9,15 @@ def split(text:str, sep=None, maxsplit=-1) -> [str]:
 DISCONTINUED = 'discontinued '
 
 # --------------- regexs --------------- #
-PID       = r'^Id:\s*(\d+)$'        ## [1]:valor
-ASIN      = r'^ASIN:\s*(\w+)$'      ## [1]:valor
-TITLE     = r'^title:\s*(.+)$'      ## [1]:valor
-GROUP     = r'^group:\s*(\w+)$'     ## [1]:valor
+PID       = r'^Id:\s*(\d+)$' ## [1]:valor
+ASIN      = r'^ASIN:\s*(\w+)$' ## [1]:valor
+TITLE     = r'^title:\s*(.+)$' ## [1]:valor
+GROUP     = r'^group:\s*(\w+)$' ## [1]:valor
 SALESRANK = r'^salesrank:\s*(\d+)$' ## [1]:valor
-SIMILAR   = r'^similar:\s*(?P<count>\d+)(?:\s+(?P<asins>.+))?' ## [count]:quantidade de items em [asins]:ASINs de outros produtos, separados por espaço (opcional)
+SIMILAR   = r'^similar:\s*(?P<similar>\d+)(?:\s+(?P<asins>.+))?' ## [similar]:quantidade de items em [asins]:ASINs de outros produtos, separados por espaço (opcional)
 CATEGORIES= r'^categories:\s*(\d+)$' ## [1]:quantidade de categorias
 CATEGORY  = r'(?P<cname>.+)?\[\s*(?P<cid>\d+)\s*\]' ## [cname]:nome da categoria (opcional) [cid]:id da categoria
-REVIEWS   = r'^reviews:\s*total:\s*(?P<total>\d+)\s+downloaded:\s*(?P<count>\d+)\s*avg\s+rating:\s*(?P<avgrating>\d+)$' ## [total]:quantidade de comentários [count]:quantidade de comentários listados no dump [avgrating]:média dos votos
+REVIEWS   = r'^reviews:\s*total:\s*(?P<total>\d+)\s+downloaded:\s*(?P<downloaded>\d+)\s*avg\s+rating:\s*(?P<avgrating>\d+)$' ## [total]:quantidade de comentários [downloaded]:quantidade de comentários listados no dump [avgrating]:média dos votos
 REVIEW    = r'^(?P<date>.+)\s+cutomer:\s*(?P<cutomer>\w+)\s+rating:\s*(?P<rating>\d+)\s+votes:\s*(?P<votes>\d+)\s+helpful:\s*(?P<helpful>\d+)$' ## [date]:dia da publicação [cutomer]:customer id [rating]:avaliação do usuário [votes]:número de votos do usuário [helpful]:número de votos de utilidade
 
 
@@ -65,12 +65,12 @@ def search_salesrank(text:str) -> int:
         return int( match.group(1) )
 
 def search_similar(text:str) -> object:
-    ''' Retorna um dicionário (count:int, asins:[str]) representando o campo 'similar' do produto  '''
+    ''' Retorna um dicionário (similar:int, asins:[str]) representando o campo 'similar' do produto  '''
     match = search(SIMILAR, text)
     if match:
         return {
-            'count': int( match.group('count') ),
-            'asins': split_similars( match.group('asins') )
+            'similar': int( match.group('similar') ),
+            'asins'  : split_similars( match.group('asins') )
         }
 
 def search_categories(text:str) -> int:
@@ -80,13 +80,13 @@ def search_categories(text:str) -> int:
         return int( match.group(1) )
 
 def search_reviews(text:str) -> object:
-    ''' Retorna um dicionário (count:int, total:int, avgrating:float) representando dados sobre os comentários do produto '''
+    ''' Retorna um dicionário (downloaded:int, total:int, avgrating:float) representando dados sobre os comentários do produto '''
     match = search(REVIEWS, text)
     if match:
         return {
-            'count'    : int( match.group('count') ),
-            'total'    : int( match.group('total') ),
-            'avgrating': float( match.group('avgrating') )
+            'downloaded': int( match.group('downloaded') ),
+            'total'     : int( match.group('total') ),
+            'avgrating' : float( match.group('avgrating') )
         }
 
 
