@@ -9,12 +9,12 @@ from psycopg2.extras import DictCursor
 
 ## ----------------------------------------------- ##
 class DATABASE_CONFIGS:
-  root = "postgres"
-  name = "db_micaellevi_victorroque"
-  host = "localhost"
-  port = "5432"
-  user = "bd1"
-  password = "bd1"
+    root = "postgres"
+    name = "db_micaellevi_victorroque"
+    host = "localhost"
+    port = "5432"
+    user = "bd1"
+    password = "bd1"
 ## ----------------------------------------------- ##
 
 # template que inserção segura na tabela 'cidade', i.e., sem duplicatas (já que a tabela ainda não possui restrições); admitindo 'id' como PK

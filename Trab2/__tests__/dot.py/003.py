@@ -6,7 +6,7 @@
 
 import sys
 
-sys.path.insert(0, '../../src')
+sys.path.insert(0, '../../src/model/parser')
 from parser_utils import *
 
 
