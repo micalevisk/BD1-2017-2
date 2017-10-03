@@ -1,24 +1,24 @@
-from re import search
-
-
 def split(text:str, sep=None, maxsplit=-1) -> [str]:
     ''' Divide uma string em substrings que são separadas por 'sep' em uma lista de strings onde nenhum elemento está vazio '''
     return list( filter(None, text.split(sep, maxsplit)) )
 
 
+# ----------- patterns ----------- #
 DISCONTINUED = 'discontinued '
+PID       = 'Id:'
+ASIN      = 'ASIN:'
+TITLE     = 'title:'
+GROUP     = 'group:'
+SALESRANK = 'salesrank:'
+SIMILAR   = 'similar:'
+CATEGORIES= 'categories:'
+REVIEWS   = 'reviews:'
+RTOTAL      = 'total:'
+RDOWNLOADED = 'downloaded:'
+RAVGRATING  = 'avg rating:'
 
-# --------------- regexs --------------- #
-PID       = 'Id:' ## [1]:valor
-ASIN      = 'ASIN:' ## [1]:valor
-TITLE     = 'title:' ## [1]:valor
-GROUP     = 'group:' ## [1]:valor
-SALESRANK = 'salesrank:' ## [1]:valor
-SIMILAR   = 'similar:' ## [similar]:quantidade de items em [asins]:ASINs de outros produtos, separados por espaço (opcional)
-CATEGORIES= 'categories:' ## [1]:quantidade de categorias
-#CATEGORY  = '(?P<cname>.+)?\[\s*(?P<cid>\d+)\s*\]' ## [cname]:nome da categoria (opcional) [cid]:id da categoria
-REVIEWS   = 'reviews:' ## [total]:quantidade de comentários [downloaded]:quantidade de comentários listados no dump [avgrating]:média dos votos
-#REVIEW    = '^(?P<date>.+)\s+cutomer:\s*(?P<cutomer>\w+)\s+rating:\s*(?P<rating>\d+)\s+votes:\s*(?P<votes>\d+)\s+helpful:\s*(?P<helpful>\d+)$' ## [date]:dia da publicação [cutomer]:customer id [rating]:avaliação do usuário [votes]:número de votos do usuário [helpful]:número de votos de utilidade
+LEN_RTOTAL      = len(RTOTAL)
+LEN_RDOWNLOADED = len(RDOWNLOADED)
 
 
 def split_similars(text:str) -> [str]:
@@ -61,14 +61,20 @@ def search_salesrank(text:str) -> int:
 
 def search_similar(text:str) -> object:
     ''' Retorna um dicionário (similar:int, asins:[str]) representando o campo 'similar' do produto  '''
-    if text.startswith(SIMILAR)
+    if text.startswith(SIMILAR):
         content = text[8:].lstrip()
-        qtd_similar = content[0 : content.find(' ')]
-        similares = content[content.find(' '):].lstrip()
+        space_begin = (content.find(' ') or 0) + 1
+
+        qtd_similar = 0
+        smilars = ''
+
+        if space_begin > 0:
+            qtd_similar = content[: space_begin]
+            smilars = content[space_begin:]
 
         return {
-            'similar': int( qtd_similar ),
-            'asins'  : split_similars( similares )
+            'similar': int(qtd_similar),
+            'asins'  : split_similars(smilars)
         }
 
 def search_categories(text:str) -> int:
@@ -78,21 +84,21 @@ def search_categories(text:str) -> int:
 
 def search_reviews(text:str) -> object:
     ''' Retorna um dicionário (downloaded:int, total:int, avgrating:float) representando dados sobre os comentários do produto '''
-    if text.startswith(REVIEWS)
+    if text.startswith(REVIEWS):
         reviews = text[8:]
 
-        total_begin = reviews.find('total:')
-        downloaded_begin = reviews.find('downloaded:')
-        avgrating_begin = reviews.find('avg rating:')
+        total_begin = reviews.find(RTOTAL)
+        downloaded_begin = reviews.find(RDOWNLOADED, total_begin + LEN_RTOTAL)
+        avgrating_begin = reviews.find(RAVGRATING, downloaded_begin + LEN_RDOWNLOADED)
 
         total = reviews[total_begin+6 : downloaded_begin]
         downloaded = reviews[downloaded_begin+12 : avgrating_begin]
         avgrating = reviews[avgrating_begin+11:]
-    
+
         return {
-            'downloaded': int( downloaded ),
-            'total'     : int( total ),
-            'avgrating' : float( avgrating )
+            'downloaded': int(downloaded),
+            'total'     : int(total),
+            'avgrating' : float(avgrating)
         }
 
 
@@ -116,7 +122,7 @@ def get_review(text:str) -> object:
     rating_begin = text.find('rating:')
     votes_begin = text.find('votes:')
     helpful_begin = text.find('helpful:')
-    
+
     date = text[0:cutomer_begin]
     cutomer = text[cutomer_begin+8 : rating_begin]
     rating = text[rating_begin+7 : votes_begin]
