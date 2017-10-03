@@ -37,7 +37,9 @@ def parse(filepath:str, dbconnection:object):
             currProduct.asin = search_asin( getNormalizedNextLine() )
 
             nextLine = getNormalizedNextLine()
-            if discontinuedProduct(nextLine): print(currProduct); continue
+            if discontinuedProduct(nextLine):
+                # print(currProduct) ## debug only
+                continue
             currProduct.details = currProductDetails
 
             ## definir title
@@ -76,9 +78,11 @@ def parse(filepath:str, dbconnection:object):
                     currProductDetails.reviews.insert(i, get_review( getNormalizedNextLine() ))
 
             ## debug only
+            '''
             try:
                 print(currProduct)
             except UnicodeEncodeError as err:
                 pass
+            '''
 
     fileDescriptor.close()
