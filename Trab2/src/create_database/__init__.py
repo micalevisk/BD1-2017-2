@@ -1,3 +1,2 @@
 from .db_connection import DBConnection
-
-__all__ = ['DBConnection']
+from create_database.parser import *
