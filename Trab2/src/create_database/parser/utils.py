@@ -29,16 +29,12 @@ LEN_RVOTES   = len(RVOTES)
 
 
 def split_similars(text:str) -> [str]:
-    """ Retorna uma lista de substrings ou None """
+    """ Retorna uma lista de substrings ou vazia (para strings vazias) """
     return split(text, ' ') or []
-    # if text:
-        # return split(text, ' ')
 
 def split_categories(text:str) -> [str]:
-    """ Retorna uma lista de substrings ou None """
+    """ Retorna uma lista de substrings ou vazia (para strings vazias) """
     return split(text, '|') or []
-    # if text:
-        # return split(text, '|')
 
 def discontinuedProduct(text:str) -> bool:
     return text.startswith(DISCONTINUED)
