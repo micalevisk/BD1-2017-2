@@ -5,12 +5,13 @@ $ find . -name \*.pyc -delete -o -type d -name __pycache__ -delete
 -->
 
 # Esquema do Banco de Dados relacional
-![relational_schema](https://user-images.githubusercontent.com/13461315/31106037-5cb72f34-a7b6-11e7-98ed-27cf14e58794.png)
+![relational_schema](https://user-images.githubusercontent.com/13461315/31137360-0b7ab4c8-a839-11e7-8689-f1d1c11dbebc.png)
 
 ## Dicionário de Dados (DD)
 
 
---
+---
+
 ## Dependência Funcional (DF)
 Tipo de Restrição de Integridade que generaliza o conceito de _chave_. <br>
 Seja `R` um esquema de relação e `X` e `Y` conjuntos não-vazios de atributos em R.
