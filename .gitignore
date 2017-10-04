@@ -142,3 +142,4 @@ $RECYCLE.BIN/
 *.stackdump
 _*
 !__tests__
+!__init__.py

@@ -1,0 +1,76 @@
+# Little informations about Amazon Share the Love products
+Total items: 6
+
+Id:   0
+ASIN: 0771044445
+  discontinued product
+
+Id:   1
+ASIN: 0486287785
+  title: World War II Allied Fighter Planes Trading Cards
+  group: Book
+  salesrank: 1270652
+  similar: 0
+  categories: 1
+   |Books[283155]|Subjects[1000]|Home & Garden[48]|Crafts & Hobbies[5126]|General[5144]
+  reviews: total: 1  downloaded: 1  avg rating: 5
+    2003-7-10  cutomer: A3IDGASRQAW8B2  rating: 5  votes:   2  helpful:   2
+
+Id:   2
+ASIN: 1859677800
+  title: Making Bread: The Taste of Traditional Home-Baking
+  group: Book
+  salesrank: 949166
+  similar: 0
+  categories: 1
+   |Books[283155]|Subjects[1000]|Cooking, Food & Wine[6]|Baking[4196]|Bread[4197]
+  reviews: total: 0  downloaded: 0  avg rating: 0
+
+Id:   3
+ASIN: 0313230269
+  title: Clockwork Worlds : Mechanized Environments in SF (Contributions to the Study of Science Fiction and Fantasy)
+  group: Book
+  salesrank: 2895088
+  similar: 0
+  categories: 3
+   |Books[283155]|Subjects[1000]|Literature & Fiction[17]|History & Criticism[10204]|Criticism & Theory[10207]|General[10213]
+   |Books[283155]|Subjects[1000]|Science Fiction & Fantasy[25]|Fantasy[16190]|History & Criticism[16203]
+   |Books[283155]|Subjects[1000]|Science Fiction & Fantasy[25]|Science Fiction[16272]|History & Criticism[16288]
+  reviews: total: 0  downloaded: 0  avg rating: 0
+
+Id:   4
+ASIN: B00004W1W1
+  title: Later...
+  group: Music
+  salesrank: 390624
+  similar: 1 0393049388
+  categories: 2
+   |Music[5174]|Styles[301668]|Jazz[34]|General[63926]
+   |Music[5174]|Specialty Stores[468040]|Indie Music[266023]|Jazz[171246]|General[520200]
+  reviews: total: 3  downloaded: 0  avg rating: 0
+
+Id:   5
+ASIN: 0393049388
+  title: Strange Fire: A Novel
+  group: Book
+  salesrank: 1277867
+  similar: 0
+  categories: 3
+   |Books[283155]|Subjects[1000]|Literature & Fiction[17]|General[10125]|Contemporary[10129]
+   |Books[283155]|Subjects[1000]|Mystery & Thrillers[18]|Mystery[10457]|General[10466]
+   |Books[283155]|Subjects[1000]|Mystery & Thrillers[18]|General[605116]
+  reviews: total: 4  downloaded: 3  avg rating: 3
+    2001-6-14  cutomer:  AA90ANPKJB452  rating: 4  votes:   4  helpful:   1
+    2001-8-20  cutomer: A382XQ7SYXEW1Q  rating: 2  votes:   2  helpful:   2
+    2002-8-5  cutomer: A12MOYPCEJUGW6  rating: 3  votes:   0  helpful:   0
+
+Id:   6
+ASIN: 0899225306
+  title: Nave: Índice Temático De La Biblia
+  group: Book
+  salesrank: 1768941
+  similar: 0
+  categories: 2
+   |Books[283155]|Subjects[1000]|Religion & Spirituality[22]|Christianity[12290]|Reference[172810]|Concordances[12163]
+   |Books[283155]|Subjects[1000]|Religion & Spirituality[22]|Christianity[12290]|Bibles[12059]|Study Guides, History & Reference[764438]|General[572094]
+  reviews: total: 0  downloaded: 0  avg rating: 0

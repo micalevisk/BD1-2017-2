@@ -1,5 +1,5 @@
 # Trabalho Prático 2: Banco de Dados Relacional
-> 11/09/2017 ⇒ 02/10/2017
+> 11/09/2017 ⇒ 03/10/2017
 
 ## Apresentação
 O objetivo deste trabalho prático é <u>projetar</u> e <u>implementar</u> um banco de dados sobre produtos vendidos em uma loja de comércio eletrônico (_e-commerce_), incluindo avaliações e comentários de usuários sobre estes produtos.
@@ -18,8 +18,8 @@ Para cada produto, a seguinte informação PODE estar disponível:
 + Título [_title_]
 + Grupo [_group_]
 + Posição no ranking de vendas [_salesrank_]
-+ Lista de produtos "similares" [_similiar_] (que foram adquiridos junto com o produto; a quantidade seguida pelos ASINs)
-+ Informação de categorização do produto [_categories_] - Categorias e subcategorias ao qual o produto pertence
++ Lista de produtos "similares" [_similiar_]  (que foram adquiridos junto com o produto; a quantidade seguida pelos ASINs)
++ Informação de categorização do produto [_categories_] - Categorias e subcategorias ao qual o produto pertence (nome opcional e id)
 + Comentários sobre os produtos [_reviews_]:
   - Total de comentários [_total_]
   - Total de downloads [_downloaded_]
@@ -51,25 +51,34 @@ ASIN: 1559362022
     2004-2-24  cutomer: A2C5K0QTLL9UAT  rating: 5  votes:   2  helpful:   2
     2004-10-13  cutomer:  A5XYF0Z3UH4HB  rating: 5  votes:   1  helpful:   1
 ```
+
+O produto acima tem um total de `8` comentários onde `8` estão listados (_downloaded_),
+e está em três categorias (com respectivas subcategorias):
+```
+Books > Subjects > Literature & Fiction > Drama           > United States
+Books > Subjects > Arts & Photography   > Performing Arts > Theater > General
+Books > Subjects > Literature & Fiction > Authors, A-Z    > ( B )   > Bogosian, Eric
+```
+
 > Data format:
 
 + **Id**: Product id (number 0, ..., 548551)
-+ **ASIN**: Amazon Standard Identification Number (postive)
++ **ASIN**: Amazon Standard Identification Number (10-character alphanumeric unique identifier)
 + **title**: Name/title of the product
 + **group**: Product group (Book, DVD, Video or Music)
-+ **salesrank**: Amazon Salesrank
++ **salesrank**: Amazon Salesrank <!-- exemplos gráficos https://www.ranktracer.com/amazon-sales-rank.php -->
 + **similar**: ASINs of co-purchased products (people who buy X also buy Y)
-+ **categories**: Location in product category hierarchy to which the product belongs (separated by |, category id in [])
++ **categories**: Location in product category hierarchy to which the product belongs (separated by |, category id in []) <!-- explicação https://authorcentral.amazon.com/gp/help?ie=UTF8&topicID=201231280 -->
 + **reviews**: Product review information: time, user id, rating, total number of votes on the review, total number of helpfulness votes (how many people found the review to be helpful)
 ---
 
 
 ## Sobre o Esquema do Banco de Dados
 O esquema de bancos de dados a ser desenvolvido deverá seguir o modelo relacional.
-Seu desenvolvimento deverá seguir a técnica ascendente (_bottom-up_) de projeto de banco de dados relacionais e deve necessariamente observar as regras de uma das formas normais de alto nível tais como a **Forma Normal de Boyce-Codd**, **Terceira Forma Normal** ou **Quarta Forma Normal**.
+Seu desenvolvimento <!-- deverá seguir a técnica ascendente (_bottom-up_) de projeto de banco de dados relacionais e --> deve necessariamente observar as regras de uma das formas normais de alto nível tais como a **Forma Normal de Boyce-Codd**, **Terceira Forma Normal** ou **Quarta Forma Normal**.
 
 ## Sobre o Dashboard
-O painel de bordo a ser implementado deve dar suporte a pelo menos as seguintes consultas, as quais devem todas ser implementadas com consultadas em linguagem SQL:
+O painel de bordo a ser implementado deve dar suporte a pelo menos as seguintes consultas, as quais devem todas ser implementadas com consultas em linguagem SQL:
 
 <ol type="a">
  <li>Dado produto, listar os 5 comentários mais úteis e com maior avaliação e os 5 comentários mais úteis e com menor avaliação</li>
