@@ -57,6 +57,7 @@ def setConfigsFromArgs():
         else:
             assert False, "unhandled option"
 
+    if dropAndCreateSchema: databaseConfigsDict["dfile"] = ""
     if None in databaseConfigsDict.values(): showHelpAndExit()
 
 
@@ -69,6 +70,7 @@ def main():
 
     if dropAndCreateSchema:
         conn.manipular('DROP SCHEMA public CASCADE; CREATE SCHEMA public', None, True, True)
+        print("O schema 'public' foi recriado!")
     else:
         ## realizar parser do arquivo e popular o banco
         parse(databaseConfigsDict["dfile"], conn)
