@@ -1,5 +1,5 @@
 # Trabalho Prático 2: Banco de Dados Relacional
-> 11/09/2017 ⇒ 02/10/2017
+> 11/09/2017 ⇒ 03/10/2017
 
 ## Apresentação
 O objetivo deste trabalho prático é <u>projetar</u> e <u>implementar</u> um banco de dados sobre produtos vendidos em uma loja de comércio eletrônico (_e-commerce_), incluindo avaliações e comentários de usuários sobre estes produtos.

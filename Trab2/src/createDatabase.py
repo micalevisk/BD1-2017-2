@@ -1,28 +1,32 @@
-# python3 -B createDatabase.py -i ../__tests__/amazon-meta_little.txt
+#
+#   Copyright (c) 2017. All rights reserved.
+#   DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+#   Created by Micael Levi on 2017-10-03
+#
 
 import getopt, sys
-
 from create_database import *
-from create_database.parser import *
+
 
 ## ----------------------------------------------- ##
 databaseConfigsDict = {
-    'root' :"postgres",
-    'name' :"db_micaellevi_victorroque",
+    'name' :None,
     'host' :"localhost",
-    'port' :"5432",
-    'user' :"bd1",
-    'pwd'  :"bd1",
+    'user' :None,
+    'pwd'  :None,
     'dfile':None
 }
 ## ----------------------------------------------- ##
 
 
 USAGE_TEXT="""\
-usage: createDatabase.py [-h] -i <path/to/input.txt> -u <USERNAME> -p <USER_PASSWORD>
+Irá criar um Banco de Dados (local) relacional com o nome passado.
+usage: createDatabase.py [-h] -i <path/to/input.txt> -d <DATABASE_NAME> -u <USERNAME> -p <USER_PASSWORD> [-r]
 
 optional arguments:
 -h, --help      Show this help message and exit
+-d, --database  Define database's name to connect
+-r, --reset     Reset all, ie., drop (delete) schema "public" and create it (exclusive option)
 
 required arguments:
 -i, --input     Define input file
@@ -31,41 +35,48 @@ required arguments:
 """
 
 
-def showUsageAndExit():
+def showHelpAndExit():
     sys.exit(USAGE_TEXT)
 
 def setConfigsFromArgs():
+    global dropAndCreateSchema
+    dropAndCreateSchema = False
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hi:u:p:d:", ["input=", "help", "user=", "pwd="])
+        opts, args = getopt.getopt(sys.argv[1:], "hi:u:p:d:r", ["database=", "input=", "help", "user=", "pwd="])
     except getopt.GetoptError as err:
         sys.exit(err)
 
     for o, a in opts:
-        if o in ("-h", "--help"): showUsageAndExit()
+        if o in ("-h", "--help"): showHelpAndExit()
+        elif o in ("-d", "--database"): databaseConfigsDict["name"] = a
         elif o in ("-i", "--input"): databaseConfigsDict["dfile"] = a
         elif o in ("-u", "--user"): databaseConfigsDict["user"] = a
         elif o in ("-p", "--pwd"): databaseConfigsDict["pwd"] = a
+        elif o in ("-r", "--reset"): dropAndCreateSchema = True
         else:
             assert False, "unhandled option"
 
-    if None in databaseConfigsDict.values(): showUsageAndExit()
-    # print( "file={dfile}\nuser={user}\npwd={pwd}".format(**databaseConfigsDict) )
+    if None in databaseConfigsDict.values(): showHelpAndExit()
 
 
-def main(dbexists=False):
-    if not dbexists:
-        ## iniciar conexão temporária para criar um novo database
-        con = DBConnection(databaseConfigsDict["host"], databaseConfigsDict["root"], databaseConfigsDict["user"], databaseConfigsDict["pwd"], True)
-        con.fechar() if con.manipular("CREATE DATABASE %s" % databaseConfigsDict["name"]) else sys.exit()
+def main():
+    ## iniciar conexão
+    conn = DBConnection(databaseConfigsDict["host"],
+                        databaseConfigsDict["name"],
+                        databaseConfigsDict["user"],
+                        databaseConfigsDict["pwd"])
 
-    ## iniciar conexão real utilizando o database criado (acima)
-    con = DBConnection(databaseConfigsDict["host"], databaseConfigsDict["name"], databaseConfigsDict["user"], databaseConfigsDict["pwd"], False)
+    if dropAndCreateSchema:
+        conn.manipular('DROP SCHEMA public CASCADE; CREATE SCHEMA public', None, True, True)
+    else:
+        ## realizar parser do arquivo e popular o banco
+        parse(databaseConfigsDict["dfile"], conn)
 
-    parse(databaseConfigsDict["dfile"], con)
-
-    con.fechar()
+    ## encerrar conexão com o banco
+    conn.fechar()
 
 
 if __name__ == "__main__":
     setConfigsFromArgs()
-    main(True)
+    main()
