@@ -7,10 +7,9 @@ Esta primeira parte do trabalho tem dois objetivos principais:
 
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
-| 1                | :bear: ou :tiger: | :x:
-| 2                | :bear: ou :tiger: | :x:
-| 3                | :bear: ou :tiger: | :x:
-| 4                | :bear: ou :tiger: | :x:
-| 5                | :bear: ou :tiger: | :x:
-| 6                | :bear: ou :tiger: | :x:
-
+| 1                | :bear: | :x:
+| 2                | :tiger: | :x:
+| 3                | :bear: | :x:
+| 4                | :bear: | :x:
+| 5                | :bear: e :tiger: | :x:
+| 6                | :tiger: | :x:
