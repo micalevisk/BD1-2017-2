@@ -8,7 +8,7 @@ Esta primeira parte do trabalho tem dois objetivos principais:
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
 | 1                | :bear: | :white_check_mark:
-| 2                | :tiger: | :x:
+| 2                | :tiger: | :white_check_mark:
 | 3                | :bear: | :x:
 | 4                | :bear: | :x:
 | 5                | :bear: e :tiger: | :x:
