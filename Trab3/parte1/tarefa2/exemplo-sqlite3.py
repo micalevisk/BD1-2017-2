@@ -1,38 +1,34 @@
-# TODO: conectar com a RAM e: criar tabela 'products', povoar e listar
-# https://sqlite.org/lang_createtable.html
-# "CREATE TABLE products (maker text, model number, type varchar(7))"
-# "INSERT INTO products VALUES ('A', 10001, 'pc')"
-# "INSERT INTO products VALUES ('B', 10321, 'laptop')"
+# USO: python3 exemplo-sqlite3.py
 
-# (c) https://docs.python.org/3/library/sqlite3.html
-# A minimal SQLite shell for experiments
+import sqlite3 # https://docs.python.org/3.6/library/sqlite3.html
 
-import sqlite3
+try:
 
-# con = sqlite3.connect(":memory:")
-con = sqlite3.connect("testeBD.db")
-con.isolation_level = None
-cur = con.cursor()
+    con = sqlite3.connect(':memory:') # usar a RAM como para BD
+    print('pysqlite version =', sqlite3.version)
+    print('SQLite db lib version =', sqlite3.sqlite_version)
 
-buffer = ""
+    with con:
+        cur = con.cursor()
+        cur.execute("ATTACH DATABASE 'firstDB.db' AS db") # criar banco 'firstDB.db' e usá-lo com o alias 'db'
 
-print("Enter your SQL commands to execute in sqlite3.")
-print("Enter a blank line to exit.")
+        cur.executescript("""
+            DROP TABLE IF EXISTS db.alunos;
+            CREATE TABLE IF NOT EXISTS db.alunos (matricula INT PRIMARY KEY, nome TEXT NOT NULL);
+            INSERT INTO db.alunos VALUES(21554923, 'micael');
+            INSERT INTO db.alunos VALUES(21550188, 'moisés');
+        """)
 
-while True:
-    line = input()
-    if line == "":
-        break
-    buffer += line
-    if sqlite3.complete_statement(buffer):
-        try:
-            buffer = buffer.strip()
-            cur.execute(buffer)
+        cur.execute("SELECT * FROM db.alunos")
+        rows = cur.fetchall()
+        for row in rows:
+            print(row)
 
-            if buffer.lstrip().upper().startswith("SELECT"):
-                print(cur.fetchall())
-        except sqlite3.Error as e:
-            print("An error occurred:", e.args[0])
-        buffer = ""
+        cur.execute("DETACH DATABASE db")
+        con.commit()
 
-con.close()
+except sqlite3.Error as e:
+    if con: con.rollback()
+    print('[ERROR]', e)
+finally:
+    if con: con.close()
