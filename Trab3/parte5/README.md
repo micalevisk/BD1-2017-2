@@ -35,7 +35,7 @@ Nos dois casos, o sistema deve ser configurado para realizar bloqueios a nível 
 
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
-| 24               | :bear: ou :tiger: | :x:
-| 25               | :bear: ou :tiger: | :x:
-| 26               | :bear: ou :tiger: | :x:
-| 27               | :bear: ou :tiger: | :x:
+| 24               | :tiger:           | :negative_squared_cross_mark:
+| 25               | :tiger:           | :negative_squared_cross_mark:
+| 26               | :bear:            | :negative_squared_cross_mark:
+| 27               | :bear:            | :negative_squared_cross_mark:

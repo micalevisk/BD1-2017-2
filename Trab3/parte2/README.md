@@ -7,8 +7,7 @@ destas variações no tempo despendido e no espaço ocupado.
 
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
-| 7                | :bear: ou :tiger: | :x:
-| 8                | :bear: ou :tiger: | :x:
-| 9                | :bear: ou :tiger: | :x:
-| 10               | :bear: ou :tiger: | :x:
-
+| 7                | :bear:            | :negative_squared_cross_mark:
+| 8                | :tiger:           | :negative_squared_cross_mark:
+| 9                | :tiger:           | :negative_squared_cross_mark:
+| 10               | :bear:            | :negative_squared_cross_mark:

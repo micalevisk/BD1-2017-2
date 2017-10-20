@@ -7,11 +7,10 @@ Esta tarefa deverá ser executada somente com o PostgreSQL.
 
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
-| 11               | :bear: ou :tiger: | :x:
-| 12               | :bear: ou :tiger: | :x:
-| 13               | :bear: ou :tiger: | :x:
-| 14               | :bear: ou :tiger: | :x:
-| 15               | :bear: ou :tiger: | :x:
-| 16               | :bear: ou :tiger: | :x:
-| 17               | :bear: ou :tiger: | :x:
-
+| 11               | :bear: e :tiger:  | :white_check_mark:
+| 12               | :bear:            | :negative_squared_cross_mark:
+| 13               | :bear:            | :negative_squared_cross_mark:
+| 14               | :tiger:           | :negative_squared_cross_mark:
+| 15               | :tiger:           | :negative_squared_cross_mark:
+| 16               | :tiger:           | :negative_squared_cross_mark:
+| 17               | :bear:            | :negative_squared_cross_mark:
