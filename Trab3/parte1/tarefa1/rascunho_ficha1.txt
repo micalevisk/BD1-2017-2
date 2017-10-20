@@ -1,7 +1,0 @@
-[/var/log/postgresql/postgresql-9.3-main.log]
-
-2017-10-18 09:10:10 AMT LOG:  database system was shut down at 2017-10-18 09:10:09 AMT
-2017-10-18 09:10:10 AMT LOG:  MultiXact member wraparound protections are now enabled
-2017-10-18 09:10:10 AMT LOG:  autovacuum launcher started
-2017-10-18 09:10:10 AMT LOG:  database system is ready to accept connections
-2017-10-18 09:10:11 AMT LOG:  incomplete startup packet
