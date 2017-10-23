@@ -8,8 +8,8 @@ Esta tarefa deverá ser executada somente com o PostgreSQL.
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
 | 11               | :bear: e :tiger:  | :white_check_mark:
-| 12               | :bear:            | :negative_squared_cross_mark:
-| 13               | :bear:            | :negative_squared_cross_mark:
+| 12               | :bear:            | :white_check_mark:
+| 13               | :bear:            | :white_check_mark:
 | 14               | :tiger:           | :negative_squared_cross_mark:
 | 15               | :tiger:           | :negative_squared_cross_mark:
 | 16               | :tiger:           | :negative_squared_cross_mark:
