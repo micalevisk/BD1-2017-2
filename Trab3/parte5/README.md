@@ -11,7 +11,7 @@ Assentos(num_voo, disp)
 > **num** é um `inteiro`  de 1 a 200 <br>
 > **disp** é `booleano` onde se _true_ então o assento está vago (valor inicial = _true_)
 
-A reversa de um assento é feita em três passos:
+A reserva de um assento é feita em três passos:
 1. O sistema recupera a lista dos assentos disponíveis.
 2. O cliente escolhe o assento. Esse passo deve ser simulado pela escolha aleatória de um dos assentos disponíveis, levando para isso um tempo de escolha de 1 segundo.
 3. O sistema registra a reserva do assento escolhido, atualizando o valor de **disp** para _false_
@@ -22,7 +22,7 @@ Duas versões diferentes do processo de reserva devem ser implementadas.
 - **(versão a)** A reserva é implementada como uma única transação que inclui os três passos acima
 - **(versão b)** A reserva inclui uma transação para o passo `1` e outra para o passo `3`. O passo `2` não faz parte das transações, mas deve ser executado.
 
-Agentes de viagens são responsáveis por realizar as reversa de 200 clientes no total.
+Agentes de viagens são responsáveis por realizar as reserva de 200 clientes no total.
 A atividade de um agente de viagens é simulada por uma _thread_.
 
 Experimentos devem ser realizados simulando a atuação de _k_ agentes de viagem trabalhando simulataneamente, <br>
