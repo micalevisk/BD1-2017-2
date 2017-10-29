@@ -11,6 +11,6 @@ Esta tarefa deverá ser executada somente com o PostgreSQL.
 | 12               | :bear:            | :white_check_mark:
 | 13               | :bear:            | :white_check_mark:
 | 14               | :tiger:           | :white_check_mark:
-| 15               | :tiger:           | :negative_squared_cross_mark:
-| 16               | :tiger:           | :negative_squared_cross_mark:
+| 15               | :tiger:           | :white_check_mark:
+| 16               | :tiger:           | :white_check_mark:
 | 17               | :bear:            | :white_check_mark:
