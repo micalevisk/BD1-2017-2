@@ -8,8 +8,8 @@ O comando `EXPLAIN` será bastante utilizado, que permite visualizar todas as et
 | Número da Tarefa | Autor             | Finalizada?
 |:----------------:|:-----------------:|:----------:|
 | 18               | :tiger:           | :negative_squared_cross_mark:
-| 19               | :bear:            | :negative_squared_cross_mark:
-| 20               | :bear:            | :negative_squared_cross_mark:
+| 19               | :bear:            | :white_check_mark:
+| 20               | :bear:            | :white_check_mark:
 | 21               | :tiger:           | :negative_squared_cross_mark:
 | 22               | :bear:            | :negative_squared_cross_mark:
 | 23               | :tiger:           | :negative_squared_cross_mark:
