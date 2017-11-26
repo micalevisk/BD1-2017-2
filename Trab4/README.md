@@ -1,4 +1,4 @@
-## Questão 1 :negative_squared_cross_mark:
+## Questão 1 :white_check_mark:
 Enriqueça o texto identificando possíveis lacunas de informação. Faça hipóteses razoáveis quando for o caso para preenchê-las. Para as questões seguintes, estas suas hipóteses devem também ser consideradas
 
 ## Questão 2 :negative_squared_cross_mark:
