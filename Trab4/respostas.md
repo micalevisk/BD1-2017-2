@@ -27,3 +27,64 @@
 
 <!-- problema: não representa um trabalhor autônomo e nem uma rede privada -->
 ![diagrama_er](resposta_questao2.png)
+
+
+### Questão 3
+> Faça o mapeamento do esquema ER da questão 2 um esquema relacional. Descreva em termos da Álgebra Relacional as restrições de integridade do modelo ER que não puderem ser mapeadas diretamente para restrições do modelo relacional. O mapeamento deve ser otimizado.
+
+![diagrama_relacional](resposta_questao3.png)
+
+### Questão 5
+> Implemente o esquema relacional da questão 3 em termos da linguagem SQL
+
+```sql
+CREATE TABLE RedePropria
+(
+  nome VARCHAR(25) NOT NULL,
+  registro_inss INT NOT NULL,
+  tipo INT NOT NULL,
+  PRIMARY KEY (registro_inss)
+);
+
+CREATE TABLE Endereço
+(
+  cep VARCHAR(8) NOT NULL,
+  número INT NOT NULL,
+  registro_inss INT NOT NULL,
+  FOREIGN KEY (registro_inss) REFERENCES RedePropria(registro_inss),
+  UNIQUE (cep, número)
+);
+
+CREATE TABLE Clínica
+(
+  registro_inss INT NOT NULL,
+  FOREIGN KEY (registro_inss) REFERENCES RedePropria(registro_inss)
+);
+
+CREATE TABLE Hospital
+(
+  registro_inss INT NOT NULL,
+  FOREIGN KEY (registro_inss) REFERENCES RedePropria(registro_inss)
+);
+
+CREATE TABLE Diagnóstico
+(
+  nome VARCHAR(25) NOT NULL,
+  sexo_alvo INT NOT NULL,
+  idade_máx INT NOT NULL,
+  idade_mín INT NOT NULL,
+  registro_inss INT NOT NULL,
+  PRIMARY KEY (nome),
+  FOREIGN KEY (registro_inss) REFERENCES RedePropria(registro_inss)
+);
+
+CREATE TABLE Paciente
+(
+  cpf VARCHAR(11) NOT NULL,
+  idade INT NOT NULL,
+  sexo INT NOT NULL,
+  registro_inss INT NOT NULL,
+  PRIMARY KEY (cpf),
+  FOREIGN KEY (registro_inss) REFERENCES RedePropria(registro_inss)
+);
+```
