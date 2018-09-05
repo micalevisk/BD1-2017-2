@@ -321,10 +321,12 @@ Então, &forall; `DF X -> A`  &isin; `F`, uma das seguintes declarações é ver
 > Portanto, cada tupla pode ser considerada como uma entidade ou relacionamento, identificado por uma chave e descrito pelos atributos restantes.
 
 e.g.:
+
 | X | Y | A |
 |---|---|---|
 | x | u | a |
 | x | v | a |
+
 satisfaz **`DF X -> A`**, como `A` é diferente de `X`, uma relação assim só pode estar em FBNC se `X` for uma chave, caso contrário, seria um exemplo de redundância. Sendo assim, _u_ é igual a _v_, ou seja, as duas tuplas acima são idênticas. Além disso, como uma relação é definida como **conjunto** de tuplas, a situação acima não pode surgir.
 
 > Todo campo de toda tupla registra uma informação que não pode ser inferida (usando-se apenas DFs) a partir dos valores presentes em todos os outros campos em todas as tuplas da instância da relação.
